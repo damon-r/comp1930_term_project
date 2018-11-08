@@ -3,9 +3,74 @@
     <head>
         <meta charset="utf-8"/>
         <title>projectHub</title>
+        <style>
+            body {
+                background-color: #ffdd99;
+            }
+            
+            h1 {
+                font-size: 48pt;
+            }
+            
+            h2 {
+                font-size: 24pt;
+            }
+            
+            h3 {
+                margin-bottom: 5px;
+            }
+            
+            #contentHolder {
+                margin: auto auto;
+            }
+            
+            #heading {
+                text-align: center;
+                color: #ffffff;
+                text-shadow: 0px 0px 8px #000000;
+            }
+        
+            #loginInfo {
+                display: block;
+                width: 50%;
+                min-width: 200px;
+                max-width: 400px;
+                margin: 0 auto;
+                border: 1px solid black;
+                border-radius: 20px;
+                text-align: center;
+                background-color: #ffffff;
+            }
+        </style>
     </head>
     
     <body>
-        <p>Test</p>
+        <div id="contentHolder">
+            <div id="heading">
+                <h1>projectHub</h1>
+                <h2>We Project Success</h2>
+            </div>
+            <div id="loginInfo">
+                <form>
+                    <h3>Username:</h3>
+                    <input type="text" name="username" required="required" pattern="[A-Za-z]{6,20}">
+                    <br>
+                    <a>Forgot Username?</a>
+                    <br>
+                    <br>
+                    
+                    <h3>Password:</h3>
+                    <input type="password" name="password" required="required" pattern="[A-Za-z0-9]{6,20}">
+                    <br>
+                    <a>Forgot Password?</a>
+                    <br>
+                    <br>
+                    
+                    <input type="submit" name="submit" value="submit">
+                    <br>
+                    <br>
+                </form>
+            </div>
+        </div>
     </body>
 </html>
