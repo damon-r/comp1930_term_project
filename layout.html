@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>projectHub</title>
+    <style>
+
+    body {
+      margin: 0;
+    }
+
+    /*-----Header-----*/
+    #header {
+      margin: 0;
+      height: 80px;
+      width: 100%;
+      background-color: none;
+      position: fixed;
+      border-bottom: 3px black solid;
+      clear: left;
+      float: left;
+    }
+
+    #headerLeft {
+      height: 100%;
+      width: 50%;
+      float: left;
+      background-color: none;
+    }
+
+    #room {
+      font-size: 25pt;
+      font-family: sans-serif;
+      display: inline-block;
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      margin-left: 15px;
+      float: left;
+    }
+
+    #headerRight {
+      height: 100%;
+      width: 45%;
+      float: right;
+      background-color: none;
+      position: relative;
+
+    }
+
+    #profileImage {
+      height: 80%;
+      float: right;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      margin-right: 0.5%;
+    }
+
+    #profileName {
+      position: relative;
+      display: inline-block;
+      top: 50%;
+      margin-right: 2%;
+      transform: translateY(-50%);
+      font-size: 18pt;
+      font-family: sans-serif;
+      float: right;
+    }
+
+    a.topButton {
+      font: 18pt Arial;
+      text-decoration: none;
+      background-color: #EEEEEE;
+      color: #333333;
+      padding: 2px 10px 2px 10px;
+      border: 1px solid #333333;
+      position: relative;
+      display: inline-block;
+      top: 50%;
+      transform: translateY(-50%);
+      float: right;
+      margin-right: 2%;
+    }
+    /*-----Header-----*/
+
+    /*-----Sidebar-----*/
+    #sidebar {
+      height: 90%;
+      width: 150px;
+      top: 80px;
+      position: fixed;
+      float: left;
+      background-color: none;
+      border-right: 3px black solid;
+    }
+
+    .sideButton {
+      width: 80%;
+      background-color: none;
+      display: inline-block;
+      text-align: center;
+      margin-top: 15%;
+      position: relative;
+      font: 20pt Arial;
+      padding: 15% 0% 15% 0%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 25px;
+      border: 2px black solid;
+    }
+
+    #exit {
+      border-radius: 0;
+      font-size: 16pt;
+    }
+
+    #admin {
+      border-color: #CCCCCC;
+      color: #CCCCCC;
+    }
+
+    #exitImage {
+      float: left;
+      width: 35%;
+      margin-left: 5%;
+      position: relative;
+      top: 5px;
+    }
+    /*-----Sidebar-----*/
+
+    </style>
+  </head>
+  <body>
+    <div id='header'>
+
+        <span id='room'>COMP-1930 Project Room Name</span>
+
+
+
+      <a id='logout' class='topButton' href='test'>Logout</a>
+      <a id='settings' class='topButton' href='test'>Settings</a>
+
+      <span id='profileName'>Username</span>
+      <img id='profileImage' src='./images/profile-orange.png' alt='A profile image'>
+
+
+
+    </div>
+    <div id='sidebar'>
+      <a id='exit' class='sideButton'><img id='exitImage' src='./images/exit.png'>Exit Room</a>
+      <a id='agenda' class='sideButton'>Agenda</a>
+      <a id='chat' class='sideButton'>Chat</a>
+      <a id='admin' class='sideButton'>Admin</a>
+    </div>
+
+
+
+  </body>
+</html>
