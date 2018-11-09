@@ -31,6 +31,7 @@
     #room {
       font-size: 25pt;
       font-family: sans-serif;
+      font-weight: bold;
       display: inline-block;
       margin: 0;
       position: absolute;
@@ -92,13 +93,13 @@
       top: 83px;
       position: fixed;
       float: left;
-      background-color: none;
+      background-color: rgb(173, 22, 22);
       border-right: 3px black solid;
     }
 
     .sideButton {
       width: 80%;
-      background-color: none;
+      background-color: white;
       display: inline-block;
       text-align: center;
       margin-top: 15%;
@@ -111,14 +112,26 @@
       border: 2px black solid;
     }
 
+    .sideButton:hover {
+      color: blue;
+      border-color: blue;
+    }
+
+    #chat {
+      font-weight: bold;
+      color: blue;
+    }
+
     #exit {
       border-radius: 0;
       font-size: 16pt;
+      background-color: #FF6868;
     }
 
     #admin {
-      border-color: #CCCCCC;
-      color: #CCCCCC;
+      border-color: #999999;
+      color: #999999;
+      background-color: #CCCCCC;
     }
 
     #exitImage {
@@ -129,6 +142,25 @@
       top: 5px;
     }
     /*-----Sidebar-----*/
+
+    #footer {
+      height: 70px;
+      width: 100%;
+      position: fixed;
+      left: 150px;
+      bottom: 0;
+      border-top: 3px black solid;
+    }
+
+    #chatInput {
+      border-radius: 5px;
+      width: 70%;
+      height: 20px;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
 
     </style>
   </head>
@@ -153,6 +185,14 @@
       <a id='agenda' class='sideButton'>Agenda</a>
       <a id='chat' class='sideButton'>Chat</a>
       <a id='admin' class='sideButton'>Admin</a>
+    </div>
+
+    <div id='footer'>
+      <div id='chatBox'>
+        <form>
+          <input id='chatInput' type='text' placeholder='Type here...'>
+        </form>
+      </div>
     </div>
 
 
