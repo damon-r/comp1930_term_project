@@ -1,10 +1,189 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8"/>
-        <title>projectHub</title>
-    </head>
-    <body>
-        <p>Just creating the file. Don't mind me...</p>
-    </body>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8"/>
+    <title>projectHub</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+  </head>
+  <style>
+
+    #usernameIcon {
+      border:2px solid black;
+      border-radius: 50%;
+      width: 2em;
+      height: 2em;
+      line-height: 2em;
+      font-size:300%;
+      text-align: center;
+      margin:0 auto;
+    }
+    #roomFunctionPanel {
+      margin-left: 35%;
+    }
+    #greeting {
+      float:left;
+    }
+
+    header div {
+      float: right;
+    }
+
+    .buttonBorder {
+      font: 18pt Arial;
+      text-decoration: none;
+      background-color: #EEEEEE;
+      color: #333333;
+      padding: 2px 10px 2px 10px;
+      border: 1px solid #333333;
+      width: 9em;
+      margin:1.5em auto;
+    }
+
+    #createNewRoom, #joinExsitingRoom {
+      margin: 2em 8em;
+    }
+
+    table, td{
+      border-collapse: collapse;
+      border:3px solid black;
+      width: 50%;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    table {
+      float:left;
+      width: 14em;
+      margin: .5em;
+    }
+  </style>
+
+  <body>
+    <header>
+      <div>
+      <img id='profileImage' src='./images/profile-orange.png' alt='A profile image'/>
+      <span id="userName">Username</span>
+      <a id='logout' class="buttonBorder" href='test'>Logout</a>
+      <a id='settings' class="buttonBorder" href='test'>Settings</a>
+      </div>
+    </header>
+
+    <div id="roomFunctionPanel">
+      <div id="greeting">
+        <div id="usernameIcon">
+          PH
+        </div>
+        <div id="grettingMessage">
+          Welcome, Username
+        </div>
+      </div>
+
+
+      <div id="createNewRoom" class="buttonBorder">
+        Create New Room
+      </div>
+
+      <div  id="joinExsitingRoom" class="buttonBorder">
+        Join Exsiting Room
+      </div>
+
+    </div>
+
+    <div id="roomSpace">
+      <table>
+        <tr>
+          <td colspan="2">
+            Projects 1 Work Flow
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <imgae src="" alt=""/>
+            <p class="descriptionToRoom">
+              "This is getting a bit meta"
+            </p>
+            <ul>
+              <li>Member: 3</li>
+              <li>Created: Oct 30, 2018</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Enter
+            <imgae class="inlineImg" src="" alt="enter"/>
+          </td>
+          <td>
+            Exit
+            <imgae class="inlineImg" src="./images/exit.png" alt="exit"/>
+          </td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <td colspan="2">
+            COMP1536 Project
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <imgae src="" alt=""/>
+            <p class="descriptionToRoom">
+              "Because HTML is hard"
+            </p>
+            <ul>
+              <li>Member: 5</li>
+              <li>Created: Nov 6, 2018</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Enter
+            <imgae class="inlineImg" src="" alt="enter"/>
+          </td>
+          <td>
+            Exit
+            <imgae class="inlineImg" src="./images/exit.png" alt="exit"/>
+          </td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <td colspan="2">
+            Yet Another Room
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <imgae src="" alt=""/>
+            <p class="descriptionToRoom">
+              "Yet Another Description"
+            </p>
+            <ul>
+              <li>Member: 9</li>
+              <li>Created: Sept 28, 2018</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Enter
+            <imgae class="inlineImg" src="" alt="enter"/>
+          </td>
+          <td>
+            Exit
+            <imgae class="inlineImg" src="./images/exit.png" alt="exit"/>
+          </td>
+        </tr>
+      </table>
+
+    </div>
+
+  </body>
 </html>

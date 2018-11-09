@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+}
+
+/*-----Header-----*/
+header {
+  margin: 0;
+  height: 10%;
+  width: 100%;
+  background-color: none;
+  border-bottom: 3px black solid;
+}
+
+#headerLeft {
+  height: 100%;
+  width: 50%;
+  float: left;
+  background-color: none;
+}
+
+h1 {
+  display: inline-block;
+}
+
+img#profileImage {
+  display: inline-block;
+
+  width:4em;
+  height:4em;
+}
