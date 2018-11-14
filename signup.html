@@ -51,24 +51,18 @@
                 <h2>We Project Success</h2>
             </div>
             <div id="loginInfo">
-                <h2>Log In</h2>
+                <h2>Sign Up</h2>
                 <h3>Email:</h3>
                 <input id="email" type="email" name="username" required="required"/>
-                <br>
-                <a>Forgot Email?</a>
                 <br>
                 <br>
                 
                 <h3>Password:</h3>
                 <input id="password" type="password" name="password" required="required" pattern="[A-Za-z0-9]{6,20}"/>
                 <br>
-                <a>Forgot Password?</a>
-                <br>
                 <br>
                 
-                <input id="submit" type="submit" name="submit" value="Submit">
-                <br>
-                <a href="signup.html">Create Account</a>
+                <input id="submit" type="submit" name="submit" value="Sign Up">
                 <br>
                 <br>
             </div>
@@ -103,11 +97,11 @@
             console.log("Password: " + password);
             
             //attempting login functionality
-            firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-              // Handle Errors here.
-              var errorCode = error.code;
-              var errorMessage = error.message;
-              // ...
+            firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // ...
             });
         })
           
