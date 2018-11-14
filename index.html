@@ -51,26 +51,55 @@
                 <h2>We Project Success</h2>
             </div>
             <div id="loginInfo">
-                <form>
-                    <h3>Username:</h3>
-                    <input type="text" name="username" required="required" pattern="[A-Za-z]{6,20}">
-                    <br>
-                    <a>Forgot Username?</a>
-                    <br>
-                    <br>
-                    
-                    <h3>Password:</h3>
-                    <input type="password" name="password" required="required" pattern="[A-Za-z0-9]{6,20}">
-                    <br>
-                    <a>Forgot Password?</a>
-                    <br>
-                    <br>
-                    
-                    <input type="submit" name="submit" value="submit">
-                    <br>
-                    <br>
-                </form>
+                <h3>Username:</h3>
+                <input id="username" type="text" name="username" required="required" pattern="[A-Za-z]{6,20}"/>
+                <br>
+                <a>Forgot Username?</a>
+                <br>
+                <br>
+                
+                <h3>Password:</h3>
+                <input id="password" type="password" name="password" required="required" pattern="[A-Za-z0-9]{6,20}"/>
+                <br>
+                <a>Forgot Password?</a>
+                <br>
+                <br>
+                
+                <input id="submit" type="submit" name="submit" value="Submit">
+                <br>
+                <br>
             </div>
         </div>
+
+        <script src="./js/jquery-3.3.1.min.js"></script>
+
+        <!-- Firebase App is always required and must be first -->
+        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-app.js"></script>
+
+        <!-- Add additional services that you want to use -->
+        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-messaging.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-functions.js"></script>
+
+        <!-- Comment out (or don't include) services that you don't want to use -->
+        <!-- <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-storage.js"></script> -->
+
+        <script src="./js/firebase_setup.js"></script>
+
+
+        <script>
+          var firebaseRef = firebase.database().ref();
+
+          var username = document.getElementById('username').value;
+          var password = document.getElementById('password').value;
+          $('#submit').click(function() {
+            
+            console.log(firebaseRef.val());
+          })
+        </script>
+        
+
     </body>
 </html>
