@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>projectHub</title>
+        <style>
+            body {
+                margin: 0;
+            }
+        
+            /*-----Header-----*/
+            #header {
+                margin: 0;
+                height: 80px;
+                width: 100%;
+                background-color: rgb(244, 184, 105);
+                position: fixed;
+                border-bottom: 3px black solid;
+                clear: left;
+                float: left;
+            }
+
+            #headerLeft {
+                height: 100%;
+                width: 50%;
+                float: left;
+                background-color: none;
+            }
+
+            #room {
+                font-size: 25pt;
+                font-family: sans-serif;
+                display: inline-block;
+                margin: 0;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                margin-left: 15px;
+                float: left;
+            }
+
+            #headerRight {
+                height: 100%;
+                width: 45%;
+                float: right;
+                background-color: none;
+                position: relative;
+
+            }
+
+            #profileImage {
+                height: 80%;
+                float: right;
+                position: relative;
+                top: 50%;
+                transform: translateY(-50%);
+                margin-right: 0.5%;
+                background-color: white;
+                border-radius: 35px;
+            }
+
+            #profileName {
+                position: relative;
+                display: inline-block;
+                top: 50%;
+                margin-right: 2%;
+                transform: translateY(-50%);
+                font-size: 18pt;
+                font-family: sans-serif;
+                float: right;
+            }
+
+            a.topButton {
+                font: 18pt Arial;
+                text-decoration: none;
+                background-color: #EEEEEE;
+                color: #333333;
+                padding: 2px 10px 2px 10px;
+                border: 1px solid #333333;
+                position: relative;
+                display: inline-block;
+                top: 50%;
+                transform: translateY(-50%);
+                float: right;
+                margin-right: 2%;
+            }
+            /*-----Header-----*/
+            
+            /*-----Body-----*/
+            form {
+            text-align: center;
+            }
+            
+            #content {
+                display: block;
+                padding-top: 100px;
+                margin: 0 auto;
+                width: 50%;
+                min-width: 400px;
+            }
+            
+            #addPerson {
+                display: block;
+                width: 100px;
+                height: 20px;
+                border: 1px solid black;
+                margin: 0 auto;
+            }
+            
+            .person {
+                display: block;
+                width: 50%;
+                height: 50px;
+                border: 1px solid black;
+                margin: 0 auto;
+                margin-top: 10px;
+            }
+            
+            .personName {
+                display: block;
+                float: left;
+                margin: 0;
+                margin-top: 15px;
+                margin-left: 20px;
+            }
+            
+            .deleteButton {
+                height: 30px;
+                width: 30px;
+                display: block;
+                float: right;
+                margin-top: 10px;
+                margin-right: 10px;
+                border: 1px solid black;
+                background-color: red;
+            }
+            /*-----Body-----*/
+        </style>
+    </head>
+    <body>
+        <div id='header'>
+            <span id='room'>Create Room</span>
+            <a id='logout' class='topButton' href='test'>Logout</a>
+            <a id='settings' class='topButton' href='test'>Settings</a>
+            <span id='profileName'>Username</span>
+            <img id='profileImage' src='./images/profile-orange.png' alt='A profile image'>
+        </div>
+        <div id='content'>
+            <form>
+                <fieldset>
+                    <h2>Room Name:</h2>
+                    <input type='name' name='roomName' required='required' placeholder='Type here...' pattern='{2,20}'>
+                </fieldset>
+                <fieldset>
+                    <h2>Room Description:</h2>
+                    <input type='text' name='roomDesc' placeholder='Type here...'>
+                </fieldset>
+                <fieldset>
+                    <h2>Room Image URL:</h2>
+                    <span>Select an Image: </span><input type='file' name='roomImage' required='required' accept='image/png, image/jpeg"'>
+                </fieldset>
+                <fieldset id='userList'>
+                    <h2>User List:</h2>
+                    <div id='addPerson'>Add User</div>
+                </fieldset>
+                <input type='submit' name='submit' value='Create Room!'>
+            </form>
+        </div>
+        
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>
+            $(document).ready(function() {
+
+            //Spawn new list items on click.
+            $("#addPerson").click(function(event){
+                $("#userList").append("<div class='person'><p class='personName'>John Smith</p><div class='deleteButton'></div></div>");
+            });
+            
+            //Delete stuff on delete button press. (not working)
+            $("#.deleteButton").click(function(event){
+                $("#userList").append("<div class='person'><p class='personName'>John Smith</p><div class='deleteButton'></div></div>");
+            });
+
+            });
+        </script>
+    </body>
+</html>

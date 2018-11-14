@@ -93,7 +93,7 @@
       top: 83px;
       position: fixed;
       float: left;
-      background-color: rgb(173, 22, 22);
+      background-color: rgb(237, 151, 42);
       border-right: 3px black solid;
     }
 
@@ -115,11 +115,8 @@
     .sideButton:hover {
       color: blue;
       border-color: blue;
-    }
-
-    #chat {
       font-weight: bold;
-      color: blue;
+      border-width: 3px;
     }
 
     #exit {
@@ -143,56 +140,174 @@
     }
     /*-----Sidebar-----*/
 
+    /*-----Footer-----*/
     #footer {
       height: 70px;
-      width: 100%;
+      width: calc(100% - 150px);
       position: fixed;
-      left: 150px;
+      left: 153px;
+      float: right;
       bottom: 0;
       border-top: 3px black solid;
+      background-color: rgb(244, 184, 105);
+    }
+
+    #chatForm {
+      width: 85%;
+      height: 25px;
+      position: relative;
+      top: 50%;
+      left: 2%;
+      transform: translateY(-50%);
     }
 
     #chatInput {
       border-radius: 5px;
-      width: 70%;
-      height: 20px;
+      width: 100%;
+      height: 100%;
+      font-size: 13pt;
+    }
+
+    #send {
+      width: 50px;
+      float: right;
+      position: relative;
+      bottom: 55%;
+      right: 4%;
+      transform: translateY(50%);
+    }
+    /*-----Footer-----*/
+
+    /*-----Main-----*/
+    #main {
+      width: calc(100% - 153px);
+      height: calc(100vh - 156px);
+    //  background-color: rgba(255, 0, 0, 0.5);
+      float: right;
+      position: relative;
+      top: 83px;
+    }
+
+    .message {
+      background-color: none;
+      width: 100%;
+      overflow: auto;
+    }
+
+    .userImage {
+      width: 64px;
+      position: relative;
+      float: left;
+      padding-top: 16px;
+    }
+
+    .userImage2 {
+      width: 64px;
+      position: relative;
+      float: right;
+      padding-top: 16px;
+    }
+
+    .ph {
+      border: 1px black solid;
+      border-radius: 5px;
+      display: inline-block;
+      max-width: calc(90% - 84px);
+      margin-left: 10px;
+      padding: 2px;
+      float: left;
+    }
+
+    .ph2 {
+      border: 1px black solid;
+      border-radius: 5px;
+      display: inline-block;
+      max-width: calc(90% - 84px);
+      margin-right: 10px;
+      padding: 2px;
+      float: right;
+    }
+
+    .userName {
+      float: left;
+      clear: left;
       position: relative;
       left: 50%;
       transform: translateX(-50%);
     }
 
+    .userName2 {
+      float: right;
+      clear: right;
+      position: relative;
+      right: 50%;
+      transform: translateX(50%);
+    }
+
+    .user {
+      display:inline-block;
+      margin-left: 20px;
+      float: left;
+    }
+
+    .user2 {
+      display:inline-block;
+      margin-right: 20px;
+      float: right;
+    }
 
     </style>
   </head>
   <body>
     <div id='header'>
-
-        <span id='room'>COMP-1930 Project Room Name</span>
-
-
-
-      <a id='logout' class='topButton' href='test'>Logout</a>
+      <span id='room'>COMP-1930 Project Room Name</span>
+      <a id='logout' class='topButton' href='../index.html'>Logout</a>
       <a id='settings' class='topButton' href='test'>Settings</a>
-
       <span id='profileName'>Username</span>
       <img id='profileImage' src='./images/profile-blue-background.png' alt='A profile image'>
-
-
-
     </div>
+
     <div id='sidebar'>
       <a id='exit' class='sideButton'><img id='exitImage' src='./images/exit.png'>Exit Room</a>
       <a id='agenda' class='sideButton'>Agenda</a>
       <a id='chat' class='sideButton'>Chat</a>
-      <a id='admin' class='sideButton'>Admin</a>
+    <!--  <a id='admin' class='sideButton'>Admin</a> -->
+    </div>
+
+    <div id='main'>
+      <div class='message'>
+        <div class='user'>
+          <img class='userImage' src='./images/profile-blue-background.png'>
+          <span class='userName'>Username</span>
+        </div>
+        <p class="ph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non diam tempor, commodo nibh eget, rutrum sem. Duis at scelerisque diam, non tempor dolor. Etiam velit odio, lobortis quis odio vitae, viverra euismod lectus. Integer sodales nunc eu justo suscipit imperdiet lacinia ac nibh. Aliquam sit amet sem ornare, tincidunt tellus ut, vehicula justo. Suspendisse commodo vehicula pretium. Nullam lacus turpis, ultricies tristique tempor ut, sagittis et urna. Donec sed efficitur lorem, ac mattis urna. Quisque convallis tortor risus, in finibus ligula congue sed. Vivamus ullamcorper quis massa vel pretium. Morbi at nibh velit.</p>
+      </div>
+
+      <div class='message'>
+        <div class='user2'>
+          <img class='userImage2' src='./images/profile-orange.png'>
+          <span class='userName2'>Username</span>
+        </div>
+        <p class="ph2">Lorem ipsum dolor sit amet,  amet sem ornare, tincidunt tellus ut, vehicula justo. Suspendisse commodo vehicula pretium. Nullam lacus turpis, ultricies tristique tempor ut, sa</p>
+      </div>
+
+      <div class='message'>
+        <div class='user'>
+          <img class='userImage' src='./images/profile-blue-background.png'>
+          <span class='userName'>Username</span>
+        </div>
+        <p class="ph">Lorem ipsum dolor sit amet,  amet sem ornare, tincidunt tellus ut, vehicula justo. Suspendisse commodo vehicula pretium. Nullam lacus turpis, ultricies tristique tempor ut, sa</p>
+      </div>
+
+
+
     </div>
 
     <div id='footer'>
-      <div id='chatBox'>
-        <form>
-          <input id='chatInput' type='text' placeholder='Type here...'>
-        </form>
-      </div>
+      <form id='chatForm'>
+        <input id='chatInput' type='text' placeholder='Type here...'>
+      </form>
+      <img id='send' src='./images/send.png'>
     </div>
 
 
