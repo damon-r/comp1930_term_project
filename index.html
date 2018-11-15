@@ -42,79 +42,71 @@
                 background-color: white;
             }
         </style>
+        
+        <!-- Firebase init -->
+        <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+        <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
+        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+        <script>
+          // Initialize Firebase
+          var config = {
+            apiKey: "AIzaSyAzdyStJSvK2g5poM_TS9VC5jSaiQRCEyY",
+            authDomain: "comp1930-project.firebaseapp.com",
+            databaseURL: "https://comp1930-project.firebaseio.com",
+            projectId: "comp1930-project",
+            storageBucket: "comp1930-project.appspot.com",
+            messagingSenderId: "724816316887"
+          };
+          firebase.initializeApp(config);
+        </script>
     </head>
     
     <body>
         <div id="contentHolder">
             <div id="heading">
                 <h1>projectHub</h1>
-                <h2>We Project Success</h2>
+                <h2>We Project Your Success</h2>
             </div>
-            <div id="loginInfo">
-                <h2>Log In</h2>
-                <h3>Email:</h3>
-                <input id="email" type="email" name="username" required="required"/>
-                <br>
-                <a>Forgot Email?</a>
-                <br>
-                <br>
+            <div id="firebaseui-auth-container">
                 
-                <h3>Password:</h3>
-                <input id="password" type="password" name="password" required="required" pattern="[A-Za-z0-9]{6,20}"/>
-                <br>
-                <a>Forgot Password?</a>
-                <br>
-                <br>
-                
-                <input id="submit" type="submit" name="submit" value="Submit">
-                <br>
-                <a href="signup.html">Create Account</a>
-                <br>
-                <br>
             </div>
+            <div id="loader">Loading, loading, deeply loading...</div>
         </div>
 
-        <script src="./js/jquery-3.3.1.min.js"></script>
-
-        <!-- Firebase App is always required and must be first -->
-        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-app.js"></script>
-
-        <!-- Add additional services that you want to use -->
-        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-database.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-firestore.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-messaging.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-functions.js"></script>
-
-        <!-- Comment out (or don't include) services that you don't want to use -->
-        <!-- <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-storage.js"></script> -->
-
-        <script src="./js/firebase_setup.js"></script>
-
-
         <script>
-        var firebaseRef = firebase.database().ref();
+        // Initialize the FirebaseUI Widget using Firebase.
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
         
-        $('#submit').click(function() {
-            var email = document.getElementById('email').value;
-            var password = document.getElementById('password').value;
-            
-            console.log("Email: " + email);
-            console.log("Password: " + password);
-            
-            //attempting login functionality
-            firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-              // Handle Errors here.
-              var errorCode = error.code;
-              var errorMessage = error.message;
-              // ...
-            });
-        })
-          
-          
-          
+        var uiConfig = {
+          callbacks: {
+            signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+              // User successfully signed in.
+              // Return type determines whether we continue the redirect automatically
+              // or whether we leave that to developer to handle.
+              return true;
+            },
+            uiShown: function() {
+              // The widget is rendered.
+              // Hide the loader.
+              document.getElementById('loader').style.display = 'none';
+            }
+          },
+          // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+          signInFlow: 'popup',
+          signInSuccessUrl: 'main.html',
+          signInOptions: [
+            // Leave the lines as is for the providers you want to offer your users.
+            firebase.auth.EmailAuthProvider.PROVIDER_ID
+          ],
+          // Terms of service url.
+          tosUrl: '<your-tos-url>',
+          // Privacy policy url.
+          privacyPolicyUrl: '<your-privacy-policy-url>'
+        };
+        
+        // The start method will wait until the DOM is loaded.
+        ui.start('#firebaseui-auth-container', uiConfig);
         </script>
-        
 
     </body>
 </html>
