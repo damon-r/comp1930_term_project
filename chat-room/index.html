@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>projectHub</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <style>
 
     body {
@@ -19,6 +20,7 @@
       border-bottom: 3px black solid;
       clear: left;
       float: left;
+      z-index: 1000;
     }
 
     #headerLeft {
@@ -175,6 +177,11 @@
       bottom: 55%;
       right: 4%;
       transform: translateY(50%);
+      cursor: pointer;
+    }
+
+    #send:hover {
+      filter: brightness(50%);
     }
     /*-----Footer-----*/
 
@@ -186,6 +193,7 @@
       float: right;
       position: relative;
       top: 83px;
+      overflow: auto;
     }
 
     .message {
@@ -216,6 +224,7 @@
       margin-left: 10px;
       padding: 2px;
       float: left;
+      margin-top: 32px;
     }
 
     .ph2 {
@@ -226,6 +235,7 @@
       margin-right: 10px;
       padding: 2px;
       float: right;
+      margin-top: 32px;
     }
 
     .userName {
@@ -304,13 +314,51 @@
     </div>
 
     <div id='footer'>
-      <form id='chatForm'>
+      <form id='chatForm' autocomplete="off">
         <input id='chatInput' type='text' placeholder='Type here...'>
       </form>
       <img id='send' src='./images/send.png'>
     </div>
 
+    <script>
 
+    function sendMessage() {
+
+      $('#main').scrollTop(1E6);
+
+      var input = $('#chatInput').val();
+
+      if (input == "") {
+        return false;
+      }
+      var content = $("<p class='ph'>" +input+ "</p>");
+      var userImage = $("<img class='userImage' src='./images/profile-blue-background.png'>");
+      var userName = $("<span class='userName'>Username</span>");
+      var user = $("<div class='user'></div>");
+      var message = $("<div class='message'></div>");
+
+      $('#main').append(message);
+      $(message).append(user);
+      $(user).append(userImage);
+      $(user).append(userName);
+      $(message).append(content);
+    }
+
+    $('#send').on('click', function() {
+      sendMessage();
+      $('#main').scrollTop(1E6);
+      $('#chatInput').val('');
+    });
+
+    $('#chatInput').on('keypress', function(e) {
+      if (e.keyCode == 13) {
+        event.preventDefault();
+        sendMessage(e);
+        $('#main').scrollTop(1E6);
+        $('#chatInput').val('');
+      }
+    });
+    </script>
 
   </body>
 </html>
