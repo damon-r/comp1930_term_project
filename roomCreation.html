@@ -91,6 +91,18 @@
             text-align: center;
             }
             
+            h2 {
+                text-align: center;
+            }
+            
+            h3 {
+                text-align: center;
+            }
+            
+            p {
+                text-align: center;
+            }
+            
             #content {
                 display: block;
                 padding-top: 100px;
@@ -99,12 +111,19 @@
                 min-width: 400px;
             }
             
+            #content input {
+                margin: 0 auto;
+                display: block;
+            }
+            
             #addPerson {
                 display: block;
                 width: 100px;
                 height: 20px;
                 border: 1px solid black;
                 margin: 0 auto;
+                margin-top: 20px;
+                margin-bottom: 20px;
             }
             
             #createRoom {
@@ -113,17 +132,24 @@
                 height: 20px;
                 border: 1px solid black;
                 margin: 0 auto;
+                margin-top: 20px;
+            }
+            
+            #personToAdd {
+                margin: 0 auto;
             }
             
             #userList {
-                width: 500px;
-                height: 500px;
+                width: 66%;
+                min-width: 360px;
                 border: 1px solid black;
+                padding-bottom: 20px;
+                margin: 0 auto;
             }
             
             .person {
                 display: block;
-                width: 50%;
+                width: 90%;
                 height: 50px;
                 border: 1px solid black;
                 margin: 0 auto;
@@ -182,11 +208,13 @@
                 <h2>Room Description:</h2>
                 <input id='roomDesc' type='text' name='roomDesc' placeholder='Type here...'>
                 <h2>Room Image URL:</h2>
-                <span>Select an Image: </span><input id='roomImage' type='file' name='roomImage' required='required' accept='image/png, image/jpeg"'>
+                <p>Select an Image: </p>
+                <input id='roomImage' type='file' name='roomImage' required='required' accept='image/png, image/jpeg"'>
+                <h2>User List:</h2>
+                <input id='personToAdd' type='text' name='personName' placeholder='Type Person to Add' pattern='(2,20)'></input>
+                <div id='addPerson'>Add User</div>
                 <div id='userList'>
-                    <h2>User List:</h2>
-                    <input id='personToAdd' type='text' name='personName' placeholder='Type Person to Add' pattern='(2,20)'></input>
-                    <div id='addPerson'>Add User</div>
+                    <h3>Your Users:</h3>
                 </div>
                 <div id='createRoom'>Create Room</div>
         </div>
