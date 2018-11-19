@@ -4,6 +4,19 @@
     <meta charset="utf-8">
     <title>projectHub</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
+    <script>
+    var config = {
+      apiKey: "AIzaSyAzdyStJSvK2g5poM_TS9VC5jSaiQRCEyY",
+      authDomain: "comp1930-project.firebaseapp.com",
+      databaseURL: "https://comp1930-project.firebaseio.com",
+      projectId: "comp1930-project",
+      storageBucket: "comp1930-project.appspot.com",
+      messagingSenderId: "724816316887"
+    };
+    firebase.initializeApp(config);
+    </script>
+
     <style>
 
     body {
@@ -41,6 +54,8 @@
       transform: translateY(-50%);
       margin-left: 15px;
       float: left;
+      color: #FFFFFF;
+      text-shadow: 0px 0px 8px #000000;
     }
 
     #headerRight {
@@ -220,38 +235,42 @@
       border: 1px black solid;
       border-radius: 5px;
       display: inline-block;
-      max-width: calc(90% - 84px);
+      max-width: calc(100% - 84px);
       margin-left: 10px;
       padding: 2px;
       float: left;
-      margin-top: 32px;
+      margin-top: 0px;
+      clear: left;
     }
 
     .ph2 {
       border: 1px black solid;
       border-radius: 5px;
       display: inline-block;
-      max-width: calc(90% - 84px);
+      max-width: calc(100% - 84px);
       margin-right: 10px;
       padding: 2px;
       float: right;
-      margin-top: 32px;
+      margin-top: 0px;
+      clear: right;
     }
 
     .userName {
       float: left;
-      clear: left;
       position: relative;
-      left: 50%;
-      transform: translateX(-50%);
+      display: inline-block;
+      font-family: sans-serif;
+      margin-left: 10px;
+      margin-top: 20px;
     }
 
     .userName2 {
       float: right;
-      clear: right;
       position: relative;
-      right: 50%;
-      transform: translateX(50%);
+      display: inline-block;
+      font-family: sans-serif;
+      margin-right: 10px;
+      margin-top: 20px;
     }
 
     .user {
@@ -264,6 +283,26 @@
       display:inline-block;
       margin-right: 20px;
       float: right;
+    }
+
+    .messageBox {
+      display: inline-block;
+      float: left;
+      width: calc(100% - 84px);
+      overflow: auto;
+    }
+
+    .messageBox2 {
+      display: inline-block;
+      float: right;
+      width: calc(100% - 84px);
+      overflow: auto;
+    }
+
+    #loading {
+      font-size: 24pt;
+      margin-left: 30px;
+      font-family: sans-serif;
     }
 
     </style>
@@ -285,30 +324,7 @@
     </div>
 
     <div id='main'>
-      <div class='message'>
-        <div class='user'>
-          <img class='userImage' src='./images/profile-blue-background.png'>
-          <span class='userName'>Username</span>
-        </div>
-        <p class="ph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non diam tempor, commodo nibh eget, rutrum sem. Duis at scelerisque diam, non tempor dolor. Etiam velit odio, lobortis quis odio vitae, viverra euismod lectus. Integer sodales nunc eu justo suscipit imperdiet lacinia ac nibh. Aliquam sit amet sem ornare, tincidunt tellus ut, vehicula justo. Suspendisse commodo vehicula pretium. Nullam lacus turpis, ultricies tristique tempor ut, sagittis et urna. Donec sed efficitur lorem, ac mattis urna. Quisque convallis tortor risus, in finibus ligula congue sed. Vivamus ullamcorper quis massa vel pretium. Morbi at nibh velit.</p>
-      </div>
-
-      <div class='message'>
-        <div class='user2'>
-          <img class='userImage2' src='./images/profile-orange.png'>
-          <span class='userName2'>Username</span>
-        </div>
-        <p class="ph2">Lorem ipsum dolor sit amet,  amet sem ornare, tincidunt tellus ut, vehicula justo. Suspendisse commodo vehicula pretium. Nullam lacus turpis, ultricies tristique tempor ut, sa</p>
-      </div>
-
-      <div class='message'>
-        <div class='user'>
-          <img class='userImage' src='./images/profile-blue-background.png'>
-          <span class='userName'>Username</span>
-        </div>
-        <p class="ph">Lorem ipsum dolor sit amet,  amet sem ornare, tincidunt tellus ut, vehicula justo. Suspendisse commodo vehicula pretium. Nullam lacus turpis, ultricies tristique tempor ut, sa</p>
-      </div>
-
+      <p id='loading'>Loading...</p>
 
 
     </div>
@@ -322,40 +338,96 @@
 
     <script>
 
-    function sendMessage() {
+    $('#main').scrollTop(1E6);
 
-      $('#main').scrollTop(1E6);
+    $('#chat').on('click', function() {
+      test();
+      console.log('Test message sent');
+    });
+
+    var messageTest = firebase.database().ref('messageTest');
+    var messageCount = firebase.database().ref('messageTest/messageCount');
+    var messages = firebase.database().ref('messageTest').child('messages');
+    var currentUser = firebase.auth().currentUser;
+
+    if (currentUser) {
+      console.log(currentUser.displayName);
+    } else {
+      console.log("No user signed in.");
+    }
+
+
+    function printMessages() {
+      messages.once('value').then(function(snapshot) {
+        for (var key in snapshot.val()) {
+          let message = firebase.database().ref('messageTest/messages/'+key+'/message');
+          message.once('value', function(m) {
+
+            var content = $("<p class='ph'>" +m.val()+ "</p>");
+            var userImage = $("<img class='userImage' src='./images/profile-blue-background.png'>");
+            var userName = $("<span class='userName'>Username</span>");
+            var user = $("<div class='user'></div>");
+            var message = $("<div class='message'></div>");
+            var messageBox = $("<div class='messageBox'></div>");
+
+            $('#main').append(message);
+            $(message).append(user);
+            $(message).append(messageBox);
+            $(user).append(userImage);
+            $(messageBox).append(userName);
+            $(messageBox).append(content);
+            $('#loading').remove();
+            $('#main').scrollTop(1E6);
+          });
+        }
+      });
+    }
+
+    printMessages();
+
+    function sendMessage() {
 
       var input = $('#chatInput').val();
 
       if (input == "") {
         return false;
       }
+
+      messageCount.transaction(function(e) {
+        return e + 1;
+      });
+
+      messages.push({
+        message: input
+      });
+
+
       var content = $("<p class='ph'>" +input+ "</p>");
       var userImage = $("<img class='userImage' src='./images/profile-blue-background.png'>");
       var userName = $("<span class='userName'>Username</span>");
       var user = $("<div class='user'></div>");
       var message = $("<div class='message'></div>");
+      var messageBox = $("<div class='messageBox'></div>");
 
       $('#main').append(message);
       $(message).append(user);
+      $(message).append(messageBox);
       $(user).append(userImage);
-      $(user).append(userName);
-      $(message).append(content);
+      $(messageBox).append(userName);
+      $(messageBox).append(content);
+
+      $('#main').scrollTop(1E6);
+      $('#chatInput').val('');
     }
 
     $('#send').on('click', function() {
       sendMessage();
-      $('#main').scrollTop(1E6);
-      $('#chatInput').val('');
     });
 
     $('#chatInput').on('keypress', function(e) {
       if (e.keyCode == 13) {
         event.preventDefault();
         sendMessage(e);
-        $('#main').scrollTop(1E6);
-        $('#chatInput').val('');
       }
     });
     </script>
