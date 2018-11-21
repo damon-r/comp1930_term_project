@@ -28,15 +28,16 @@
             }
 
             #room {
-                font-size: 25pt;
-                font-family: sans-serif;
-                display: inline-block;
-                margin: 0;
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                margin-left: 15px;
-                float: left;
+              font-size: 35pt;
+              font-family: sans-serif;
+              margin: 0;
+              position: absolute;
+              top: 50%;
+              transform: translateY(-50%);
+              margin-left: 15px;
+              float: left;
+              color: #FFFFFF;
+              text-shadow: 0px 0px 8px #000000;
             }
 
             #headerRight {
@@ -107,7 +108,7 @@
                 display: block;
                 padding-top: 100px;
                 margin: 0 auto;
-                width: 50%;
+                width: 66%;
                 min-width: 400px;
             }
             
@@ -142,6 +143,7 @@
             #userList {
                 width: 66%;
                 min-width: 360px;
+                max-width: 500px;
                 border: 1px solid black;
                 padding-bottom: 20px;
                 margin: 0 auto;
@@ -196,7 +198,7 @@
     </head>
     <body>
         <div id='header'>
-            <span id='room'>Create Room</span>
+            <span id='room'>ProjectHub: Create Room</span>
             <a id='logout' class='topButton' href='test'>Logout</a>
             <a id='settings' class='topButton' href='test'>Settings</a>
             <span id='profileName'>Username</span>
@@ -210,11 +212,11 @@
                 <h2>Room Image URL:</h2>
                 <p>Select an Image: </p>
                 <input id='roomImage' type='file' name='roomImage' required='required' accept='image/png, image/jpeg"'>
-                <h2>User List:</h2>
-                <input id='personToAdd' type='text' name='personName' placeholder='Type Person to Add' pattern='(2,20)'></input>
+                <h2>Invite List:</h2>
+                <input id='personToAdd' type='text' name='personName' placeholder='Type User to Add' pattern='(2,20)'></input>
                 <div id='addPerson'>Add User</div>
                 <div id='userList'>
-                    <h3>Your Users:</h3>
+                    <h3>Invited Users:</h3>
                 </div>
                 <div id='createRoom'>Create Room</div>
         </div>
@@ -222,12 +224,13 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script>
             $(document).ready(function() {
+            // = = = = = Define Variables = = = = =
             var user;
             var userCount;
             var currentUserEmail;
             var userList;
             
-            // = = = = = Define Variables = = = = =
+            //Add yourself to the array.
             setTimeout(function() {
             user = firebase.auth().currentUser.displayName;
             userCount = 1; //How many users are in the room. Defaults to 1, because you're kinda making it.
@@ -238,12 +241,25 @@
             }, 500);
 
             // = = = = = Button Events = = = = =
-            //Spawn new list items on click.
+            //Spawn new list items on click, assuming a name is typed.
             $("#addPerson").click(function(event){
                 var nameOfAdded = $("#personToAdd").val();
-                userCount += 1;
-                userList.push(nameOfAdded);
-                $("#userList").append("<div class='person'><p class='personName'>" + nameOfAdded + "</p><div class='deleteButton'></div></div>");
+                
+                if (nameOfAdded != "") {
+                    userCount += 1;
+                    userList.push(nameOfAdded);
+                    $("#userList").append("<div class='person'><p class='personName'>" + nameOfAdded + "</p><div class='deleteButton'></div></div>");
+                    $("#personToAdd").val("");
+               } else {
+                    alert("Please provide a user to add.");
+                }
+            });
+            
+            //Alternatively for #addPerson, listen for enter presses.
+            $("#personToAdd").on("keypress", function(e) {
+                if (e.which === 13) {
+                $("#addPerson").click();
+                }
             });
             
             //Delete stuff on delete button press.
@@ -254,20 +270,26 @@
                 //Edit array.
                 userList[position] = "";
                 userList = userList.filter(trimArray)
-                console.log(userList);
                 
                 $(this).closest(".person").remove();
             });
             
              //Create room on click.
             $("#createRoom").click(function(event){
-                let inputName = $("#roomName").val();
-                let inputDesc = $("#roomDesc").val();
-                let inputImage = $("#roomImage").val();
-                writeUserData(inputName, inputDesc, inputImage);
+                
+                //Check if the name is filled.
+                if ($("#roomName").val() != "") {
+                    let inputName = $("#roomName").val();
+                    let inputDesc = $("#roomDesc").val();
+                    let inputImage = $("#roomImage").val();
+                    writeUserData(inputName, inputDesc, inputImage);
+                } else {
+                    alert("Your room requires a name!");
+                }
             });
             
             // = = = = = Add to Database = = = = =
+            //Adds the room to the database.
             function writeUserData(inputName, inputDesc, inputImage) {
                 firebase.database().ref('groups/' + inputName).set({
                   roomDesc: inputDesc,
@@ -278,11 +300,10 @@
             }
             
             // = = = = = Trim Array = = = = =
+            //A thing used to determine what to put in the new array.
             function trimArray(name) {
                 return name != "";
             }
-            
-           
             
             }); 
         </script>
