@@ -58,8 +58,6 @@
     var currentUserID;
     var currentUserName;
 
-    var messageProcessing;
-
 
 
     //Store the current user's display name and ID in local variables
@@ -79,10 +77,9 @@
 
 
     //Prints out messages stored in database
-    function printMessages() {
-      messageProcessing = true;
-      messages.once('value').then(function(snapshot) {
-        for (var key in snapshot.val()) {
+    setTimeout(function() {
+      messages.on('child_added', function(snapshot) {
+          let key = snapshot.key;
 
           let messageRef = firebase.database().ref('messageTest/messages/'+key+'/message');
           let messageUserRef = firebase.database().ref('messageTest/messages/'+key+'/messageUser');
@@ -133,35 +130,19 @@
             $('#loading').remove();
             $('#main').scrollTop(1E6);
 
-          })
+          });
 
 
-        }
-      });
-      messageProcessing = false;
-    }
+        });
+      }, 1500);
 
-    setTimeout(function() {
 
-    }, 3000);
 
-    setTimeout(function() {
-      printMessages();
-    }, 1500);
 
-/*
-    messages.on('child_added', function(e) {
-      if (!messageProcessing) {
-        let incomingMessageKey = messages.orderByKey().limitToLast(1);
-        console.log(incomingMessageKey);
-
-      }
-    });
-*/
 
     //Prints out message sent through message input to the screen
     function sendMessage() {
-      messageProcessing = true;
+
 
       var input = $('#chatInput').val();
       if (input == "") {
@@ -178,24 +159,7 @@
         messageUserName: currentUserName
       });
 
-      var content = $("<p class='ph'>" +input+ "</p>");
-      var userImage = $("<img class='userImage' src='./images/profile-blue-background.png'>");
-      var userName = $("<span class='userName'>Username</span>");
-      var user = $("<div class='user'></div>");
-      var message = $("<div class='message'></div>");
-      var messageBox = $("<div class='messageBox'></div>");
-
-      $('#main').append(message);
-      $(message).append(user);
-      $(message).append(messageBox);
-      $(user).append(userImage);
-      $(messageBox).append(userName);
-      $(userName).html(currentUserName);
-      $(messageBox).append(content);
-
-      $('#main').scrollTop(1E6);
       $('#chatInput').val('');
-      messageProcessing = false;
     }
 
     //Signs user out and returns them to login Page
