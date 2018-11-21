@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>projectHub</title>
+    <link rel="stylesheet" type="text/css" href="chatStyle.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
     <script>
@@ -17,295 +18,8 @@
     firebase.initializeApp(config);
     </script>
 
-    <style>
 
-    body {
-      margin: 0;
-    }
 
-    /*-----Header-----*/
-    #header {
-      margin: 0;
-      height: 80px;
-      width: 100%;
-      background-color: rgb(244, 184, 105);
-      position: fixed;
-      border-bottom: 3px black solid;
-      clear: left;
-      float: left;
-      z-index: 1000;
-    }
-
-    #headerLeft {
-      height: 100%;
-      width: 50%;
-      float: left;
-      background-color: none;
-    }
-
-    #room {
-      font-size: 25pt;
-      font-family: sans-serif;
-      font-weight: bold;
-      display: inline-block;
-      margin: 0;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      margin-left: 15px;
-      float: left;
-      color: #FFFFFF;
-      text-shadow: 0px 0px 8px #000000;
-    }
-
-    #headerRight {
-      height: 100%;
-      width: 45%;
-      float: right;
-      background-color: none;
-      position: relative;
-
-    }
-
-    #profileImage {
-      height: 80%;
-      float: right;
-      position: relative;
-      top: 50%;
-      transform: translateY(-50%);
-      margin-right: 0.5%;
-    }
-
-    #profileName {
-      position: relative;
-      display: inline-block;
-      top: 50%;
-      margin-right: 2%;
-      transform: translateY(-50%);
-      font-size: 18pt;
-      font-family: sans-serif;
-      float: right;
-    }
-
-    a.topButton {
-      font: 18pt Arial;
-      text-decoration: none;
-      background-color: #EEEEEE;
-      color: #333333;
-      padding: 2px 10px 2px 10px;
-      border: 1px solid #333333;
-      position: relative;
-      display: inline-block;
-      top: 50%;
-      transform: translateY(-50%);
-      float: right;
-      margin-right: 2%;
-    }
-    /*-----Header-----*/
-
-    /*-----Sidebar-----*/
-    #sidebar {
-      height: 90%;
-      width: 150px;
-      top: 83px;
-      position: fixed;
-      float: left;
-      background-color: rgb(237, 151, 42);
-      border-right: 3px black solid;
-    }
-
-    .sideButton {
-      width: 80%;
-      background-color: white;
-      display: inline-block;
-      text-align: center;
-      margin-top: 15%;
-      position: relative;
-      font: 20pt Arial;
-      padding: 15% 0% 15% 0%;
-      left: 50%;
-      transform: translateX(-50%);
-      border-radius: 25px;
-      border: 2px black solid;
-    }
-
-    .sideButton:hover {
-      color: blue;
-      border-color: blue;
-      font-weight: bold;
-      border-width: 3px;
-    }
-
-    #exit {
-      border-radius: 0;
-      font-size: 16pt;
-      background-color: #FF6868;
-    }
-
-    #admin {
-      border-color: #999999;
-      color: #999999;
-      background-color: #CCCCCC;
-    }
-
-    #exitImage {
-      float: left;
-      width: 35%;
-      margin-left: 5%;
-      position: relative;
-      top: 5px;
-    }
-    /*-----Sidebar-----*/
-
-    /*-----Footer-----*/
-    #footer {
-      height: 70px;
-      width: calc(100% - 150px);
-      position: fixed;
-      left: 153px;
-      float: right;
-      bottom: 0;
-      border-top: 3px black solid;
-      background-color: rgb(244, 184, 105);
-    }
-
-    #chatForm {
-      width: 85%;
-      height: 25px;
-      position: relative;
-      top: 50%;
-      left: 2%;
-      transform: translateY(-50%);
-    }
-
-    #chatInput {
-      border-radius: 5px;
-      width: 100%;
-      height: 100%;
-      font-size: 13pt;
-    }
-
-    #send {
-      width: 50px;
-      float: right;
-      position: relative;
-      bottom: 55%;
-      right: 4%;
-      transform: translateY(50%);
-      cursor: pointer;
-    }
-
-    #send:hover {
-      filter: brightness(50%);
-    }
-    /*-----Footer-----*/
-
-    /*-----Main-----*/
-    #main {
-      width: calc(100% - 153px);
-      height: calc(100vh - 156px);
-    //  background-color: rgba(255, 0, 0, 0.5);
-      float: right;
-      position: relative;
-      top: 83px;
-      overflow: auto;
-    }
-
-    .message {
-      background-color: none;
-      width: 100%;
-      overflow: auto;
-    }
-
-    .userImage {
-      width: 64px;
-      position: relative;
-      float: left;
-      padding-top: 16px;
-    }
-
-    .userImage2 {
-      width: 64px;
-      position: relative;
-      float: right;
-      padding-top: 16px;
-    }
-
-    .ph {
-      border: 1px black solid;
-      border-radius: 5px;
-      display: inline-block;
-      max-width: calc(100% - 84px);
-      margin-left: 10px;
-      padding: 2px;
-      float: left;
-      margin-top: 0px;
-      clear: left;
-    }
-
-    .ph2 {
-      border: 1px black solid;
-      border-radius: 5px;
-      display: inline-block;
-      max-width: calc(100% - 84px);
-      margin-right: 10px;
-      padding: 2px;
-      float: right;
-      margin-top: 0px;
-      clear: right;
-    }
-
-    .userName {
-      float: left;
-      position: relative;
-      display: inline-block;
-      font-family: sans-serif;
-      margin-left: 10px;
-      margin-top: 20px;
-    }
-
-    .userName2 {
-      float: right;
-      position: relative;
-      display: inline-block;
-      font-family: sans-serif;
-      margin-right: 10px;
-      margin-top: 20px;
-    }
-
-    .user {
-      display:inline-block;
-      margin-left: 20px;
-      float: left;
-    }
-
-    .user2 {
-      display:inline-block;
-      margin-right: 20px;
-      float: right;
-    }
-
-    .messageBox {
-      display: inline-block;
-      float: left;
-      width: calc(100% - 84px);
-      overflow: auto;
-    }
-
-    .messageBox2 {
-      display: inline-block;
-      float: right;
-      width: calc(100% - 84px);
-      overflow: auto;
-    }
-
-    #loading {
-      font-size: 24pt;
-      margin-left: 30px;
-      font-family: sans-serif;
-    }
-
-    </style>
   </head>
   
   <body>
@@ -318,10 +32,9 @@
     </div>
 
     <div id='sidebar'>
-      <a id='exit' class='sideButton'><img id='exitImage' src='./images/exit.png'>Exit Room</a>
-      <a id='agenda' class='sideButton'>Agenda</a>
-      <a id='chat' class='sideButton'>Chat</a>
-    <!--  <a id='admin' class='sideButton'>Admin</a> -->
+      <a id='exit' class='sideButton' href='../main.html'><img id='exitImage' src='./images/exit.png'>Exit Room</a>
+      <a id='agenda' class='sideButton' href='../agenda/index.html'>Agenda</a>
+      <a id='chat' class='sideButton' href='./index.html'>Chat</a>
     </div>
 
     <div id='main'>
@@ -339,57 +52,100 @@
 
     <script>
 
-    $('#main').scrollTop(1E6);
-
-    $('#chat').on('click', function() {
-      test();
-      console.log('Test message sent');
-    });
-
+    //Defining firebase variables
     var messageTest = firebase.database().ref('messageTest');
     var messageCount = firebase.database().ref('messageTest/messageCount');
     var messages = firebase.database().ref('messageTest').child('messages');
-    var currentUser = firebase.auth().currentUser;
+    var currentUserID;
+    var currentUserName;
 
+
+
+    //Store the current user's display name and ID in local variables
+    setTimeout(function() {
+      currentUserID = firebase.auth().currentUser.uid;
+      currentUserName = firebase.auth().currentUser.displayName;
+      console.log(currentUserID);
+      console.log(currentUserName);
+    }, 1000);
+    /*
     if (currentUser) {
       console.log(currentUser.displayName);
     } else {
       console.log("No user signed in.");
     }
+    */
 
 
-    function printMessages() {
-      messages.once('value').then(function(snapshot) {
-        for (var key in snapshot.val()) {
-          let message = firebase.database().ref('messageTest/messages/'+key+'/message');
-          message.once('value', function(m) {
+    //Prints out messages stored in database
+    setTimeout(function() {
+      messages.on('child_added', function(snapshot) {
+          let key = snapshot.key;
 
-            var content = $("<p class='ph'>" +m.val()+ "</p>");
-            var userImage = $("<img class='userImage' src='./images/profile-blue-background.png'>");
-            var userName = $("<span class='userName'>Username</span>");
-            var user = $("<div class='user'></div>");
-            var message = $("<div class='message'></div>");
-            var messageBox = $("<div class='messageBox'></div>");
+          let messageRef = firebase.database().ref('messageTest/messages/'+key+'/message');
+          let messageUserRef = firebase.database().ref('messageTest/messages/'+key+'/messageUser');
+          let messageUserNameRef = firebase.database().ref('messageTest/messages/'+key+'/messageUserName');
 
+          let messageValue;
+          let messageUser;
+          let messageUserName;
+
+          let messagePromise = messageRef.once('value', function(m) {
+            messageValue = m.val();
+          });
+          let messageUserPromise = messageUserRef.once('value', function(m) {
+            messageUser = m.val();
+          });
+          let messageUserNamePromise = messageUserNameRef.once('value', function(m) {
+            messageUserName = m.val();
+          });
+
+          Promise.all([messagePromise, messageUserPromise, messageUserNamePromise]).then(function() {
+            console.log(messageValue);
+            console.log(messageUser);
+            console.log(messageUserName);
+
+
+            if (messageUser == currentUserID) {
+              var content = $("<p class='ph'>" +messageValue+ "</p>");
+              var userImage = $("<img class='userImage' src='./images/profile-blue-background.png'>");
+              var userName = $("<span class='userName'>Username</span>");
+              var user = $("<div class='user'></div>");
+              var message = $("<div class='message'></div>");
+              var messageBox = $("<div class='messageBox'></div>");
+            } else {
+              var content = $("<p class='ph2'>" +messageValue+ "</p>");
+              var userImage = $("<img class='userImage2' src='./images/profile-orange.png'>");
+              var userName = $("<span class='userName2'>Username</span>");
+              var user = $("<div class='user2'></div>");
+              var message = $("<div class='message'></div>");
+              var messageBox = $("<div class='messageBox2'></div>");
+            }
             $('#main').append(message);
             $(message).append(user);
             $(message).append(messageBox);
             $(user).append(userImage);
             $(messageBox).append(userName);
+            $(userName).html(messageUserName);
             $(messageBox).append(content);
             $('#loading').remove();
             $('#main').scrollTop(1E6);
+
           });
-        }
-      });
-    }
 
-    printMessages();
 
+        });
+      }, 1500);
+
+
+
+
+
+    //Prints out message sent through message input to the screen
     function sendMessage() {
 
-      var input = $('#chatInput').val();
 
+      var input = $('#chatInput').val();
       if (input == "") {
         return false;
       }
@@ -399,36 +155,29 @@
       });
 
       messages.push({
-        message: input
+        message: input,
+        messageUser: currentUserID,
+        messageUserName: currentUserName
       });
 
-
-      var content = $("<p class='ph'>" +input+ "</p>");
-      var userImage = $("<img class='userImage' src='./images/profile-blue-background.png'>");
-      var userName = $("<span class='userName'>Username</span>");
-      var user = $("<div class='user'></div>");
-      var message = $("<div class='message'></div>");
-      var messageBox = $("<div class='messageBox'></div>");
-
-      $('#main').append(message);
-      $(message).append(user);
-      $(message).append(messageBox);
-      $(user).append(userImage);
-      $(messageBox).append(userName);
-      $(messageBox).append(content);
-
-      $('#main').scrollTop(1E6);
       $('#chatInput').val('');
     }
 
+    //Signs user out and returns them to login Page
+    $('#logout').on('click', function() {
+      firebase.auth().signOut();
+    });
+
+    //Sends message when send button is clicked
     $('#send').on('click', function() {
       sendMessage();
     });
 
+    //Sends message when enter is pressed while message input field is focused on
     $('#chatInput').on('keypress', function(e) {
       if (e.keyCode == 13) {
         event.preventDefault();
-        sendMessage(e);
+        sendMessage();
       }
     });
     </script>

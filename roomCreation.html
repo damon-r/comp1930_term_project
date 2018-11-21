@@ -222,31 +222,48 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script>
             $(document).ready(function() {
+            var user;
+            var userCount;
+            var currentUserEmail;
+            var userList;
             
             // = = = = = Define Variables = = = = =
-            var userCount = 1; //How many users are in the room. Defaults to 1, because you're kinda making it.
-            var userList = new Array("Placeholder User"); //An array to hold usernames.
+            setTimeout(function() {
+            user = firebase.auth().currentUser.displayName;
+            userCount = 1; //How many users are in the room. Defaults to 1, because you're kinda making it.
+            currentUserDisplay = firebase.auth().currentUser.displayName;
+            userList = new Array(currentUserDisplay); //An array to hold usernames.
+            console.log(currentUserDisplay);
+            console.log(userList);
+            }, 500);
 
-            // = = = = = Add to List = = = = =
+            // = = = = = Button Events = = = = =
             //Spawn new list items on click.
             $("#addPerson").click(function(event){
                 var nameOfAdded = $("#personToAdd").val();
                 userCount += 1;
                 userList.push(nameOfAdded);
-                console.log(userList);
                 $("#userList").append("<div class='person'><p class='personName'>" + nameOfAdded + "</p><div class='deleteButton'></div></div>");
             });
             
-            //Delete stuff on delete button press. WIP.
-            $(".deleteButton").click(function(event){
-                console.log("Deletion recorded!");
+            //Delete stuff on delete button press.
+            $(document).on("click", ".deleteButton", function() {
+                var nameWithin = $(this).closest(".person").children("p").text();
+                var position = $.inArray(nameWithin, userList, 0);
+                
+                //Edit array.
+                userList[position] = "";
+                userList = userList.filter(trimArray)
+                console.log(userList);
+                
+                $(this).closest(".person").remove();
             });
             
              //Create room on click.
             $("#createRoom").click(function(event){
-                var inputName = $("#roomName").val();
-                var inputDesc = $("#roomDesc").val();
-                var inputImage = $("#roomImage").val();
+                let inputName = $("#roomName").val();
+                let inputDesc = $("#roomDesc").val();
+                let inputImage = $("#roomImage").val();
                 writeUserData(inputName, inputDesc, inputImage);
             });
             
@@ -258,6 +275,11 @@
                   count: userCount,
                   users: userList
               });
+            }
+            
+            // = = = = = Trim Array = = = = =
+            function trimArray(name) {
+                return name != "";
             }
             
            
