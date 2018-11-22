@@ -16,12 +16,21 @@
         <img id='profileImage' src='./images/profile-orange.png' alt='A profile image'>
     </div>
 
-    <div id='agendaSpace'>
-      <ul class="groupNames">
-        <li class="groupAgendas"></li>
-      </ul>
-      
+    <div id='agendaSpace'>Loading agendas ...</div>
+
+    <div class='modal'>
+      <div id="create_agenda_modal">
+          <input id="agendaDesc" class="floatClearRight" type="text" placeholder="What the task is about" size="30" required/>
+          <label class="floatClearRight members">name1<input class="nameCheckbox" type="checkbox" value="name1"/></label>
+          <label class="floatClearRight members">name2<input class="nameCheckbox" type="checkbox" value="name2"/></label>
+          <label class="floatClearRight members">name3<input class="nameCheckbox" type="checkbox" value="name3"/></label>
+          <label class="floatClearRight members">name4<input class="nameCheckbox" type="checkbox" value="name4"/></label>
+          <label id="dueDate" class="floatClearRight members" >Due Date: <input type="date" min="2018-11-21"/></label>
+          <label id="dueTime" class="floatClearRight members">Due Time: <input type="time" value="23:59"/></label>
+          <button id="createBtn" class="floatClearRight">Create</button>
+      </div>
     </div>
+
     <!-- <header>
       <div>
       <img id='profileImage' src='./images/profile-orange.png' alt='A profile image'/>
@@ -31,8 +40,7 @@
       </div>
     </header> -->
 
-    <div id="roomSpace">Loading rooms...</div>
-
+    <div id="roomSpace">Loading rooms ...</div>
 
     <div id="createAndJoinRoom">
       <div class="tooltip">
@@ -44,8 +52,6 @@
         <span class="tooltiptext">Click To Join</span>
       </div>
     </div>
-      
-
 
     <!--modal-->
     <div id="getKeyModal" class="modal">
@@ -57,16 +63,22 @@
         <input id="groupKey" type="text" placeholder="Enter your invitation key"/>
         <p class="errorText"></p>
         <button id="validateBtn">Enter</button>
-        
       </div>
     </div>
     
 
+    <!-- <div class="modal">
+        <div id="modal-content">
+          <div class="title">
+            <h3 class="agendaTitles"></h3>
+            <span id="closeBtn">&times;</span>
+          </div>
+          <input id="groupKey" type="text" placeholder="Enter your invitation key"/>
+          <p class="errorText"></p>
+          <button id="validateBtn">Enter</button>
+        </div>
+    </div> -->
 
-
-    
-
-    
     
     <!-- Firebase App is always required and must be first -->
     <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-app.js"></script>
