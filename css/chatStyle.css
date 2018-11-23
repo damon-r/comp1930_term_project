@@ -346,10 +346,14 @@ img.rotateOnHoveringImg{
   top:50px;
   float:right;
   background-color: white;
-  width:250px;
+  width:350px;
   margin-right: 5px;
   margin-top: 3px;
   z-index: 999999;
+}
+
+input#agendaDesc {
+  font-size: 12pt;
 }
 
 .floatClearRight {

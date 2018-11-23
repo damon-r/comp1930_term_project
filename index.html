@@ -50,18 +50,7 @@
         <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
         <link href="https://fonts.googleapis.com/css?family=Audiowide|Roboto" rel="stylesheet">
         <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
-        <script>
-          // Initialize Firebase
-          var config = {
-            apiKey: "AIzaSyAzdyStJSvK2g5poM_TS9VC5jSaiQRCEyY",
-            authDomain: "comp1930-project.firebaseapp.com",
-            databaseURL: "https://comp1930-project.firebaseio.com",
-            projectId: "comp1930-project",
-            storageBucket: "comp1930-project.appspot.com",
-            messagingSenderId: "724816316887"
-          };
-          firebase.initializeApp(config);
-        </script>
+        <script src="js/firebase_setup.js"></script>
     </head>
     
     <body>
@@ -99,7 +88,7 @@
           },
           // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
           signInFlow: 'popup',
-          signInSuccessUrl: 'main.html',
+          signInSuccessUrl: '',
           signInOptions: [
             // Leave the lines as is for the providers you want to offer your users.
             firebase.auth.EmailAuthProvider.PROVIDER_ID
@@ -112,12 +101,34 @@
         
         // The start method will wait until the DOM is loaded.
         ui.start('#firebaseui-auth-container', uiConfig);
+        
 
-        $('[type="submit"]').click(function() {
+
+
+
+// var userUid;
+//   firebase.auth().onAuthStateChanged(function(user) {
+//     if (user) {
+//       var userUid = firebase.auth().currentUser.uid;
+//       console.log(userUid);
+//     } else {
+//       console.log('user not logged in');
+//     }
+//   });
+        
+//         $('form').attr('onclick','myfunction()');
+        
+        $('#heading').hover(function() {
+            $('body').css('background-color', 'white');
+            var emailBox = $('[type="email"]').val();
+            console.log(emailBox);
+        });
+        $('[type="submit]"]').hover(function() {
+            console.log('submitBtn working');
             var email = document.getElementsByName('email');
         var displayName = document.getElementsByName('name');
         console.log(email + display);
-        })
+        });
 
         </script>
 

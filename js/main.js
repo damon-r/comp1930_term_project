@@ -5,8 +5,6 @@ $(document).ready(function() {
   // var userUid = firebase.auth().currentUser.uid;
   // console.log(userUid);
   var userUid = '9EqPuCH1fEU4siXeBZyJHSxyS8I3';
-
-  
   
   var group_title, group_description, group_createdOn, group_memberCount, currentUserEmail, currentUserDisplayName;
 
@@ -20,32 +18,45 @@ $(document).ready(function() {
   // });
   var currentUserRef = database.ref('users/' + userUid);
 
-
-  $('#roomSpace').text('');
-  $('#agendaSpace').text('');
-  
-
   //sets the user name on the top right cornner.
   currentUserRef.once('value').then(function(snapshot) {
       var userName = snapshot.child('displayName').val();
       $('#profileName').text(userName);
   });
   
+
   //retrieves current user's groups, needs to be run once page is loaded.
   //!!!!!!!!!!!might need to sort the data first!!!!!!!!!!!!!!
   currentUserRef.child('groups').once('value').then(function(snapshot) {
-    snapshot.forEach(function(childSnapshot) {
-      var uid = childSnapshot.key;
-      retrieveGroupInfo(uid);
-    });
+    var contains = snapshot.exists();
+    if (!contains) {
+      $('#roomSpace').text('No Groups Yet.');
+      console.log('No group data.');
+    } else {
+      console.log('Start looping for groups.');
+      $('#roomSpace').text('');
+      snapshot.forEach(function(childSnapshot) {
+        var uid = childSnapshot.key;
+        retrieveGroupInfo(uid);
+      });
+    }
   });
 
   //retrieves current user's agendas, needs to be run once page is loaded.
   currentUserRef.child('/agendas').once('value').then(function(snapshot) {
-    snapshot.forEach(function(childSnapshot) {
-      var uid = childSnapshot.key;
-      retrieveAgendaInfo(uid);
-    });
+    var contains = snapshot.exists();
+    if (!contains) {
+      $('#agendaSpace').text('No Groups Yet.');
+      console.log('No agenda data.');
+    } else {
+      console.log('Start looping for agendas.');
+      $('#agendaSpace').text('');
+      snapshot.forEach(function(childSnapshot) {
+        var uid = childSnapshot.key;
+        retrieveAgendaInfo(uid);
+      });
+    }
+
   });
 
   //retrieves title, description, memberCount and creadtedOn info 
@@ -54,12 +65,18 @@ $(document).ready(function() {
   function retrieveGroupInfo(groupUid) {
     database.ref('groups/' + groupUid).once('value').then(function(snapshot) {
       console.log(groupUid);
-      group_title = snapshot.child('title').val();
-      group_description = snapshot.child('description').val();
-      group_memberCount = snapshot.child('memberCounts').val();
-      group_createdOn = snapshot.child('dateCreated').val();
+      var group_title = snapshot.child('title').val();
+      var group_description = snapshot.child('description').val();
+      var group_memberCount = snapshot.child('memberCounts').val();
+      var group_createdOn = snapshot.child('dateCreated').val();
       console.log('group Info Retieved..');
-      addAGroupTable(groupUid, group_title, group_description, group_memberCount, group_createdOn);
+      console.log(group_title + group_description+group_memberCount+group_createdOn);
+      if (group_title == null || group_description == null || group_memberCount == null || group_createdOn == null) {
+        console.log('group info contains null');
+      } else {
+        addAGroupTable(groupUid, group_title, group_description, group_memberCount, group_createdOn);
+      }
+      
     });
   }
   //===========end of the function.==============
@@ -117,28 +134,40 @@ $(document).ready(function() {
 
   //var ref = database.ref('agendas').orderByChild('dueDate');
   function retrieveAgendaInfo(agendaUid) {
-    database.ref('agendas').once('value').then(function(snapshot) {
+    database.ref('agendas/' + agendaUid).once('value').then(function(snapshot) {
       console.log(agendaUid);
-      var dataObj = {
-        //assignedTo: snapshot.child('assignedTo').val(),
-        description: snapshot.child('description').val(),
-        dueDate: snapshot.child('dueDate').val(),
-        dueTime: snapshot.child('dueTime').val(),
-      };
+      agendaDesc = snapshot.child('description').val();
+      agendaDueD = snapshot.child('dueDate').val();
+      agendaDueT = snapshot.child('dueTime').val();
       console.log('agenda info Retieved..');
-      addAAgendaList(agendaUid, dataObj);
+      if (agendaDesc == null ||
+        agendaDueD == null ||
+        agendaDueT == null) {
+          console.log('agenda info contains null');
+        } else {
+          var dataObj = {
+            //assignedTo: snapshot.child('assignedTo').val(),
+            description: agendaDesc,
+            dueDate: agendaDueD,
+            dueTime: agendaDueT,
+          };
+          addAAgendaList(agendaUid, dataObj);
+        }
+
     });
   }
 
   //==============creating and appending a agenda list======
   function addAAgendaList(agendaUid, {description, dueDate, dueTime}) {
+    console.log('---------------');
+    
     console.log(agendaUid + description + dueDate + dueTime);
+    console.log('---------------');
     var div_agendas = $('<div></div>');
     div_agendas.addClass('agendas');
     var h2_groupTitle = $('<h2></h2>');
     h2_groupTitle.text("");
     div_agendas.append(h2_groupTitle);
-    //need to loop this
     var div_individualAgenda = $('<div></div>');
     div_individualAgenda.addClass('individualAgenda')
     var h4_agendaDesc = $('<h4><//h4>');
