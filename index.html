@@ -76,6 +76,9 @@
             <div id="loader">Loading, loading, deeply loading...</div>
         </div>
 
+
+        <script src="./js/jquery-3.3.1.min.js"></script>
+    <script src="./js/jquery-3.3.1.js"></script>
         <script>
         // Initialize the FirebaseUI Widget using Firebase.
         var ui = new firebaseui.auth.AuthUI(firebase.auth());
@@ -109,6 +112,13 @@
         
         // The start method will wait until the DOM is loaded.
         ui.start('#firebaseui-auth-container', uiConfig);
+
+        $('[type="submit"]').click(function() {
+            var email = document.getElementsByName('email');
+        var displayName = document.getElementsByName('name');
+        console.log(email + display);
+        })
+
         </script>
 
     </body>

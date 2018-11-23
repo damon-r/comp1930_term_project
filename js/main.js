@@ -2,15 +2,28 @@ $(document).ready(function() {
 
   var database = firebase.database();
   var rootRef = database.ref();
-  //var userUid = firebase.auth().currentUser.uid;
+  // var userUid = firebase.auth().currentUser.uid;
+  // console.log(userUid);
   var userUid = '9EqPuCH1fEU4siXeBZyJHSxyS8I3';
-  var currentUserRef = database.ref('/users/' + userUid);
+
   
   
   var group_title, group_description, group_createdOn, group_memberCount, currentUserEmail, currentUserDisplayName;
 
+  // var userUid;
+  // firebase.auth().onAuthStateChanged(function(user) {
+  //   if (user) {
+  //     userUid = firebase.auth().currentUser.uid;
+  //   } else {
+  //     console.log('user not logged in');
+  //   }
+  // });
+  var currentUserRef = database.ref('users/' + userUid);
+
+
   $('#roomSpace').text('');
   $('#agendaSpace').text('');
+  
 
   //sets the user name on the top right cornner.
   currentUserRef.once('value').then(function(snapshot) {
@@ -104,7 +117,6 @@ $(document).ready(function() {
 
   //var ref = database.ref('agendas').orderByChild('dueDate');
   function retrieveAgendaInfo(agendaUid) {
-
     database.ref('agendas').once('value').then(function(snapshot) {
       console.log(agendaUid);
       var dataObj = {
@@ -212,6 +224,7 @@ $(document).ready(function() {
   });
 
   //retieve current user's displayName and email.
+  //createNewGroup();
   function createNewGroup() {
     currentUserRef.once('value').then(function(snapshot) {
       currentUserDisplayName = snapshot.child('displayName').val();
@@ -274,82 +287,5 @@ $(document).ready(function() {
     //database.ref('groups/').child(groupUid).remove();
   }
   //=========end of the function=======================
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-  //parses the url address and get the currentGroupUid.
-  var currentGroupUid = getCurrentGroupUidFromUrl();
-  
-
-  //parses the url with delimiter ('?') and gets the groupUid.
-  function getCurrentGroupUidFromUrl() {
-      var url = document.location.href;
-      //var currentGroupUid = url.split('?')[1];
-      var currentGroupUid ='-LRoR2dwlyAUq70qYL0F';
-      return currentGroupUid;
-  }
-
-  console.log('geting group uid from url: ' + currentGroupUid);
-  
-
-
-
-  //creates a json object containing all the agenda info passed in and generates
-  //a random key assigned to that agenda, lastly, store these info under the
-  //currentGroupUid.
-  function updatingANewAgenda(currentGroupUid, newAgenda_description, newAgenda_dateDue, newAgenda_timeDue, newAgenda_memberObj) {
-    database.ref('groups/').once('value').then(function(snapshot) {
-      //check if the passing in currentGroupUid exists or not.
-      var contains = snapshot.child(currentGroupUid).exists();
-      if (!contains) {
-          console.log('Group Not Found');
-      } else {
-        // A new group
-        var newAgendaData = {
-          description: newAgenda_description,
-          dueTime: newAgenda_timeDue,
-          dueDate: newAgenda_dateDue,
-          assignedTo: newAgenda_memberObj,
-        };
-        // Get a key for a new group.
-        var newAgendaUid = rootRef.child('agendas').push().key;
-        console.log('new key for agenda:' + newAgendaUid);
-        // Write the new group's data simultaneously in the groups list and the 
-        //user's group list.
-        var updates = {};
-        updates['agendas/' + newAgendaUid] = newAgendaData;
-        updates['groups/' + currentGroupUid + '/agendas/'  + newAgendaUid] = true;
-        updates['users/' + userUid + '/agendas/'  + newAgendaUid] = true;
-        console.log('updatingAgenda called.');
-        return rootRef.update(updates);
-      }
-    });
-  }
-  //==========end of the function=============
-
-  //clicks the create button on the create agenda modal will write all the value
-  //in the input boxes to the database.
-  $('#createAgendaBtn').click(function getAgendaInfo() {
-    var agendaDescription = $('#agendaDesc').val();
-    var agendaDueDate = $('#dueDate').val();
-    var agendaDueTime = $('#dueTime').val();
-    var assignedTo = {};
-    //store values of the checked box in 'assigned' object.
-    $('.nameCheckbox:checked').each(function iterator(){
-      assignedTo[$(this).val()] = true;
-    });
-    updatingANewAgenda(currentGroupUid, agendaDescription, agendaDueTime, agendaDueDate, assigned);
-  });
 })
 
