@@ -50,6 +50,9 @@
         <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
         <link href="https://fonts.googleapis.com/css?family=Audiowide|Roboto" rel="stylesheet">
         <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-database.js"></script>
         <script src="js/firebase_setup.js"></script>
     </head>
     
@@ -78,6 +81,14 @@
               // User successfully signed in.
               // Return type determines whether we continue the redirect automatically
               // or whether we leave that to developer to handle.
+              var userName = $('[name="name"]').val();
+              if (typeof userName != typeof undefined) {
+                var email = $('[name="email"]').val();
+                var userUid = firebase.auth().currentUser.uid;
+                console.log("input:\nemail: " + email + '\nusername:' + userName + '\nuid:' + userUid);
+                writeUserData(userUid, userName, email);
+              }
+              console.log('userName is defined, skipped over if statement');
               return true;
             },
             uiShown: function() {
@@ -88,7 +99,7 @@
           },
           // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
           signInFlow: 'popup',
-          signInSuccessUrl: '',
+          signInSuccessUrl: './main.html',
           signInOptions: [
             // Leave the lines as is for the providers you want to offer your users.
             firebase.auth.EmailAuthProvider.PROVIDER_ID
@@ -103,33 +114,15 @@
         ui.start('#firebaseui-auth-container', uiConfig);
         
 
-
-
-
-// var userUid;
-//   firebase.auth().onAuthStateChanged(function(user) {
-//     if (user) {
-//       var userUid = firebase.auth().currentUser.uid;
-//       console.log(userUid);
-//     } else {
-//       console.log('user not logged in');
-//     }
-//   });
-        
-//         $('form').attr('onclick','myfunction()');
-        
-        $('#heading').hover(function() {
-            $('body').css('background-color', 'white');
-            var emailBox = $('[type="email"]').val();
-            console.log(emailBox);
-        });
-        $('[type="submit]"]').hover(function() {
-            console.log('submitBtn working');
-            var email = document.getElementsByName('email');
-        var displayName = document.getElementsByName('name');
-        console.log(email + display);
-        });
-
+        // = = = = = Add to Database = = = = =
+        //Adds the room to the database.
+        function writeUserData(uid, displayName, email) {
+            firebase.database().ref('users/' + uid).set({
+                uid: uid,
+                displayName: displayName,
+                email: email,
+            });
+        }
         </script>
 
     </body>
