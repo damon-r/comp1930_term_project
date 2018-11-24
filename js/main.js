@@ -1,63 +1,126 @@
 $(document).ready(function() {
-
   var database = firebase.database();
   var rootRef = database.ref();
-  // var userUid = firebase.auth().currentUser.uid;
-  // console.log(userUid);
-  var userUid = '9EqPuCH1fEU4siXeBZyJHSxyS8I3';
   
-  var group_title, group_description, group_createdOn, group_memberCount, currentUserEmail, currentUserDisplayName;
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      var userUid = user.uid;
+      var currentUserRef = database.ref('users/' + userUid);
+      console.log('in onAuthStateChanged: ' + userUid);
+      setUsername(currentUserRef);
+      loopForUserGroups(currentUserRef);
+      loopForUserAgendas(currentUserRef);
+      console.log('in onAuthStateChanged: ' + userUid);
+    } else {
+      console.log('user not logged in');
+    }
+  });
 
-  // var userUid;
-  // firebase.auth().onAuthStateChanged(function(user) {
-  //   if (user) {
-  //     userUid = firebase.auth().currentUser.uid;
-  //   } else {
-  //     console.log('user not logged in');
-  //   }
-  // });
-  var currentUserRef = database.ref('users/' + userUid);
+  //=====================event handling sction================================
+  //click exit buttons will get a warning of quiting a group, if 
+  //"OK" is clicked, remove that group info from the page and the
+  //database.
+  $(document).on('click', '.exitButtons', 
+  function quitAGroupConfirmation() {
+    var classes = $(this).attr('class').split(' ');
+    var groupUid = classes[0];
+    if (confirm("Are you sure you want to quit this group?")) {
+      $('#' + groupUid).slideUp('500');
+      $('#' + groupUid).remove();
+      removeGroupInfoFromDatabase(groupUid);
+    }
+  });
+
+  //click enter buttons will enter the corresponding room.
+  $(document).on('click', '.enterButtons', 
+  function redirect() {
+    var [groupUid] = $(this).attr('class').split(' ');
+    window.location.href = "./chat_room.html#" + groupUid;
+  });
+
+  $('#joinARoom').click(function promptToGetKey(){
+      $('#getKeyModal').css('display', 'block');
+    });
+    
+  $('#closeBtn').click(function closeModal() {
+    $('#getKeyModal').css('display', 'none');
+    $('.errorText').text("");
+  });
+
+
+  $('#logout').click(function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    firebase.auth().signOut();
+  });
+
+  $('#validateBtn').click(function validateKey() {
+    database.ref('groups/').once('value').then(function(snapshot) {
+      var groupKeyEntered = $('#groupKey').val();
+      console.log('key enter' + groupKeyEntered);
+      var contains = snapshot.child(groupKeyEntered).exists();
+      if (contains) {
+          $('.errorText').text("");
+          console.log('group found');
+          var updates = {};
+          var uid = firebase.auth().currentUser.uid;
+          console.log(uid);
+          updates['users/' + uid + '/groups/' + groupKeyEntered] = true;
+          rootRef.update(updates);
+          console.log('group: ' + groupKeyEntered + ' added.');
+          window.location.href="./chat_room.html#" + groupKeyEntered;
+      } else {
+        $('.errorText').text("The key is not valid.");
+      }
+    });
+  });
+  //=====================end of event handling sction==========================
+
 
   //sets the user name on the top right cornner.
-  currentUserRef.once('value').then(function(snapshot) {
-      var userName = snapshot.child('displayName').val();
-      $('#profileName').text(userName);
-  });
+  function setUsername(currentUserRef) {
+    currentUserRef.once('value').then(function(snapshot) {
+        var userName = snapshot.child('displayName').val();
+        $('#profileName').text(userName);
+    });
+  }
   
-
   //retrieves current user's groups, needs to be run once page is loaded.
   //!!!!!!!!!!!might need to sort the data first!!!!!!!!!!!!!!
-  currentUserRef.child('groups').once('value').then(function(snapshot) {
-    var contains = snapshot.exists();
-    if (!contains) {
-      $('#roomSpace').text('No Groups Yet.');
-      console.log('No group data.');
-    } else {
-      console.log('Start looping for groups.');
-      $('#roomSpace').text('');
-      snapshot.forEach(function(childSnapshot) {
-        var uid = childSnapshot.key;
-        retrieveGroupInfo(uid);
-      });
-    }
-  });
+  function loopForUserGroups(currentUserRef) {
+    currentUserRef.child('groups').once('value').then(function(snapshot) {
+      var contains = snapshot.exists();
+      if (!contains) {
+        $('#roomSpace').text('No Groups Yet.');
+        console.log('No group data.');
+      } else {
+        console.log('Start looping for groups.');
+        $('#roomSpace').text('');
+        snapshot.forEach(function(childSnapshot) {
+          var uid = childSnapshot.key;
+          retrieveGroupInfo(uid);
+        });
+      }
+    });
+  }
 
   //retrieves current user's agendas, needs to be run once page is loaded.
-  currentUserRef.child('/agendas').once('value').then(function(snapshot) {
-    var contains = snapshot.exists();
-    if (!contains) {
-      $('#agendaSpace').text('No Groups Yet.');
-      console.log('No agenda data.');
-    } else {
-      console.log('Start looping for agendas.');
-      $('#agendaSpace').text('');
-      snapshot.forEach(function(childSnapshot) {
-        var uid = childSnapshot.key;
-        retrieveAgendaInfo(uid);
-      });
-    }
-
-  });
+  function loopForUserAgendas(currentUserRef) {
+    currentUserRef.child('/agendas').once('value').then(function(snapshot) {
+      var contains = snapshot.exists();
+      if (!contains) {
+        $('#agendaSpace').text('No Agendas Yet.');
+        console.log('No agenda data.');
+      } else {
+        console.log('Start looping for agendas.');
+        $('#agendaSpace').text('');
+        snapshot.forEach(function(childSnapshot) {
+          var uid = childSnapshot.key;
+          retrieveAgendaInfo(uid);
+        });
+      }
+    });
+  }
 
   //retrieves title, description, memberCount and creadtedOn info 
   //of a group using //groupUid, adds them onto a table and 
@@ -122,7 +185,7 @@ $(document).ready(function() {
     exit_button.addClass('exitButtons');
     //appending all the elements above.
     tr_groupTitle.append(td_groupTitle);
-    td_groupInfo.append(img_groupIcon, p_groupDesc, p_groupMemberCount,    p_groupDateCreated);
+    td_groupInfo.append(img_groupIcon, p_groupDesc, p_groupMemberCount, p_groupDateCreated);
     tr_groupInfo.append(td_groupInfo);
     td_enter.append(enter_button);
     td_exit.append(exit_button);
@@ -188,34 +251,6 @@ $(document).ready(function() {
   }
   //==============end of the function============
 
-  //click exit buttons will get a warning of quiting a group, if 
-  //"OK" is clicked, remove that group info from the page and the
-  //database.
-  $(document).on('click', '.exitButtons', 
-  function quitAGroupConfirmation() {
-    var classes = $(this).attr('class').split(' ');
-    var groupUid = classes[0];
-    if (confirm("Are you sure you want to quit this group?")) {
-      $('#' + groupUid).remove();
-      removeGroupInfoFromDatabase(groupUid);
-    }
-  });
-
-  //click enter buttons will enter the corresponding room.
-  $(document).on('click', '.enterButtons', 
-  function redirect() {
-    var [groupUid] = $(this).attr('class').split(' ');
-    window.location.href = "./chat-room/index.html?" + groupUid;
-  });
-
-  $('#joinARoom').click(function promptToGetKey(){
-      $('#getKeyModal').css('display', 'block');
-    });
-    
-  $('#closeBtn').click(function closeModal() {
-    $('#getKeyModal').css('display', 'none');
-    $('.errorText').text("");
-  });
 
   // $('#validateBtn').click(function validateKey() {
   //   database.ref('groups/').once('value').then(function(snapshot) {
@@ -236,28 +271,14 @@ $(document).ready(function() {
     
   // });
 
-  $('#validateBtn').click(function validateKey() {
-    database.ref('groups/').once('value').then(function(snapshot) {
-      var groupKeyEntered = $('#groupKey').val();
-      console.log('key enter' + groupKeyEntered);
-      var contains = snapshot.child(groupKeyEntered).exists();
-      console.log(contains);
-      if (contains) {
-          $('.errorText').text("");
-          console.log('found');
-          window.location.href="./chat-room/index.html?" + groupKeyEntered;
-      } else {
-        $('.errorText').text("The key is not valid.");
-      }
-    });
-  });
+
 
   //retieve current user's displayName and email.
   //createNewGroup();
   function createNewGroup() {
     currentUserRef.once('value').then(function(snapshot) {
-      currentUserDisplayName = snapshot.child('displayName').val();
-      currentUserEmail = snapshot.child('email').val();
+      var currentUserDisplayName = snapshot.child('displayName').val();
+      var currentUserEmail = snapshot.child('email').val();
       var newGroup_title = "new tile"; //get the text from web.
       var newGroup_description = "new description"; //get the description from web.
       console.log(currentUserDisplayName,currentUserEmail,newGroup_title,newGroup_description);
@@ -316,5 +337,4 @@ $(document).ready(function() {
     //database.ref('groups/').child(groupUid).remove();
   }
   //=========end of the function=======================
-})
-
+});
