@@ -17,7 +17,7 @@ a {
   border-bottom: 3px black solid;
   clear: left;
   float: left;
-  z-index: 1000;
+  
 }
 
 #headerLeft {
@@ -90,12 +90,13 @@ a.topButton {
 /*-----Sidebar-----*/
 #sidebar {
   height: 90%;
-  width: 150px;
+  width: 350px;
   top: 83px;
   position: fixed;
-  float: left;
+  left:0px;
   background-color: rgb(237, 151, 42);
   border-right: 3px black solid;
+  overflow: auto;
 }
 
 .sideButton {
@@ -113,11 +114,11 @@ a.topButton {
   border: 2px black solid;
 }
 
-.sideButton:hover {
+/* .sideButton:hover {
   color: blue;
   border-color: blue;
   font-weight: bold;
-}
+} */
 
 #exit {
   border-radius: 0;
@@ -143,9 +144,9 @@ a.topButton {
 /*-----Footer-----*/
 #footer {
   height: 70px;
-  width: calc(100% - 150px);
+  width: calc(100% - 353px);
   position: fixed;
-  left: 153px;
+  left: 353px;
   float: right;
   bottom: 0;
   border-top: 3px black solid;
@@ -185,7 +186,7 @@ a.topButton {
 
 /*-----Main-----*/
 #main {
-  width: calc(100% - 153px);
+  width: calc(100% - 353px);
   height: calc(100vh - 156px);
 //  background-color: rgba(255, 0, 0, 0.5);
   float: right;
@@ -287,3 +288,100 @@ a.topButton {
   margin-left: 30px;
   font-family: sans-serif;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+div#sidebar_title {
+  background-color: rgb(209, 198, 39);
+  position: fixed;
+  width: 350px;
+  height: 50px;
+  top:83px;
+  left:0px;
+}
+div#sidebar_title h3 {
+  display: inline-block;
+}
+
+#agendaSpace {
+  position: relative;
+  top:50px;
+  height: calc(100% - 133px);
+}
+
+img#createAgendaIcon {
+  width: 50px;
+  height: 50px;
+  margin-right: 3px;
+  border-radius: 50%;
+  vertical-align: middle;
+  float:right;
+}
+
+img.rotateOnHoveringImg{
+  border-radius:50%;
+  -webkit-transition: -webkit-transform .3s ease-in-out;
+  -ms-transition: -ms-transform .3s ease-in-out;
+  transition: transform .3s ease-in-out;
+}
+
+/* #newAgendaForm {
+  display:none;
+  background-color: black;
+  float:right;
+} */
+
+#create_agenda_modal {
+  position: relative;
+  border-radius: 10px;
+  top:50px;
+  float:right;
+  background-color: white;
+  width:350px;
+  margin-right: 5px;
+  margin-top: 3px;
+  z-index: 999999;
+}
+
+input#agendaDesc {
+  font-size: 12pt;
+}
+
+.floatClearRight {
+  float:right;
+  clear:right;
+  margin:5%;
+}
+
+.members {
+  margin-top: 2px;
+} 
+
+.individualAgenda, .agenda_groupTitle {
+  margin:.6%;
+}
+
+div.individualAgenda {
+  text-align: right;
+  border:1px solid black;
+  width:90%;
+  margin-left:auto;
+  margin-right:auto;
+  border-radius: 10px;
+  padding:3%;
+  box-shadow:  0px 0px 8px #000000;
+}
+
+.agendaDesc {
+  margin: .1rem;
+}
+

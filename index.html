@@ -50,18 +50,10 @@
         <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
         <link href="https://fonts.googleapis.com/css?family=Audiowide|Roboto" rel="stylesheet">
         <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
-        <script>
-          // Initialize Firebase
-          var config = {
-            apiKey: "AIzaSyAzdyStJSvK2g5poM_TS9VC5jSaiQRCEyY",
-            authDomain: "comp1930-project.firebaseapp.com",
-            databaseURL: "https://comp1930-project.firebaseio.com",
-            projectId: "comp1930-project",
-            storageBucket: "comp1930-project.appspot.com",
-            messagingSenderId: "724816316887"
-          };
-          firebase.initializeApp(config);
-        </script>
+        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-database.js"></script>
+        <script src="js/firebase_setup.js"></script>
     </head>
     
     <body>
@@ -76,6 +68,9 @@
             <div id="loader">Loading, loading, deeply loading...</div>
         </div>
 
+
+        <script src="./js/jquery-3.3.1.min.js"></script>
+    <script src="./js/jquery-3.3.1.js"></script>
         <script>
         // Initialize the FirebaseUI Widget using Firebase.
         var ui = new firebaseui.auth.AuthUI(firebase.auth());
@@ -86,6 +81,14 @@
               // User successfully signed in.
               // Return type determines whether we continue the redirect automatically
               // or whether we leave that to developer to handle.
+              var userName = $('[name="name"]').val();
+              if (typeof userName != typeof undefined) {
+                var email = $('[name="email"]').val();
+                var userUid = firebase.auth().currentUser.uid;
+                console.log("input:\nemail: " + email + '\nusername:' + userName + '\nuid:' + userUid);
+                writeUserData(userUid, userName, email);
+              }
+              console.log('userName is defined, skipped over if statement');
               return true;
             },
             uiShown: function() {
@@ -96,7 +99,7 @@
           },
           // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
           signInFlow: 'popup',
-          signInSuccessUrl: 'main.html',
+          signInSuccessUrl: './main.html',
           signInOptions: [
             // Leave the lines as is for the providers you want to offer your users.
             firebase.auth.EmailAuthProvider.PROVIDER_ID
@@ -109,6 +112,17 @@
         
         // The start method will wait until the DOM is loaded.
         ui.start('#firebaseui-auth-container', uiConfig);
+        
+
+        // = = = = = Add to Database = = = = =
+        //Adds the room to the database.
+        function writeUserData(uid, displayName, email) {
+            firebase.database().ref('users/' + uid).set({
+                uid: uid,
+                displayName: displayName,
+                email: email,
+            });
+        }
         </script>
 
     </body>

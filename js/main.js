@@ -1,39 +1,126 @@
 $(document).ready(function() {
-
   var database = firebase.database();
   var rootRef = database.ref();
-  //var userUid = firebase.auth().currentUser.uid;
-  var userUid = '9EqPuCH1fEU4siXeBZyJHSxyS8I3';
-  var currentUserRef = database.ref('/users/' + userUid);
   
-  
-  var group_title, group_description, group_createdOn, group_memberCount, currentUserEmail, currentUserDisplayName;
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      var userUid = user.uid;
+      var currentUserRef = database.ref('users/' + userUid);
+      console.log('in onAuthStateChanged: ' + userUid);
+      setUsername(currentUserRef);
+      loopForUserGroups(currentUserRef);
+      loopForUserAgendas(currentUserRef);
+      console.log('in onAuthStateChanged: ' + userUid);
+    } else {
+      console.log('user not logged in');
+    }
+  });
 
-  $('#roomSpace').text('');
-  $('#agendaSpace').text('');
+  //=====================event handling sction================================
+  //click exit buttons will get a warning of quiting a group, if 
+  //"OK" is clicked, remove that group info from the page and the
+  //database.
+  $(document).on('click', '.exitButtons', 
+  function quitAGroupConfirmation() {
+    var classes = $(this).attr('class').split(' ');
+    var groupUid = classes[0];
+    if (confirm("Are you sure you want to quit this group?")) {
+      $('#' + groupUid).slideUp('500');
+      $('#' + groupUid).remove();
+      removeGroupInfoFromDatabase(groupUid);
+    }
+  });
+
+  //click enter buttons will enter the corresponding room.
+  $(document).on('click', '.enterButtons', 
+  function redirect() {
+    var [groupUid] = $(this).attr('class').split(' ');
+    window.location.href = "./chat_room.html#" + groupUid;
+  });
+
+  $('#joinARoom').click(function promptToGetKey(){
+      $('#getKeyModal').css('display', 'block');
+    });
+    
+  $('#closeBtn').click(function closeModal() {
+    $('#getKeyModal').css('display', 'none');
+    $('.errorText').text("");
+  });
+
+
+  $('#logout').click(function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    firebase.auth().signOut();
+  });
+
+  $('#validateBtn').click(function validateKey() {
+    database.ref('groups/').once('value').then(function(snapshot) {
+      var groupKeyEntered = $('#groupKey').val();
+      console.log('key enter' + groupKeyEntered);
+      var contains = snapshot.child(groupKeyEntered).exists();
+      if (contains) {
+          $('.errorText').text("");
+          console.log('group found');
+          var updates = {};
+          var uid = firebase.auth().currentUser.uid;
+          console.log(uid);
+          updates['users/' + uid + '/groups/' + groupKeyEntered] = true;
+          rootRef.update(updates);
+          console.log('group: ' + groupKeyEntered + ' added.');
+          window.location.href="./chat_room.html#" + groupKeyEntered;
+      } else {
+        $('.errorText').text("The key is not valid.");
+      }
+    });
+  });
+  //=====================end of event handling sction==========================
+
 
   //sets the user name on the top right cornner.
-  currentUserRef.once('value').then(function(snapshot) {
-      var userName = snapshot.child('displayName').val();
-      $('#profileName').text(userName);
-  });
+  function setUsername(currentUserRef) {
+    currentUserRef.once('value').then(function(snapshot) {
+        var userName = snapshot.child('displayName').val();
+        $('#profileName').text(userName);
+    });
+  }
   
   //retrieves current user's groups, needs to be run once page is loaded.
   //!!!!!!!!!!!might need to sort the data first!!!!!!!!!!!!!!
-  currentUserRef.child('groups').once('value').then(function(snapshot) {
-    snapshot.forEach(function(childSnapshot) {
-      var uid = childSnapshot.key;
-      retrieveGroupInfo(uid);
+  function loopForUserGroups(currentUserRef) {
+    currentUserRef.child('groups').once('value').then(function(snapshot) {
+      var contains = snapshot.exists();
+      if (!contains) {
+        $('#roomSpace').text('No Groups Yet.');
+        console.log('No group data.');
+      } else {
+        console.log('Start looping for groups.');
+        $('#roomSpace').text('');
+        snapshot.forEach(function(childSnapshot) {
+          var uid = childSnapshot.key;
+          retrieveGroupInfo(uid);
+        });
+      }
     });
-  });
+  }
 
   //retrieves current user's agendas, needs to be run once page is loaded.
-  currentUserRef.child('/agendas').once('value').then(function(snapshot) {
-    snapshot.forEach(function(childSnapshot) {
-      var uid = childSnapshot.key;
-      retrieveAgendaInfo(uid);
+  function loopForUserAgendas(currentUserRef) {
+    currentUserRef.child('/agendas').once('value').then(function(snapshot) {
+      var contains = snapshot.exists();
+      if (!contains) {
+        $('#agendaSpace').text('No Agendas Yet.');
+        console.log('No agenda data.');
+      } else {
+        console.log('Start looping for agendas.');
+        $('#agendaSpace').text('');
+        snapshot.forEach(function(childSnapshot) {
+          var uid = childSnapshot.key;
+          retrieveAgendaInfo(uid);
+        });
+      }
     });
-  });
+  }
 
   //retrieves title, description, memberCount and creadtedOn info 
   //of a group using //groupUid, adds them onto a table and 
@@ -41,12 +128,18 @@ $(document).ready(function() {
   function retrieveGroupInfo(groupUid) {
     database.ref('groups/' + groupUid).once('value').then(function(snapshot) {
       console.log(groupUid);
-      group_title = snapshot.child('title').val();
-      group_description = snapshot.child('description').val();
-      group_memberCount = snapshot.child('memberCounts').val();
-      group_createdOn = snapshot.child('dateCreated').val();
+      var group_title = snapshot.child('title').val();
+      var group_description = snapshot.child('description').val();
+      var group_memberCount = snapshot.child('memberCounts').val();
+      var group_createdOn = snapshot.child('dateCreated').val();
       console.log('group Info Retieved..');
-      addAGroupTable(groupUid, group_title, group_description, group_memberCount, group_createdOn);
+      console.log(group_title + group_description+group_memberCount+group_createdOn);
+      if (group_title == null || group_description == null || group_memberCount == null || group_createdOn == null) {
+        console.log('group info contains null');
+      } else {
+        addAGroupTable(groupUid, group_title, group_description, group_memberCount, group_createdOn);
+      }
+      
     });
   }
   //===========end of the function.==============
@@ -92,7 +185,7 @@ $(document).ready(function() {
     exit_button.addClass('exitButtons');
     //appending all the elements above.
     tr_groupTitle.append(td_groupTitle);
-    td_groupInfo.append(img_groupIcon, p_groupDesc, p_groupMemberCount,    p_groupDateCreated);
+    td_groupInfo.append(img_groupIcon, p_groupDesc, p_groupMemberCount, p_groupDateCreated);
     tr_groupInfo.append(td_groupInfo);
     td_enter.append(enter_button);
     td_exit.append(exit_button);
@@ -104,29 +197,40 @@ $(document).ready(function() {
 
   //var ref = database.ref('agendas').orderByChild('dueDate');
   function retrieveAgendaInfo(agendaUid) {
-
-    database.ref('agendas').once('value').then(function(snapshot) {
+    database.ref('agendas/' + agendaUid).once('value').then(function(snapshot) {
       console.log(agendaUid);
-      var dataObj = {
-        //assignedTo: snapshot.child('assignedTo').val(),
-        description: snapshot.child('description').val(),
-        dueDate: snapshot.child('dueDate').val(),
-        dueTime: snapshot.child('dueTime').val(),
-      };
+      agendaDesc = snapshot.child('description').val();
+      agendaDueD = snapshot.child('dueDate').val();
+      agendaDueT = snapshot.child('dueTime').val();
       console.log('agenda info Retieved..');
-      addAAgendaList(agendaUid, dataObj);
+      if (agendaDesc == null ||
+        agendaDueD == null ||
+        agendaDueT == null) {
+          console.log('agenda info contains null');
+        } else {
+          var dataObj = {
+            //assignedTo: snapshot.child('assignedTo').val(),
+            description: agendaDesc,
+            dueDate: agendaDueD,
+            dueTime: agendaDueT,
+          };
+          addAAgendaList(agendaUid, dataObj);
+        }
+
     });
   }
 
   //==============creating and appending a agenda list======
   function addAAgendaList(agendaUid, {description, dueDate, dueTime}) {
+    console.log('---------------');
+    
     console.log(agendaUid + description + dueDate + dueTime);
+    console.log('---------------');
     var div_agendas = $('<div></div>');
     div_agendas.addClass('agendas');
     var h2_groupTitle = $('<h2></h2>');
     h2_groupTitle.text("");
     div_agendas.append(h2_groupTitle);
-    //need to loop this
     var div_individualAgenda = $('<div></div>');
     div_individualAgenda.addClass('individualAgenda')
     var h4_agendaDesc = $('<h4><//h4>');
@@ -147,34 +251,6 @@ $(document).ready(function() {
   }
   //==============end of the function============
 
-  //click exit buttons will get a warning of quiting a group, if 
-  //"OK" is clicked, remove that group info from the page and the
-  //database.
-  $(document).on('click', '.exitButtons', 
-  function quitAGroupConfirmation() {
-    var classes = $(this).attr('class').split(' ');
-    var groupUid = classes[0];
-    if (confirm("Are you sure you want to quit this group?")) {
-      $('#' + groupUid).remove();
-      removeGroupInfoFromDatabase(groupUid);
-    }
-  });
-
-  //click enter buttons will enter the corresponding room.
-  $(document).on('click', '.enterButtons', 
-  function redirect() {
-    var [groupUid] = $(this).attr('class').split(' ');
-    window.location.href = "./chat-room/index.html?" + groupUid;
-  });
-
-  $('#joinARoom').click(function promptToGetKey(){
-      $('#getKeyModal').css('display', 'block');
-    });
-    
-  $('#closeBtn').click(function closeModal() {
-    $('#getKeyModal').css('display', 'none');
-    $('.errorText').text("");
-  });
 
   // $('#validateBtn').click(function validateKey() {
   //   database.ref('groups/').once('value').then(function(snapshot) {
@@ -195,27 +271,14 @@ $(document).ready(function() {
     
   // });
 
-  $('#validateBtn').click(function validateKey() {
-    database.ref('groups/').once('value').then(function(snapshot) {
-      var groupKeyEntered = $('#groupKey').val();
-      console.log('key enter' + groupKeyEntered);
-      var contains = snapshot.child(groupKeyEntered).exists();
-      console.log(contains);
-      if (contains) {
-          $('.errorText').text("");
-          console.log('found');
-          window.location.href="./chat-room/index.html?" + groupKeyEntered;
-      } else {
-        $('.errorText').text("The key is not valid.");
-      }
-    });
-  });
+
 
   //retieve current user's displayName and email.
+  //createNewGroup();
   function createNewGroup() {
     currentUserRef.once('value').then(function(snapshot) {
-      currentUserDisplayName = snapshot.child('displayName').val();
-      currentUserEmail = snapshot.child('email').val();
+      var currentUserDisplayName = snapshot.child('displayName').val();
+      var currentUserEmail = snapshot.child('email').val();
       var newGroup_title = "new tile"; //get the text from web.
       var newGroup_description = "new description"; //get the description from web.
       console.log(currentUserDisplayName,currentUserEmail,newGroup_title,newGroup_description);
@@ -274,82 +337,4 @@ $(document).ready(function() {
     //database.ref('groups/').child(groupUid).remove();
   }
   //=========end of the function=======================
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-  //parses the url address and get the currentGroupUid.
-  var currentGroupUid = getCurrentGroupUidFromUrl();
-  
-
-  //parses the url with delimiter ('?') and gets the groupUid.
-  function getCurrentGroupUidFromUrl() {
-      var url = document.location.href;
-      //var currentGroupUid = url.split('?')[1];
-      var currentGroupUid ='-LRoR2dwlyAUq70qYL0F';
-      return currentGroupUid;
-  }
-
-  console.log('geting group uid from url: ' + currentGroupUid);
-  
-
-
-
-  //creates a json object containing all the agenda info passed in and generates
-  //a random key assigned to that agenda, lastly, store these info under the
-  //currentGroupUid.
-  function updatingANewAgenda(currentGroupUid, newAgenda_description, newAgenda_dateDue, newAgenda_timeDue, newAgenda_memberObj) {
-    database.ref('groups/').once('value').then(function(snapshot) {
-      //check if the passing in currentGroupUid exists or not.
-      var contains = snapshot.child(currentGroupUid).exists();
-      if (!contains) {
-          console.log('Group Not Found');
-      } else {
-        // A new group
-        var newAgendaData = {
-          description: newAgenda_description,
-          dueTime: newAgenda_timeDue,
-          dueDate: newAgenda_dateDue,
-          assignedTo: newAgenda_memberObj,
-        };
-        // Get a key for a new group.
-        var newAgendaUid = rootRef.child('agendas').push().key;
-        console.log('new key for agenda:' + newAgendaUid);
-        // Write the new group's data simultaneously in the groups list and the 
-        //user's group list.
-        var updates = {};
-        updates['agendas/' + newAgendaUid] = newAgendaData;
-        updates['groups/' + currentGroupUid + '/agendas/'  + newAgendaUid] = true;
-        updates['users/' + userUid + '/agendas/'  + newAgendaUid] = true;
-        console.log('updatingAgenda called.');
-        return rootRef.update(updates);
-      }
-    });
-  }
-  //==========end of the function=============
-
-  //clicks the create button on the create agenda modal will write all the value
-  //in the input boxes to the database.
-  $('#createAgendaBtn').click(function getAgendaInfo() {
-    var agendaDescription = $('#agendaDesc').val();
-    var agendaDueDate = $('#dueDate').val();
-    var agendaDueTime = $('#dueTime').val();
-    var assignedTo = {};
-    //store values of the checked box in 'assigned' object.
-    $('.nameCheckbox:checked').each(function iterator(){
-      assignedTo[$(this).val()] = true;
-    });
-    updatingANewAgenda(currentGroupUid, agendaDescription, agendaDueTime, agendaDueDate, assigned);
-  });
-})
-
+});

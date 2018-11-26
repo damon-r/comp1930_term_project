@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>projectHub</title>
+    <link rel="stylesheet" type="text/css" href="./css/chatStyle.css"/>
+  </head>
+  
+  <body>
+    <div id='header'>
+      <span id='room'>COMP-1930 Project Room Name</span>
+      <a id='logout' class='topButton' href='./index.html'>Logout</a>
+      <a id='settings' class='topButton' href='test'>Settings</a>
+      <span id='profileName'>Username</span>
+      <img id='profileImage' src='./images/profile-blue-background.png' alt='A profile image'>
+    </div>
+
+    <div id='sidebar'>
+      <!-- <a id='exit' class='sideButton' href='../main.html'><img id='exitImage' src='./images/exit.png'>Exit Room</a>
+      <a id='agenda' class='sideButton' href='../agenda/index.html'>Agenda</a>
+      <a id='chat' class='sideButton' href='./index.html'>Chat</a> -->
+      <div class="hoverToCreate">
+          <div id="sidebar_title">
+            <h3>Agendas</h3> 
+            <a href="#"><img id="createAgendaIcon" class="rotateOnHoveringImg functionalityIcon" src="./images/create_new_room.png" alt="Create New Group Icon"/></a>
+          </div>
+          
+          <div id="create_agenda_modal">
+            <input id="agendaDesc" class="floatClearRight" type="text" placeholder="What the task is about" size="30" required/>
+            <!-- <label class="floatClearRight members">name1<input class="nameCheckbox" type="checkbox" value="name1"/></label>
+            -->
+            <label class="floatClearRight" >Due Date: <input id="dueDate" type="date" required/></label>
+            <label class="floatClearRight">Due Time: <input id="dueTime" type="time" value="23:59" required/></label>
+            <button id="createAgendaBtn" class="floatClearRight">Create</button>
+          </div>
+          
+          
+      </div>
+      <div id="agendaSpace">Loading agendas ...</div>
+
+    </div>
+
+    <div id='main'>
+      <p id='loading'>Loading...</p>
+
+
+    </div>
+
+    <div id='footer'>
+      <form id='chatForm' autocomplete="off">
+        <input id='chatInput' type='text' placeholder='Type here...'>
+      </form>
+      <img id='send' src='./images/send.png'>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
+    <script src="./js/firebase_setup.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <script src="./js/chat_room.js"></script>
+
+  </body>
+</html>
