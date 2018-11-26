@@ -17,17 +17,14 @@
     };
     firebase.initializeApp(config);
     </script>
-
-
-
   </head>
-  
+
   <body>
     <div id='header'>
       <span id='room'>COMP-1930 Project Room Name</span>
       <a id='logout' class='topButton' href='../index.html'>Logout</a>
       <a id='settings' class='topButton' href='test'>Settings</a>
-      <span id='profileName'>Username</span>
+      <span id='profileName'></span>
       <img id='profileImage' src='./images/profile-blue-background.png' alt='A profile image'>
     </div>
 
@@ -39,8 +36,6 @@
 
     <div id='main'>
       <p id='loading'>Loading...</p>
-
-
     </div>
 
     <div id='footer'>
@@ -59,25 +54,17 @@
     var currentUserID;
     var currentUserName;
 
-
-
     //Store the current user's display name and ID in local variables
     setTimeout(function() {
       currentUserID = firebase.auth().currentUser.uid;
       currentUserName = firebase.auth().currentUser.displayName;
       console.log(currentUserID);
       console.log(currentUserName);
+      $('#profileName').html(currentUserName);
+
     }, 1000);
-    /*
-    if (currentUser) {
-      console.log(currentUser.displayName);
-    } else {
-      console.log("No user signed in.");
-    }
-    */
 
-
-    //Prints out messages stored in database
+    //Prints out all messages in database, as well as any new messages in real time
     setTimeout(function() {
       messages.on('child_added', function(snapshot) {
           let key = snapshot.key;
@@ -101,9 +88,9 @@
           });
 
           Promise.all([messagePromise, messageUserPromise, messageUserNamePromise]).then(function() {
-            console.log(messageValue);
-            console.log(messageUser);
-            console.log(messageUserName);
+          //  console.log(messageValue);
+          //  console.log(messageUser);
+          //  console.log(messageUserName);
 
 
             if (messageUser == currentUserID) {
@@ -130,29 +117,23 @@
             $(messageBox).append(content);
             $('#loading').remove();
             $('#main').scrollTop(1E6);
-
           });
-
-
         });
       }, 1500);
 
-
-
-
-
-    //Prints out message sent through message input to the screen
+    //Sends message from input field to database, as well as the user's ID and display name
     function sendMessage() {
-
 
       var input = $('#chatInput').val();
       if (input == "") {
         return false;
       }
 
+/*
       messageCount.transaction(function(e) {
         return e + 1;
       });
+*/
 
       messages.push({
         message: input,
@@ -163,7 +144,7 @@
       $('#chatInput').val('');
     }
 
-    //Signs user out and returns them to login Page
+    //Signs user out when returning to login page
     $('#logout').on('click', function() {
       firebase.auth().signOut();
     });
