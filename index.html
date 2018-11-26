@@ -7,31 +7,31 @@
             body {
                 background-color: rgb(244, 184, 105);
             }
-            
+
             h1 {
                 font-size: 48pt;
                 font-family: 'Audiowide', cursive;
             }
-            
+
             h2 {
                 font-size: 24pt;
                 font-family: 'Audiowide', cursive;
             }
-            
+
             #loader {
                 font-family: 'Roboto', sans-serif;
             }
-            
+
             #contentHolder {
                 margin: auto auto;
             }
-            
+
             #heading {
                 text-align: center;
                 color: #ffffff;
                 text-shadow: 0px 0px 8px #000000;
             }
-        
+
             #loginInfo {
                 display: block;
                 width: 50%;
@@ -44,7 +44,7 @@
                 background-color: white;
             }
         </style>
-        
+
         <!-- Firebase init -->
         <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
         <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
@@ -55,7 +55,7 @@
         <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-database.js"></script>
         <script src="js/firebase_setup.js"></script>
     </head>
-    
+
     <body>
         <div id="contentHolder">
             <div id="heading">
@@ -63,7 +63,7 @@
                 <h2>We Project Your Success</h2>
             </div>
             <div id="firebaseui-auth-container">
-                
+
             </div>
             <div id="loader">Loading, loading, deeply loading...</div>
         </div>
@@ -74,7 +74,7 @@
         <script>
         // Initialize the FirebaseUI Widget using Firebase.
         var ui = new firebaseui.auth.AuthUI(firebase.auth());
-        
+
         var uiConfig = {
           callbacks: {
             signInSuccessWithAuthResult: function(authResult, redirectUrl) {
@@ -109,10 +109,10 @@
           // Privacy policy url.
           privacyPolicyUrl: 'privacyPolicy.html'
         };
-        
+
         // The start method will wait until the DOM is loaded.
         ui.start('#firebaseui-auth-container', uiConfig);
-        
+
 
         // = = = = = Add to Database = = = = =
         //Adds the room to the database.

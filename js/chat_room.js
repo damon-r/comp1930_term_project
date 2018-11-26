@@ -5,7 +5,7 @@
   var messageTest = firebase.database().ref('messageTest');
   var messageCount = firebase.database().ref('messageTest/messageCount');
   var messages = firebase.database().ref('messageTest').child('messages');
- 
+
   var currentUserName;
 
   $('#create_agenda_modal').hide();
@@ -41,18 +41,18 @@
   //     //var currentGroupUid ='-LRoR2dwlyAUq70qYL0F';
   //     return currentGroupUid;
   // }
-  
 
-  // //Store the current user's display name and ID in local variables
-  // var currentUserID;
-  // setTimeout(function() {
-  //   currentUserID = firebase.auth().currentUser.uid;
-  //   //currentUserName = firebase.auth().currentUser.displayName;
-  //   console.log('currentUserID(setTimeout): ' + currentUserID);
-  //   return currentUserID;
-  //   //console.log(currentUserName);
-  // }, 1000);
-  // console.log('currentUserID: ' + currentUserID);
+
+   //Store the current user's display name and ID in local variables
+   var currentUserID;
+   setTimeout(function() {
+     currentUserID = firebase.auth().currentUser.uid;
+     currentUserName = firebase.auth().currentUser.displayName;
+     console.log('currentUserID(setTimeout): ' + currentUserID);
+     return currentUserID;
+     console.log(currentUserName);
+   }, 1000);
+   console.log('currentUserID: ' + currentUserID);
 
 
 
@@ -136,7 +136,7 @@
     });
   }
 
-  //accepts a uid of each member under a group. it then uses the uid to retrieve 
+  //accepts a uid of each member under a group. it then uses the uid to retrieve
   //and store the displayName under that uid. finally, it adds that displayName
   //into the user list to whom a task can be assign.
   function retrieveGroupMemberName(uid) {
@@ -183,7 +183,7 @@
         var newAgendaUid = prefix + rootRef.child('agendas').push().key;
         console.log('new key for agenda:' + newAgendaUid);
         console.log('new agenda data' + newAgendaData);
-        // Write the new group's data simultaneously in the groups list and the 
+        // Write the new group's data simultaneously in the groups list and the
         //user's group list.
         var updates = {};
         updates['agendas/' + newAgendaUid] = newAgendaData;
@@ -262,7 +262,7 @@
     $('#createAgendaIcon').css('transform', 'rotate(-90deg)');
     $("#create_agenda_modal").slideUp();
   });
-  
+
   $('#logout').click(function(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -333,7 +333,7 @@
         console.log(messageUser);
         console.log(messageUserName);
 
-        
+
         if (messageUser == currentUserID) {
           var content = $("<p class='ph'>" +messageValue+ "</p>");
           var userImage = $("<img class='userImage' src='./images/profile-blue-background.png'>");
@@ -390,6 +390,7 @@
   //Signs user out and returns them to login Page
   $('#logout').on('click', function() {
     firebase.auth().signOut();
+    window.location.replace("index.html");
   });
 
   //Sends message when send button is clicked
@@ -404,4 +405,3 @@
       sendMessage();
     }
   });
-
