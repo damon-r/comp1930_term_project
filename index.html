@@ -83,12 +83,17 @@
               // or whether we leave that to developer to handle.
               var userName = $('[name="name"]').val();
               if (typeof userName != typeof undefined) {
+                console.log('username is defined');
                 var email = $('[name="email"]').val();
                 var userUid = firebase.auth().currentUser.uid;
-                console.log("input:\nemail: " + email + '\nusername:' + userName + '\nuid:' + userUid);
-                writeUserData(userUid, userName, email);
-              }
-              console.log('userName is defined, skipped over if statement');
+                console.log("input values:\nemail: " + email + '\nusername:' + userName + '\nuid:' + userUid);
+                firebase.database().ref('users/' + userUid).set({
+                  uid: userUid,
+                  displayName: userName,
+                  email: email,
+                });
+              };
+              console.log('userName is not defined, skipped over if statement');
               return true;
             },
             uiShown: function() {
@@ -122,6 +127,7 @@
                 displayName: displayName,
                 email: email,
             });
+            console.log('writeUserData funciotn called.');
         }
         </script>
 
