@@ -5,12 +5,12 @@
     <title>projectHub</title>
     <link rel="stylesheet" type="text/css" href="./css/chatStyle.css"/>
   </head>
-  
+
   <body>
     <div id='header'>
       <span id='room'>COMP-1930 Project Room Name</span>
       <a id='logout' class='topButton' href='./index.html'>Logout</a>
-      <a id='settings' class='topButton' href='test'>Settings</a>
+      <a id='settings' class='topButton' href='./main.html'>Exit Room</a>
       <span id='profileName'>Username</span>
       <img id='profileImage' src='./images/profile-blue-background.png' alt='A profile image'>
     </div>
@@ -21,10 +21,10 @@
       <a id='chat' class='sideButton' href='./index.html'>Chat</a> -->
       <div class="hoverToCreate">
           <div id="sidebar_title">
-            <h3>Agendas</h3> 
+            <h3>Agendas</h3>
             <a href="#"><img id="createAgendaIcon" class="rotateOnHoveringImg functionalityIcon" src="./images/create_new_room.png" alt="Create New Group Icon"/></a>
           </div>
-          
+
           <div id="create_agenda_modal">
             <input id="agendaDesc" class="floatClearRight" type="text" placeholder="What the task is about" size="30" required/>
             <!-- <label class="floatClearRight members">name1<input class="nameCheckbox" type="checkbox" value="name1"/></label>
@@ -33,8 +33,8 @@
             <label class="floatClearRight">Due Time: <input id="dueTime" type="time" value="23:59" required/></label>
             <button id="createAgendaBtn" class="floatClearRight">Create</button>
           </div>
-          
-          
+
+
       </div>
       <div id="agendaSpace">Loading agendas ...</div>
 
@@ -57,7 +57,7 @@
     <script src="./js/firebase_setup.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    
+
     <script src="./js/chat_room.js"></script>
 
   </body>
