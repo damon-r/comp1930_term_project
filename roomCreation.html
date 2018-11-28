@@ -244,8 +244,8 @@
                 <input id='roomName' type='name' name='roomName' required='required' placeholder='Type here...' pattern='(2,20)'>
                 <h2>Room Description:</h2>
                 <input id='roomDesc' type='text' name='roomDesc' placeholder='Type here...'>
-                <h2>Room Image:</h2>
-                <p>Select an Image: </p>
+                <h2>Room Color:</h2>
+                <input id='roomColor' type="color" name="favcolor">
                 <h2>Invite List:</h2>
                 <input id='personToAdd' type='text' name='personName' placeholder='Type User to Add' pattern='(2,20)'></input>
                 <div id='addPerson' class='button'>Add User</div>
@@ -315,8 +315,9 @@
                 if ($("#roomName").val() != "") {
                     let inputName = $("#roomName").val();
                     let inputDesc = $("#roomDesc").val();
-                    let inputImage = $("#roomImage").val();
-                    writeUserData(inputName, inputDesc, inputImage);
+                    let inputColor = $("#roomColor").val();
+                    writeUserData(inputName, inputDesc, inputColor);
+                    window.location.href = "main.html";
                 } else {
                     alert("Your room requires a name!");
                 }
@@ -324,14 +325,14 @@
 
             // = = = = = Add to Database = = = = =
             //Adds the room to the database.
-            function writeUserData(inputName, inputDesc, inputImage) {
+            function writeUserData(inputName, inputDesc, inputColor) {
                 var database = firebase.database().ref();
                 var newGroupUid = database.child('groups').push().key;
                 firebase.database().ref('groups/' + newGroupUid).set({
                     dateCreated: getCurrentDate(),
                     title: inputName,
                     description: inputDesc,
-                    roomImage: inputImage,
+                    roomColor: inputColor,
                     memberCounts: userCount,
                     memberInfo: userList
               });
