@@ -6,11 +6,10 @@ $(document).ready(function() {
     if (user) {
       var userUid = user.uid;
       var currentUserRef = database.ref('users/' + userUid);
-      console.log('in onAuthStateChanged: ' + userUid);
+      console.log('onAuthStateChanged: ' + userUid);
       setUsername(currentUserRef);
       loopForUserGroups(currentUserRef);
       loopForUserAgendas(currentUserRef);
-      console.log('in onAuthStateChanged: ' + userUid);
     } else {
       console.log('user not logged in');
     }
@@ -97,7 +96,9 @@ $(document).ready(function() {
         console.log('Start looping for groups.');
         $('#roomSpace').text('');
         snapshot.forEach(function(childSnapshot) {
+          
           var uid = childSnapshot.key;
+          console.log('groupUid: ' + uid + '\n');
           retrieveGroupInfo(uid);
         });
       }
@@ -127,7 +128,6 @@ $(document).ready(function() {
   //displays them on page.
   function retrieveGroupInfo(groupUid) {
     database.ref('groups/' + groupUid).once('value').then(function(snapshot) {
-      console.log(groupUid);
       var group_title = snapshot.child('title').val();
       var group_description = snapshot.child('description').val();
       var group_memberCount = snapshot.child('memberCounts').val();
