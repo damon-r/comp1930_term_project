@@ -24,7 +24,6 @@ $(document).ready(function() {
     var classes = $(this).attr('class').split(' ');
     var groupUid = classes[0];
     if (confirm("Are you sure you want to quit this group?")) {
-      $('#' + groupUid).slideUp('500');
       $('#' + groupUid).remove();
       removeGroupInfoFromDatabase(groupUid);
     }
@@ -46,11 +45,10 @@ $(document).ready(function() {
     $('.errorText').text("");
   });
 
-
-  $('#logout').click(function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    firebase.auth().signOut();
+  $("#groupKey").on("keypress", function(e) {
+    if (e.which === 13) {
+    $('#validateBtn').click();
+    }
   });
 
   $('#validateBtn').click(function validateKey() {
@@ -72,6 +70,14 @@ $(document).ready(function() {
         $('.errorText').text("The key is not valid.");
       }
     });
+  });
+
+  //logs out current user when click.
+  $('#logout').click(function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    firebase.auth().signOut();
+    window.location.href = "./index.html";
   });
   //=====================end of event handling sction==========================
 
@@ -273,60 +279,60 @@ $(document).ready(function() {
 
 
 
-  //retieve current user's displayName and email.
-  //createNewGroup();
-  function createNewGroup() {
-    currentUserRef.once('value').then(function(snapshot) {
-      var currentUserDisplayName = snapshot.child('displayName').val();
-      var currentUserEmail = snapshot.child('email').val();
-      var newGroup_title = "new tile"; //get the text from web.
-      var newGroup_description = "new description"; //get the description from web.
-      console.log(currentUserDisplayName,currentUserEmail,newGroup_title,newGroup_description);
-      updatingNewGroup(newGroup_title, newGroup_description, currentUserEmail, currentUserDisplayName);
-    });
-  }
+  // //retieve current user's displayName and email.
+  // //createNewGroup();
+  // function createNewGroup() {
+  //   currentUserRef.once('value').then(function(snapshot) {
+  //     var currentUserDisplayName = snapshot.child('displayName').val();
+  //     var currentUserEmail = snapshot.child('email').val();
+  //     var newGroup_title = "new tile"; //get the text from web.
+  //     var newGroup_description = "new description"; //get the description from web.
+  //     console.log(currentUserDisplayName,currentUserEmail,newGroup_title,newGroup_description);
+  //     updatingNewGroup(newGroup_title, newGroup_description, currentUserEmail, currentUserDisplayName);
+  //   });
+  // }
 
-  //creates a json object containing all the group info passed in and generates
-  //a random key assigned to that group.
-  function updatingNewGroup(newGroup_title, newGroup_description, currentUserEmail, currentUserDisplayName) {
-    var currentDate = getCurrentDate();
-    // A new group
-    var newGroupData = {
-      title: newGroup_title,
-      description: newGroup_description,
-      memberCounts: 1,
-      dateCreated: currentDate,
-      memberInfo: {
-        [userUid]: {
-          email: currentUserEmail,
-          displayName: currentUserDisplayName,
-        },
-      },
-    };
-    // Get a key for a new group.
-    var newGroupUid = rootRef.child('groups').push().key;
-    // Write the new group's data simultaneously in the groups list and the 
-    //user's group list.
-    var updates = {};
-    updates['groups/' + newGroupUid] = newGroupData;
-    updates['users/' + userUid + '/groups/' + newGroupUid] = true;
-    console.log('updatingNewGroup() called.');
-    return rootRef.update(updates);
-  }
+  // //creates a json object containing all the group info passed in and generates
+  // //a random key assigned to that group.
+  // function updatingNewGroup(newGroup_title, newGroup_description, currentUserEmail, currentUserDisplayName) {
+  //   var currentDate = getCurrentDate();
+  //   // A new group
+  //   var newGroupData = {
+  //     title: newGroup_title,
+  //     description: newGroup_description,
+  //     memberCounts: 1,
+  //     dateCreated: currentDate,
+  //     memberInfo: {
+  //       [userUid]: {
+  //         email: currentUserEmail,
+  //         displayName: currentUserDisplayName,
+  //       },
+  //     },
+  //   };
+  //   // Get a key for a new group.
+  //   var newGroupUid = rootRef.child('groups').push().key;
+  //   // Write the new group's data simultaneously in the groups list and the 
+  //   //user's group list.
+  //   var updates = {};
+  //   updates['groups/' + newGroupUid] = newGroupData;
+  //   updates['users/' + userUid + '/groups/' + newGroupUid] = true;
+  //   console.log('updatingNewGroup() called.');
+  //   return rootRef.update(updates);
+  // }
 
-  //==========get current date function, eg. Nov 20, 2018.=================
-  function getCurrentDate() {
-    var monthNames = [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct",
-      "Nov", "Dec"
-    ];
-    var currentDate = new Date();
-    var date = currentDate.getDate();
-    var month = currentDate.getMonth();
-    var year = currentDate.getFullYear();
-    return monthNames[month] + " " + date + ", " + year;
-  }
-  //=========end of the function=======================
+  // //==========get current date function, eg. Nov 20, 2018.=================
+  // function getCurrentDate() {
+  //   var monthNames = [
+  //     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct",
+  //     "Nov", "Dec"
+  //   ];
+  //   var currentDate = new Date();
+  //   var date = currentDate.getDate();
+  //   var month = currentDate.getMonth();
+  //   var year = currentDate.getFullYear();
+  //   return monthNames[month] + " " + date + ", " + year;
+  // }
+  // //=========end of the function=======================
 
 
   //removes given groupUid from "users" and "groups", including all the data 
