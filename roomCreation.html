@@ -198,6 +198,12 @@
                 background-color: red;
             }
 
+            .deleteButton span {
+              font-size: 40pt;
+              position: relative;
+              bottom: 14px;
+            }
+
             .deleteButton:hover {
               cursor: pointer;
               filter: brightness(75%);
@@ -277,7 +283,7 @@
                 if (nameOfAdded != "") {
                     userCount += 1;
                     userList.push(nameOfAdded);
-                    $("#userList").append("<div class='person'><p class='personName'>" + nameOfAdded + "</p><div class='deleteButton'></div></div>");
+                    $("#userList").append("<div class='person'><p class='personName'>" + nameOfAdded + "</p><div class='deleteButton'><span>&times</span></div></div>");
                     $("#personToAdd").val("");
                } else {
                     alert("Please provide a user to add.");
