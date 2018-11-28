@@ -89,7 +89,7 @@
             
             /*-----Body-----*/
             form {
-            text-align: center;
+                text-align: center;
             }
             
             h1 {
@@ -149,6 +149,13 @@
                 margin: 0 auto;
             }
             
+            #imgBox {
+                width: 50%;
+                height: 50px;
+                margin: 0 auto;
+                border: 1px solid red;
+            }
+            
             .person {
                 display: block;
                 width: 90%;
@@ -189,6 +196,15 @@
                 background-color: red;
             }
             
+            .imgSelect {
+                height: 50px;
+                width: 50px;
+                display: block;
+                float: left;
+                margin: 0 auto;
+                border: 1px solid black;
+            }
+            
             /*-----Body-----*/
         </style>
         <link href="https://fonts.googleapis.com/css?family=Audiowide|Roboto" rel="stylesheet">
@@ -224,9 +240,14 @@
                 <input id='roomName' type='name' name='roomName' required='required' placeholder='Type here...' pattern='(2,20)'>
                 <h2>Room Description:</h2>
                 <input id='roomDesc' type='text' name='roomDesc' placeholder='Type here...'>
-                <h2>Room Image URL:</h2>
+                <h2>Room Image:</h2>
                 <p>Select an Image: </p>
-                <input id='roomImage' type='file' name='roomImage' required='required' accept='image/png, image/jpeg"'>
+                <div id='imgBox'>
+                    <div id='img1' class='imgSelect'></div>
+                    <div id='img2' class='imgSelect'></div>
+                    <div id='img3' class='imgSelect'></div>
+                    <div id='img4' class='imgSelect'></div>
+                </div>
                 <h2>Invite List:</h2>
                 <input id='personToAdd' type='text' name='personName' placeholder='Type User to Add' pattern='(2,20)'></input>
                 <div id='addPerson' class='button'>Add User</div>
@@ -245,14 +266,20 @@
             var currentUserEmail;
             var userList;
             
-            //Add yourself to the array.
+            var storage = firebase.storage();
+            var storageRef = storage.ref();
+            var url = storageRef.child('groupImages/chooseImage1.png').getDownloadURL;
+            console.log(url);
+            $("#img1").css("background-image", url);
+            
+            //Add yourself to the array. Add images to the selector things.
             setTimeout(function() {
-            user = firebase.auth().currentUser.displayName;
-            userCount = 1; //How many users are in the room. Defaults to 1, because you're kinda making it.
-            currentUserDisplay = firebase.auth().currentUser.displayName;
-            userList = new Array(currentUserDisplay); //An array to hold usernames.
-            console.log(currentUserDisplay);
-            console.log(userList);
+                user = firebase.auth().currentUser.displayName;
+                userCount = 1; //How many users are in the room. Defaults to 1, because you're kinda making it.
+                currentUserDisplay = firebase.auth().currentUser.displayName;
+                userList = new Array(currentUserDisplay); //An array to hold usernames.
+                console.log(currentUserDisplay);
+                console.log(userList);
             }, 500);
 
             // = = = = = Button Events = = = = =
