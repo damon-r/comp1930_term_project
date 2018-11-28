@@ -292,14 +292,6 @@
   });
   //=====================end of event handling section=====================
 
-  /*
-  if (currentUser) {
-  console.log(currentUser.displayName);
-  } else {
-  console.log("No user signed in.");
-  }
-  */
-
 
   //Prints out messages stored in database
   setTimeout(function() {
@@ -359,7 +351,12 @@
 
       });
     });
+    $('#loading').remove();
   }, 1500);
+
+  setTimeout(function() {
+    $('#main').scrollTop(1E6);
+  }, 1650)
 
 
 
