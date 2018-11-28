@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css?family=Audiowide|Roboto");
+
+body {
+  background-color: rgb(244, 184, 105);
+}
+
+h1 {
+  font-size: 48pt;
+  font-family: 'Audiowide', cursive;
+}
+
+h2 {
+  font-size: 24pt;
+  font-family: 'Audiowide', cursive;
+}
+
+#loader {
+  font-family: 'Roboto', sans-serif;
+}
+
+#contentHolder {
+  margin: auto auto;
+}
+
+#heading {
+  text-align: center;
+  color: #ffffff;
+  text-shadow: 0px 0px 8px #000000;
+}
+
+#loginInfo {
+  display: block;
+  width: 50%;
+  min-width: 200px;
+  max-width: 400px;
+  margin: 0 auto;
+  border: 1px solid black;
+  border-radius: 20px;
+  text-align: center;
+  background-color: white;
+}
