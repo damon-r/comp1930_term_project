@@ -92,9 +92,11 @@
                   displayName: userName,
                   email: email,
                 });
-              };
+                setTimeout(function() {
+                    window.location.href='./main.html';
+                }, 2000);
+              }
               console.log('userName is not defined, skipped over if statement');
-              return true;
             },
             uiShown: function() {
               // The widget is rendered.
@@ -103,8 +105,8 @@
             }
           },
           // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-          signInFlow: 'popup',
-          signInSuccessUrl: './main.html',
+          signInFlow: 'redirect',
+          signInSuccessUrl: '',
           signInOptions: [
             // Leave the lines as is for the providers you want to offer your users.
             firebase.auth.EmailAuthProvider.PROVIDER_ID
@@ -117,18 +119,6 @@
 
         // The start method will wait until the DOM is loaded.
         ui.start('#firebaseui-auth-container', uiConfig);
-
-
-        // = = = = = Add to Database = = = = =
-        //Adds the room to the database.
-        function writeUserData(uid, displayName, email) {
-            firebase.database().ref('users/' + uid).set({
-                uid: uid,
-                displayName: displayName,
-                email: email,
-            });
-            console.log('writeUserData funciotn called.');
-        }
         </script>
 
     </body>
