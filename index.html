@@ -1,135 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8"/>
-        <title>projectHub</title>
-        <style>
-            body {
-                background-color: rgb(244, 184, 105);
-            }
+  <head>
+    <meta charset="utf-8"/>
+    <title>projectHub</title>
+    <link type="text/css" rel="stylesheet" href="./css/index.css"/>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
+  </head>
 
-            h1 {
-                font-size: 48pt;
-                font-family: 'Audiowide', cursive;
-            }
+  <body>
+    <div id="contentHolder">
+      <div id="heading">
+        <h1>projectHub</h1>
+        <h2>We Project Your Success</h2>
+      </div>
+      <div id="firebaseui-auth-container"></div>
+      <div id="loader">Loading, loading, deeply loading...</div>
+    </div>
 
-            h2 {
-                font-size: 24pt;
-                font-family: 'Audiowide', cursive;
-            }
+    <!-- Firebase init -->
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-database.js"></script>
+    <script src="./js/firebase_setup.js"></script>
 
-            #loader {
-                font-family: 'Roboto', sans-serif;
-            }
-
-            #contentHolder {
-                margin: auto auto;
-            }
-
-            #heading {
-                text-align: center;
-                color: #ffffff;
-                text-shadow: 0px 0px 8px #000000;
-            }
-
-            #loginInfo {
-                display: block;
-                width: 50%;
-                min-width: 200px;
-                max-width: 400px;
-                margin: 0 auto;
-                border: 1px solid black;
-                border-radius: 20px;
-                text-align: center;
-                background-color: white;
-            }
-        </style>
-        <link href="https://fonts.googleapis.com/css?family=Audiowide|Roboto" rel="stylesheet">
-        
-        <!-- Firebase init -->
-        <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
-        <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
-        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-database.js"></script>
-        <script src="js/firebase_setup.js"></script>
-    </head>
-
-    <body>
-        <div id="contentHolder">
-            <div id="heading">
-                <h1>projectHub</h1>
-                <h2>We Project Your Success</h2>
-            </div>
-            <div id="firebaseui-auth-container">
-
-            </div>
-            <div id="loader">Loading, loading, deeply loading...</div>
-        </div>
-
-
-        <script src="./js/jquery-3.3.1.min.js"></script>
+    <script src="./js/jquery-3.3.1.min.js"></script>
     <script src="./js/jquery-3.3.1.js"></script>
-        <script>
-        // Initialize the FirebaseUI Widget using Firebase.
-        var ui = new firebaseui.auth.AuthUI(firebase.auth());
-
-        var uiConfig = {
-          callbacks: {
-            signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-              // User successfully signed in.
-              // Return type determines whether we continue the redirect automatically
-              // or whether we leave that to developer to handle.
-              var userName = $('[name="name"]').val();
-              if (typeof userName != typeof undefined) {
-                console.log('username is defined');
-                var email = $('[name="email"]').val();
-                var userUid = firebase.auth().currentUser.uid;
-                console.log("input values:\nemail: " + email + '\nusername:' + userName + '\nuid:' + userUid);
-                firebase.database().ref('users/' + userUid).set({
-                  uid: userUid,
-                  displayName: userName,
-                  email: email,
-                });
-              };
-              console.log('userName is not defined, skipped over if statement');
-              return true;
-            },
-            uiShown: function() {
-              // The widget is rendered.
-              // Hide the loader.
-              document.getElementById('loader').style.display = 'none';
-            }
-          },
-          // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-          signInFlow: 'popup',
-          signInSuccessUrl: './main.html',
-          signInOptions: [
-            // Leave the lines as is for the providers you want to offer your users.
-            firebase.auth.EmailAuthProvider.PROVIDER_ID
-          ],
-          // Terms of service url.
-          tosUrl: 'termsOfService.html',
-          // Privacy policy url.
-          privacyPolicyUrl: 'privacyPolicy.html'
-        };
-
-        // The start method will wait until the DOM is loaded.
-        ui.start('#firebaseui-auth-container', uiConfig);
-
-
-        // = = = = = Add to Database = = = = =
-        //Adds the room to the database.
-        function writeUserData(uid, displayName, email) {
-            firebase.database().ref('users/' + uid).set({
-                uid: uid,
-                displayName: displayName,
-                email: email,
-            });
-            console.log('writeUserData function called.');
-        }
-        </script>
-
-    </body>
+    <script src="./js/index.js"></script>
+  </body>
 </html>

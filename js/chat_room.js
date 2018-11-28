@@ -251,19 +251,28 @@
   //hover the plus sign will show the interface for creating an agenda.
   $("#createAgendaIcon").mouseover(function() {
     $('#createAgendaIcon').css('transform', 'rotate(135deg)');
-    $("#create_agenda_modal").slideDown();
+    
   });
 
   //click the plus sign to close the interface,
-  $('#createAgendaIcon').click(function() {
-    $('#createAgendaIcon').css('transform', 'rotate(-90deg)');
-    $("#create_agenda_modal").slideUp();
+  var open = false;
+  $('#createAgendaIcon').click(function(e) {
+    e.preventDefault();
+    if (!open) {
+      $("#create_agenda_modal").slideDown();
+      open = true;
+    } else {
+      $('#createAgendaIcon').css('transform', 'rotate(-90deg)');
+      $("#create_agenda_modal").slideUp();
+      open = false;
+    }
   });
 
   $('#logout').click(function(e) {
     e.preventDefault();
     e.stopPropagation();
     firebase.auth().signOut();
+    window.location.href = "./index.html";
   });
 
   //clicks the create button on the create agenda modal will write all the value
@@ -291,14 +300,6 @@
     $("#create_agenda_modal").slideUp();
   });
   //=====================end of event handling section=====================
-
-  /*
-  if (currentUser) {
-  console.log(currentUser.displayName);
-  } else {
-  console.log("No user signed in.");
-  }
-  */
 
 
   //Prints out messages stored in database
@@ -359,7 +360,12 @@
 
       });
     });
+    $('#loading').remove();
   }, 1500);
+
+  setTimeout(function() {
+    $('#main').scrollTop(1E6);
+  }, 1650)
 
 
 
