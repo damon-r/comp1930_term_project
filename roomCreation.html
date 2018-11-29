@@ -3,232 +3,7 @@
     <head>
         <meta charset="utf-8"/>
         <title>projectHub</title>
-        <style>
-            body {
-                margin: 0;
-            }
-
-            /*-----Header-----*/
-            #header {
-                margin: 0;
-                height: 80px;
-                width: 100%;
-                background-color: rgb(244, 184, 105);
-                position: fixed;
-                border-bottom: 3px black solid;
-                clear: left;
-                float: left;
-            }
-
-            #headerLeft {
-                height: 100%;
-                width: 50%;
-                float: left;
-                background-color: none;
-            }
-
-            #room {
-              font-size: 35pt;
-              font-family: 'Audiowide', cursive;
-              margin: 0;
-              position: absolute;
-              top: 50%;
-              transform: translateY(-50%);
-              margin-left: 15px;
-              float: left;
-              color: #FFFFFF;
-              text-shadow: 0px 0px 8px #000000;
-            }
-
-            #headerRight {
-                height: 100%;
-                width: 45%;
-                float: right;
-                background-color: none;
-                position: relative;
-
-            }
-
-            #profileImage {
-                height: 80%;
-                float: right;
-                position: relative;
-                top: 50%;
-                transform: translateY(-50%);
-                margin-right: 0.5%;
-                background-color: white;
-                border-radius: 35px;
-            }
-
-            #profileName {
-                position: relative;
-                display: inline-block;
-                top: 50%;
-                margin-right: 2%;
-                transform: translateY(-50%);
-                font-size: 18pt;
-                font-family: sans-serif;
-                float: right;
-            }
-
-            a.topButton {
-                font: 18pt Arial;
-                text-decoration: none;
-                background-color: #EEEEEE;
-                color: #333333;
-                padding: 2px 10px 2px 10px;
-                border: 1px solid #333333;
-                position: relative;
-                display: inline-block;
-                top: 50%;
-                transform: translateY(-50%);
-                float: right;
-                margin-right: 2%;
-            }
-
-            a.topButton:hover {
-              filter: brightness(75%);
-            }
-            /*-----Header-----*/
-
-            /*-----Body-----*/
-            form {
-            text-align: center;
-            }
-
-            h1 {
-                text-align: center;
-                font-family: 'Audiowide', cursive;
-            }
-
-            h2 {
-                text-align: center;
-                font-family: 'Audiowide', cursive;
-            }
-
-            h3 {
-                text-align: center;
-                font-family: 'Audiowide', cursive;
-            }
-
-            #content {
-                display: block;
-                padding-top: 100px;
-                margin: 0 auto;
-                width: 66%;
-                min-width: 400px;
-            }
-
-            #content p {
-                text-align: center;
-                font-family: 'Roboto', sans-serif;
-            }
-
-            #content input {
-                margin: 0 auto;
-                display: block;
-            }
-
-            #addPerson {
-                margin: 0 auto;
-                margin-top: 20px;
-                margin-bottom: 20px;
-            }
-
-            #createRoom {
-                margin: 0 auto;
-                margin-top: 20px;
-            }
-
-            #personToAdd {
-                margin: 0 auto;
-            }
-
-            #userList {
-                width: 66%;
-                min-width: 360px;
-                max-width: 500px;
-                border: 1px solid black;
-                padding-bottom: 20px;
-                margin: 0 auto;
-            }
-
-            .person {
-                display: block;
-                width: 90%;
-                height: 50px;
-                border: 1px solid black;
-                margin: 0 auto;
-                margin-top: 10px;
-            }
-
-            .personName {
-                display: block;
-                float: left;
-                margin: 0;
-                margin-top: 15px;
-                margin-left: 20px;
-            }
-
-            .button {
-                text-align: center;
-                font-family: 'Roboto', sans-serif;
-                display: block;
-                border: 1px solid black;
-                width: 150px;
-                height: 40px;
-                padding-top: 14px;
-                font-size: 16pt;
-                background-color: rgb(209, 198, 39);
-            }
-
-            .button:hover {
-              cursor: pointer;
-              filter: brightness(75%);
-            }
-
-            .deleteButton {
-                height: 30px;
-                width: 30px;
-                display: block;
-                float: right;
-                margin-top: 10px;
-                margin-right: 10px;
-                border: 1px solid black;
-                background-color: red;
-            }
-
-            .deleteButton span {
-              font-size: 40pt;
-              position: relative;
-              bottom: 14px;
-            }
-
-            .deleteButton:hover {
-              cursor: pointer;
-              filter: brightness(75%);
-            }
-
-            /*-----Body-----*/
-        </style>
-        <link href="https://fonts.googleapis.com/css?family=Audiowide|Roboto" rel="stylesheet">
-
-        <!-- Firebase init -->
-        <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
-        <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
-        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
-        <script>
-          // Initialize Firebase
-          var config = {
-            apiKey: "AIzaSyAzdyStJSvK2g5poM_TS9VC5jSaiQRCEyY",
-            authDomain: "comp1930-project.firebaseapp.com",
-            databaseURL: "https://comp1930-project.firebaseio.com",
-            projectId: "comp1930-project",
-            storageBucket: "comp1930-project.appspot.com",
-            messagingSenderId: "724816316887"
-          };
-          firebase.initializeApp(config);
-        </script>
+        <link type="text/css" rel="stylesheet" href="./css/room_creation.css"/>
     </head>
     <body>
         <div id='header'>
@@ -236,128 +11,33 @@
             <a id='logout' class='topButton' href='test'>Logout</a>
             <a id='settings' class='topButton' href='test'>Settings</a>
             <span id='profileName'>Username</span>
-            <img id='profileImage' src='./images/profile-orange.png' alt='A profile image'>
+            <img id='profileImage' src='./images/profile-orange.png' alt='A profile image'/>
         </div>
         <div id='content'>
                 <h1>Create Room</h1>
                 <h2>Room Name:</h2>
-                <input id='roomName' type='name' name='roomName' required='required' placeholder='Type here...' pattern='(2,20)'>
+                <input id='roomName' type='name' name='roomName' required='required' placeholder='Type here...' pattern='(2,20)'/>
                 <h2>Room Description:</h2>
-                <input id='roomDesc' type='text' name='roomDesc' placeholder='Type here...'>
+                <input id='roomDesc' type='text' name='roomDesc' placeholder='Type here...'/>
                 <h2>Room Image URL:</h2>
-                <p>Select an Image: </p>
-                <input id='roomImage' type='file' name='roomImage' required='required' accept='image/png, image/jpeg"'>
+                <p>Select an Image: <img id="groupIcon" /></p>
+                <input id='roomImage' type='file' name='roomImage' required='required' accept='image/png, image/jpeg' />
+                
                 <h2>Invite List:</h2>
-                <input id='personToAdd' type='text' name='personName' placeholder='Type User to Add' pattern='(2,20)'></input>
-                <div id='addPerson' class='button'>Add User</div>
+                <input id='personToAdd' type='email' name='personName' placeholder='Type Email to Add'/>
+                <p id='error' class="errorText"></p>
+                <!-- <div id='addPerson' class='button'>Add User</div> -->
                 <div id='userList'>
-                    <h3>Invited Users:</h3>
+                   <h3>Invited Users:</h3>
                 </div>
                 <div id='createRoom' class='button'>Create Room</div>
         </div>
 
+        <!-- Firebase init -->
+        <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+        <script src="./js/firebase_setup.js"></script>
+        
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script>
-            $(document).ready(function() {
-            // = = = = = Define Variables = = = = =
-            var user;
-            var userCount;
-            var currentUserEmail;
-            var userList;
-
-            //Add yourself to the array.
-            setTimeout(function() {
-            user = firebase.auth().currentUser.displayName;
-            userCount = 1; //How many users are in the room. Defaults to 1, because you're kinda making it.
-            currentUserDisplay = firebase.auth().currentUser.displayName;
-            userList = new Array(currentUserDisplay); //An array to hold usernames.
-            console.log(currentUserDisplay);
-            console.log(userList);
-            }, 500);
-
-            // = = = = = Button Events = = = = =
-            //Spawn new list items on click, assuming a name is typed.
-            $("#addPerson").click(function(event){
-                var nameOfAdded = $("#personToAdd").val();
-
-                if (nameOfAdded != "") {
-                    userCount += 1;
-                    userList.push(nameOfAdded);
-                    $("#userList").append("<div class='person'><p class='personName'>" + nameOfAdded + "</p><div class='deleteButton'><span>&times</span></div></div>");
-                    $("#personToAdd").val("");
-               } else {
-                    alert("Please provide a user to add.");
-                }
-            });
-
-            //Alternatively for #addPerson, listen for enter presses.
-            $("#personToAdd").on("keypress", function(e) {
-                if (e.which === 13) {
-                $("#addPerson").click();
-                }
-            });
-
-            //Delete stuff on delete button press.
-            $(document).on("click", ".deleteButton", function() {
-                var nameWithin = $(this).closest(".person").children("p").text();
-                var position = $.inArray(nameWithin, userList, 0);
-
-                //Edit array.
-                userList[position] = "";
-                userList = userList.filter(trimArray)
-
-                $(this).closest(".person").remove();
-            });
-
-             //Create room on click.
-            $("#createRoom").click(function(event){
-
-                //Check if the name is filled.
-                if ($("#roomName").val() != "") {
-                    let inputName = $("#roomName").val();
-                    let inputDesc = $("#roomDesc").val();
-                    let inputImage = $("#roomImage").val();
-                    writeUserData(inputName, inputDesc, inputImage);
-                } else {
-                    alert("Your room requires a name!");
-                }
-            });
-
-            // = = = = = Add to Database = = = = =
-            //Adds the room to the database.
-            function writeUserData(inputName, inputDesc, inputImage) {
-                var database = firebase.database().ref();
-                var newGroupUid = database.child('groups').push().key;
-                firebase.database().ref('groups/' + newGroupUid).set({
-                    dateCreated: getCurrentDate(),
-                    title: inputName,
-                    description: inputDesc,
-                    roomImage: inputImage,
-                    memberCounts: userCount,
-                    memberInfo: userList
-              });
-            }
-
-            //==========get current date function, eg. Nov 20, 2018.=================
-            function getCurrentDate() {
-                var monthNames = [
-                "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct",
-                "Nov", "Dec"
-                ];
-                var currentDate = new Date();
-                var date = currentDate.getDate();
-                var month = currentDate.getMonth();
-                var year = currentDate.getFullYear();
-                return monthNames[month] + " " + date + ", " + year;
-            }
-
-            // = = = = = Trim Array = = = = =
-            //A thing used to determine what to put in the new array.
-            function trimArray(name) {
-                return name != "";
-            }
-
-            });
-        </script>
+        <script src="./js/room_creation.js"></script>
     </body>
 </html>
