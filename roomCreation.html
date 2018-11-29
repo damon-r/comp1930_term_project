@@ -93,7 +93,7 @@
 
             /*-----Body-----*/
             form {
-            text-align: center;
+                text-align: center;
             }
 
             h1 {
@@ -244,9 +244,8 @@
                 <input id='roomName' type='name' name='roomName' required='required' placeholder='Type here...' pattern='(2,20)'>
                 <h2>Room Description:</h2>
                 <input id='roomDesc' type='text' name='roomDesc' placeholder='Type here...'>
-                <h2>Room Image URL:</h2>
-                <p>Select an Image: </p>
-                <input id='roomImage' type='file' name='roomImage' required='required' accept='image/png, image/jpeg"'>
+                <h2>Room Color:</h2>
+                <input id='roomColor' type="color" name="favcolor">
                 <h2>Invite List:</h2>
                 <input id='personToAdd' type='text' name='personName' placeholder='Type User to Add' pattern='(2,20)'></input>
                 <div id='addPerson' class='button'>Add User</div>
@@ -267,12 +266,12 @@
 
             //Add yourself to the array.
             setTimeout(function() {
-            user = firebase.auth().currentUser.displayName;
-            userCount = 1; //How many users are in the room. Defaults to 1, because you're kinda making it.
-            currentUserDisplay = firebase.auth().currentUser.displayName;
-            userList = new Array(currentUserDisplay); //An array to hold usernames.
-            console.log(currentUserDisplay);
-            console.log(userList);
+                user = firebase.auth().currentUser.displayName;
+                userCount = 1; //How many users are in the room. Defaults to 1, because you're kinda making it.
+                currentUserDisplay = firebase.auth().currentUser.displayName;
+                userList = new Array(currentUserDisplay); //An array to hold usernames.
+                console.log(currentUserDisplay);
+                console.log(userList);
             }, 500);
 
             // = = = = = Button Events = = = = =
@@ -316,8 +315,9 @@
                 if ($("#roomName").val() != "") {
                     let inputName = $("#roomName").val();
                     let inputDesc = $("#roomDesc").val();
-                    let inputImage = $("#roomImage").val();
-                    writeUserData(inputName, inputDesc, inputImage);
+                    let inputColor = $("#roomColor").val();
+                    writeUserData(inputName, inputDesc, inputColor);
+                    window.location.href = "main.html";
                 } else {
                     alert("Your room requires a name!");
                 }
@@ -325,14 +325,14 @@
 
             // = = = = = Add to Database = = = = =
             //Adds the room to the database.
-            function writeUserData(inputName, inputDesc, inputImage) {
+            function writeUserData(inputName, inputDesc, inputColor) {
                 var database = firebase.database().ref();
                 var newGroupUid = database.child('groups').push().key;
                 firebase.database().ref('groups/' + newGroupUid).set({
                     dateCreated: getCurrentDate(),
                     title: inputName,
                     description: inputDesc,
-                    roomImage: inputImage,
+                    roomColor: inputColor,
                     memberCounts: userCount,
                     memberInfo: userList
               });
