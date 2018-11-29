@@ -317,14 +317,16 @@
                     let inputDesc = $("#roomDesc").val();
                     let inputColor = $("#roomColor").val();
                     writeUserData(inputName, inputDesc, inputColor);
-                    window.location.href = "main.html";
+                    setTimeout(function() {
+                        window.location.href = "main.html";
+                    }, 1000);
                 } else {
                     alert("Your room requires a name!");
                 }
             });
 
-            // = = = = = Add to Database = = = = =
-            //Adds the room to the database.
+            // = = = = = Add to Database, Join Room = = = = =
+            //Adds the room to the database, and adds the person to the room.
             function writeUserData(inputName, inputDesc, inputColor) {
                 var database = firebase.database().ref();
                 var newGroupUid = database.child('groups').push().key;
@@ -335,7 +337,16 @@
                     roomColor: inputColor,
                     memberCounts: userCount,
                     memberInfo: userList
-              });
+                });
+                
+                //Write the new group's data simultaneously in the groups list and the 
+                //user's group list.
+                var updates = {};
+                var uid = firebase.auth().currentUser.uid;
+                console.log("Current ID: ",uid);
+                console.log("Room ID: ",newGroupUid);
+                updates['users/' + uid + '/groups/' + newGroupUid] = true;
+                database.update(updates);
             }
 
             //==========get current date function, eg. Nov 20, 2018.=================
@@ -348,6 +359,7 @@
                 var date = currentDate.getDate();
                 var month = currentDate.getMonth();
                 var year = currentDate.getFullYear();
+                console.log("test");
                 return monthNames[month] + " " + date + ", " + year;
             }
 
