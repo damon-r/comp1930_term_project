@@ -40,19 +40,24 @@ h2 {
   background-color: white;
 }
 
+#spinnerWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 #spinner {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid rgb(237, 151, 42);
     border-radius: 50%;
     width: 70px;
     height: 70px;
     animation: spin 0.5s linear infinite;
-    position: absolute;
-    left: 50%;
-    top: 50%;
+    position: relative;
 }
 
 @keyframes spin {
     0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    100% { transform: rotate(359deg); }
 }
