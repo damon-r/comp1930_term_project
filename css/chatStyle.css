@@ -17,7 +17,7 @@ a {
   border-bottom: 3px black solid;
   clear: left;
   float: left;
-  
+
 }
 
 #headerLeft {
@@ -84,6 +84,10 @@ a.topButton {
   transform: translateY(-50%);
   float: right;
   margin-right: 2%;
+}
+
+a.topButton:hover {
+  filter: brightness(75%);
 }
 /*-----Header-----*/
 
@@ -364,7 +368,7 @@ input#agendaDesc {
 
 .members {
   margin-top: 2px;
-} 
+}
 
 .individualAgenda, .agenda_groupTitle {
   margin:.6%;
@@ -384,4 +388,3 @@ div.individualAgenda {
 .agendaDesc {
   margin: .1rem;
 }
-

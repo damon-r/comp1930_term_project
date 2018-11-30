@@ -59,6 +59,10 @@ a.topButton {
   float: right;
   margin-right: 2%;
 }
+
+a.topButton:hover {
+  filter: brightness(75%);
+}
 /*-----Header-----*/
 
 /*-----Agenda-----*/
@@ -136,7 +140,7 @@ img.rotateOnHoveringImg:hover{
 .tooltip {
   position: relative;
   display: inline-block;
-  
+
 }
 
 .tooltip .tooltiptext {
