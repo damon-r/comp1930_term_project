@@ -1,6 +1,7 @@
+$(document).ready(function() {
   //Defining firebase variables
-  var database = firebase.database();
-  var rootRef = database.ref();
+  const database = firebase.database();
+  const rootRef = database.ref();
 
   var currentUserName;
 
@@ -356,11 +357,7 @@
 
   setTimeout(function() {
     $('#main').scrollTop(1E6);
-  }, 1650)
-
-
-
-
+  }, 1650);
 
   //Prints out message sent through message input to the screen
   function sendMessage() {
@@ -396,3 +393,4 @@
       sendMessage();
     }
   });
+});
