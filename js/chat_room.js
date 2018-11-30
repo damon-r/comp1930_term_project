@@ -243,6 +243,7 @@
     div_agendas.append(div_individualAgenda);
     $('#agendaSpace').prepend(div_agendas);
     console.log('agenda added.');
+
   }
   //========================end of a section======================
 
@@ -255,7 +256,8 @@
   });
 
   //click the plus sign to close the interface,
-  $('#createAgendaIcon').click(function() {
+  $('#createAgendaIcon').click(function(e) {
+    e.preventDefault();
     $('#createAgendaIcon').css('transform', 'rotate(-90deg)');
     $("#create_agenda_modal").slideUp();
   });
@@ -368,6 +370,11 @@
     if (input == "") {
       return false;
     }
+
+    var messageDate = new Date();
+    var messageTime = messageDate.getTime();
+    
+    console.log(messageTime);
 
     messages.push({
       message: input,
