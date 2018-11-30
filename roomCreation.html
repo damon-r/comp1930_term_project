@@ -248,7 +248,7 @@
                 <input id='roomColor' type="color" name="favcolor">
                 <h2>Invite List:</h2>
                 <input id='personToAdd' type='text' name='personName' placeholder='Type User to Add' pattern='(2,20)'></input>
-                <div id='addPerson' class='button'>Add User</div>
+                <div id='addPerson' class='button'>Add Email</div>
                 <div id='userList'>
                     <h3>Invited Users:</h3>
                 </div>
@@ -268,10 +268,9 @@
             setTimeout(function() {
                 user = firebase.auth().currentUser.displayName;
                 userCount = 1; //How many users are in the room. Defaults to 1, because you're kinda making it.
-                currentUserDisplay = firebase.auth().currentUser.displayName;
-                userList = new Array(currentUserDisplay); //An array to hold usernames.
-                console.log(currentUserDisplay);
-                console.log(userList);
+                currentUserDisplay = firebase.auth().currentUser.displayName; //This is your username. Hi!
+                userList = new Array(); //An array to hold usernames.
+                $("#profileName").text(currentUserDisplay);
             }, 500);
 
             // = = = = = Button Events = = = = =
@@ -343,10 +342,21 @@
                 //user's group list.
                 var updates = {};
                 var uid = firebase.auth().currentUser.uid;
-                console.log("Current ID: ",uid);
-                console.log("Room ID: ",newGroupUid);
+                console.log("Current ID: ", uid);
+                console.log("Room ID: ", newGroupUid);
                 updates['users/' + uid + '/groups/' + newGroupUid] = true;
                 database.update(updates);
+                
+                //Write invited users in as well
+                var ref = firebase.database().ref('users');
+                for (let user of userList) {
+                    ref.orderByChild('email').equalTo(user).on("child_added", function(snapshot) {
+                        var uidOther = snapshot.key;
+                        var updates = {};
+                        updates['users/' + uidOther + '/groups/' + newGroupUid] = true;
+                        database.update(updates);
+                    });
+                } 
             }
 
             //==========get current date function, eg. Nov 20, 2018.=================
