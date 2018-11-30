@@ -85,10 +85,11 @@ ul.agendaLists {
 
 /*-----Rooms-----*/
 div#roomSpace {
-  width: calc(100vw - 355px);
+/*  width: calc(100vw - 355px); */
+  width: 100vw;  
   height: calc(100vh - 83px);
   top:83px;
-  left:355px;
+/*  left:355px; */
   position:relative;
   border-right: 3px black solid;
   overflow: auto;

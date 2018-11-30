@@ -17,10 +17,10 @@ $(document).ready(function() {
   });
 
   //=====================event handling sction================================
-  //click exit buttons will get a warning of quiting a group, if 
+  //click exit buttons will get a warning of quiting a group, if
   //"OK" is clicked, remove that group info from the page and the
   //database.
-  $(document).on('click', '.exitButtons', 
+  $(document).on('click', '.exitButtons',
   function quitAGroupConfirmation() {
     var classes = $(this).attr('class').split(' ');
     var groupUid = classes[0];
@@ -31,7 +31,7 @@ $(document).ready(function() {
   });
 
   //click enter buttons will enter the corresponding room.
-  $(document).on('click', '.enterButtons', 
+  $(document).on('click', '.enterButtons',
   function redirect() {
     var [groupUid] = $(this).attr('class').split(' ');
     window.location.href = "./chat_room.html#" + groupUid;
@@ -40,7 +40,7 @@ $(document).ready(function() {
   $('#joinARoom').click(function promptToGetKey(){
       $('#getKeyModal').css('display', 'block');
     });
-    
+
   $('#closeBtn').click(function closeModal() {
     $('#getKeyModal').css('display', 'none');
     $('.errorText').text("");
@@ -90,7 +90,7 @@ $(document).ready(function() {
         $('#profileName').text(userName);
     });
   }
-  
+
   //retrieves current user's groups, needs to be run once page is loaded.
   //!!!!!!!!!!!might need to sort the data first!!!!!!!!!!!!!!
   function loopForUserGroups(currentUserRef) {
@@ -103,7 +103,7 @@ $(document).ready(function() {
         console.log('Start looping for groups.');
         $('#roomSpace').text('');
         snapshot.forEach(function(childSnapshot) {
-          
+
           var uid = childSnapshot.key;
           console.log('groupUid: ' + uid + '\n');
           retrieveGroupInfo(uid);
@@ -130,8 +130,8 @@ $(document).ready(function() {
     });
   }
 
-  //retrieves title, description, memberCount and creadtedOn info 
-  //of a group using //groupUid, adds them onto a table and 
+  //retrieves title, description, memberCount and creadtedOn info
+  //of a group using //groupUid, adds them onto a table and
   //displays them on page.
   function retrieveGroupInfo(groupUid) {
     database.ref('groups/' + groupUid).once('value').then(function(snapshot) {
@@ -146,16 +146,15 @@ $(document).ready(function() {
       } else {
         addAGroupTable(groupUid, group_title, group_description, group_memberCount, group_createdOn);
       }
-      
     });
   }
   //===========end of the function.==============
 
 
   //=======creating and appending a group table.========
-  function addAGroupTable(groupUid, group_title, group_description, 
+  function addAGroupTable(groupUid, group_title, group_description,
     group_memberCount, group_createdOn) {
-      
+
     var table = $('<table></table>');
     table.attr('id', groupUid);
     var tr_groupTitle = $('<tr></tr>');
@@ -230,7 +229,7 @@ $(document).ready(function() {
   //==============creating and appending a agenda list======
   function addAAgendaList(agendaUid, {description, dueDate, dueTime}) {
     console.log('---------------');
-    
+
     console.log(agendaUid + description + dueDate + dueTime);
     console.log('---------------');
     var div_agendas = $('<div></div>');
@@ -275,7 +274,7 @@ $(document).ready(function() {
   //     });
   //     $('.errorText').text("The key is not valid.");
   //   });
-    
+
   // });
 
 
@@ -312,7 +311,7 @@ $(document).ready(function() {
   //   };
   //   // Get a key for a new group.
   //   var newGroupUid = rootRef.child('groups').push().key;
-  //   // Write the new group's data simultaneously in the groups list and the 
+  //   // Write the new group's data simultaneously in the groups list and the
   //   //user's group list.
   //   var updates = {};
   //   updates['groups/' + newGroupUid] = newGroupData;
@@ -336,7 +335,7 @@ $(document).ready(function() {
   // //=========end of the function=======================
 
 
-  //removes given groupUid from "users" and "groups", including all the data 
+  //removes given groupUid from "users" and "groups", including all the data
   //under the groupUid.
   function removeGroupInfoFromDatabase(groupUid) {
     console.log('beginning to remove groups under userUid');

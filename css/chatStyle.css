@@ -345,7 +345,7 @@ img.rotateOnHoveringImg{
 } */
 
 #create_agenda_modal {
-  position: relative;
+  position: absolute;
   border-radius: 10px;
   top:50px;
   float:right;
@@ -383,6 +383,11 @@ div.individualAgenda {
   border-radius: 10px;
   padding:3%;
   box-shadow:  0px 0px 8px #000000;
+  background-color: rgb(233, 233, 233);
+}
+
+.agendas {
+  margin-top: 10px;
 }
 
 .agendaDesc {
