@@ -59,7 +59,7 @@ $(document).ready(function() {
   //sets the group title on the top left cornner.
   function setGroupTitle(currentGroupUid) {
     rootRef.once('value').then(function(snapshot) {
-        var groupTitle = snapshot.child('groups/' + currentGroupUid + '/description').val();
+        var groupTitle = snapshot.child('groups/' + currentGroupUid + '/title').val();
         $('#room').text(groupTitle);
     });
   }
@@ -230,8 +230,8 @@ $(document).ready(function() {
     div_individualAgenda.addClass('individualAgenda');
     var h4_agendaDesc = $('<h4><//h4>');
     h4_agendaDesc.addClass('agendaDesc');
-    //h4_agendaDesc.text(description);
-    h4_agendaDesc.text(agendaUid);
+    h4_agendaDesc.text(description);
+    //h4_agendaDesc.text(agendaUid);
     var p_agendaDesc = $('<p></p>');
     p_agendaDesc.text("Due: ");
     p_agendaDesc.addClass('agendaDesc');
@@ -252,28 +252,19 @@ $(document).ready(function() {
   //hover the plus sign will show the interface for creating an agenda.
   $("#createAgendaIcon").mouseover(function() {
     $('#createAgendaIcon').css('transform', 'rotate(135deg)');
-    
+    $("#create_agenda_modal").slideDown();
   });
 
   //click the plus sign to close the interface,
-  var open = false;
-  $('#createAgendaIcon').click(function(e) {
-    e.preventDefault();
-    if (!open) {
-      $("#create_agenda_modal").slideDown();
-      open = true;
-    } else {
-      $('#createAgendaIcon').css('transform', 'rotate(-90deg)');
-      $("#create_agenda_modal").slideUp();
-      open = false;
-    }
+  $('#createAgendaIcon').click(function() {
+    $('#createAgendaIcon').css('transform', 'rotate(-90deg)');
+    $("#create_agenda_modal").slideUp();
   });
 
   $('#logout').click(function(e) {
     e.preventDefault();
     e.stopPropagation();
     firebase.auth().signOut();
-    window.location.href = "./index.html";
   });
 
   //clicks the create button on the create agenda modal will write all the value
