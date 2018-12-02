@@ -16,73 +16,6 @@ $(document).ready(function() {
     }
   });
 
-  //=====================event handling section================================
-  //click exit buttons will get a warning of quiting a group, if
-  //"OK" is clicked, remove that group info from the page and the
-  //database.
-  $(document).on('click', '.exitButtons',
-  function quitAGroupConfirmation() {
-    var classes = $(this).attr('class').split(' ');
-    var groupUid = classes[0];
-    if (confirm("Are you sure you want to quit this group?")) {
-      $('#' + groupUid).remove();
-      removeGroupInfoFromDatabase(groupUid);
-    }
-  });
-
-  //click enter buttons will enter the corresponding room.
-  $(document).on('click', '.enterButtons',
-  function redirect() {
-    var [groupUid] = $(this).attr('class').split(' ');
-    window.location.href = "./chat_room.html#" + groupUid;
-  });
-
-  $('#joinARoom').click(function promptToGetKey(){
-      $('#getKeyModal').css('display', 'block');
-    });
-
-  $('#closeBtn').click(function closeModal() {
-    $('#getKeyModal').css('display', 'none');
-    $('.errorText').text("");
-  });
-
-  $("#groupKey").on("keypress", function(e) {
-    if (e.which === 13) {
-    $('#validateBtn').click();
-    }
-  });
-
-  $('#validateBtn').click(function validateKey() {
-    database.ref('groups/').once('value').then(function(snapshot) {
-      var groupKeyEntered = $('#groupKey').val();
-      console.log('key enter' + groupKeyEntered);
-      var contains = snapshot.child(groupKeyEntered).exists();
-      if (contains) {
-          $('.errorText').text("");
-          console.log('group found');
-          var updates = {};
-          var uid = firebase.auth().currentUser.uid;
-          console.log(uid);
-          updates['users/' + uid + '/groups/' + groupKeyEntered] = true;
-          rootRef.update(updates);
-          console.log('group: ' + groupKeyEntered + ' added.');
-          window.location.href="./chat_room.html#" + groupKeyEntered;
-      } else {
-        $('.errorText').text("The key is not valid.");
-      }
-    });
-  });
-
-  //logs out current user when click.
-  $('#logout').click(function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    firebase.auth().signOut();
-    window.location.href = "./index.html";
-  });
-  //=====================end of event handling sction==========================
-
-
   //sets the user name on the top right cornner.
   function setUsername(currentUserRef) {
     currentUserRef.once('value').then(function(snapshot) {
@@ -112,27 +45,9 @@ $(document).ready(function() {
     });
   }
 
-  // //retrieves current user's agendas, needs to be run once page is loaded.
-  // function loopForUserAgendas(currentUserRef) {
-  //   currentUserRef.child('/agendas').once('value').then(function(snapshot) {
-  //     var contains = snapshot.exists();
-  //     if (!contains) {
-  //       $('#agendaSpace').text('No Agendas Yet.');
-  //       console.log('No agenda data.');
-  //     } else {
-  //       console.log('Start looping for agendas.');
-  //       $('#agendaSpace').text('');
-  //       snapshot.forEach(function(childSnapshot) {
-  //         var uid = childSnapshot.key;
-  //         retrieveAgendaInfo(uid);
-  //       });
-  //     }
-  //   });
-  // }
-
-  //retrieves title, description, memberCount and creadtedOn info
-  //of a group using //groupUid, adds them onto a table and
-  //displays them on page.
+  //retrieves all info under the passed in groupUid node in the database. if the
+  //info does not contain any null value, it then passes the info to 
+  //addAGroupTable function to create and append a table onto the webpage.
   function retrieveGroupInfo(groupUid) {
     database.ref('groups/' + groupUid).once('value').then(function(snapshot) {
       var group_title = snapshot.child('title').val();
@@ -145,22 +60,26 @@ $(document).ready(function() {
         //default color for group table border.
         group_color = black;
       }
-      console.log('group Info Retieved:');
-      console.log(group_title + group_description+group_memberCount+group_createdOn);
-      if (group_title == null || group_description == null || group_memberCount == null || group_createdOn == null) {
+      console.log('retrieveGroupInof function called.');
+      console.log('retrieved value:\n' + group_title + group_description + 
+        group_memberCount + group_createdOn);
+      if (group_title == null || group_description == null ||
+        group_memberCount == null || group_createdOn == null) {
         console.log('group info contains null');
       } else {
-        addAGroupTable(groupUid, group_title, group_description, group_memberCount, group_createdOn, group_color);
+        console.log('calling addAGroupTable function...');
+        addAGroupTable(groupUid, group_title, group_description,
+          group_memberCount, group_createdOn, group_color);
       }
     });
   }
   //===========end of the function.==============
 
 
-  //=======creating and appending a group table.========
+  //adds a dynamic group table according to the parameters passed in.
+  //the css of the table is also applied in here.
   function addAGroupTable(groupUid, group_title, group_description,
     group_memberCount, group_createdOn, group_color) {
-
     var table = $('<table></table>');
     table.css('border', '3px solid ' + group_color);
     table.attr('id', groupUid);
@@ -220,9 +139,107 @@ $(document).ready(function() {
     tr_footer.append(td_enter, td_exit);
     table.append(tr_groupTitle, tr_groupInfo, tr_footer);
     $('#roomSpace').prepend(table);
-    console.log('table created.');
+    console.log('addAGroupTable function called.');
   }
   //===========end of the function.==============
+
+  //removes given groupUid under "users" and "groups" nodes in the database.
+  function removeGroupInfoFromDatabase(groupUid) {
+    currentUserRef.child('groups/' + groupUid).remove();
+    //database.ref('groups/').child(groupUid).remove();
+    console.log('removeGroupInfoFromDatabase function called.');
+  }
+  //=========end of the function=======================
+
+  //=====================event handling section================================
+  //clicks enter buttons will remove the corresponding room by parsing the value
+  //of the class, which contains the groupUid.
+  $(document).on('click', '.exitButtons',
+  function quitAGroupConfirmation() {
+    var classes = $(this).attr('class').split(' ');
+    var groupUid = classes[0];
+    if (confirm("Are you sure you want to quit this group?")) {
+      $('#' + groupUid).remove();
+      console.log('calling removeGroupInfoFromDatabase...');
+      removeGroupInfoFromDatabase(groupUid);
+    }
+  });
+
+  //clicks enter buttons will enter the corresponding room by parsing the value
+  //of the class, which contains the groupUid.
+  $(document).on('click', '.enterButtons',
+  function redirect() {
+    var [groupUid] = $(this).attr('class').split(' ');
+    window.location.href = "./chat_room.html#" + groupUid;
+  });
+
+  //triggers a popup that asks for a groupUid to join.
+  $('#joinARoom').click(function promptToGetKey(){
+      $('#getKeyModal').css('display', 'block');
+    });
+  
+  //closes the "join a room" popup.
+  $('#closeBtn').click(function closeModal() {
+    $('#getKeyModal').css('display', 'none');
+    $('.errorText').text("");
+  });
+
+  //pressing Enter key has the same effect as clicking "create" button.
+  $("#groupKey").on("keypress", function(e) {
+    if (e.which === 13) {
+    $('#validateBtn').click();
+    }
+  });
+  
+  //validates if the entered groupUid exists in the database, if yes, join the
+  //user into the group. if no, show the error text.
+  $('#validateBtn').click(function validateKey() {
+    database.ref('groups/').once('value').then(function(snapshot) {
+      var groupKeyEntered = $('#groupKey').val();
+      console.log('key enter' + groupKeyEntered);
+      var contains = snapshot.child(groupKeyEntered).exists();
+      if (contains) {
+          $('.errorText').text("");
+          console.log('group found');
+          var updates = {};
+          var uid = firebase.auth().currentUser.uid;
+          console.log(uid);
+          updates['users/' + uid + '/groups/' + groupKeyEntered] = true;
+          rootRef.update(updates);
+          console.log('group: ' + groupKeyEntered + ' added.');
+          window.location.href="./chat_room.html#" + groupKeyEntered;
+      } else {
+        $('.errorText').text("The key is not valid.");
+      }
+    });
+  });
+
+  //logs out current user when click.
+  $('#logout').click(function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    firebase.auth().signOut();
+    window.location.href = "./index.html";
+  });
+  //=====================end of event handling sction==========================
+
+  // //retrieves current user's agendas, needs to be run once page is loaded.
+  // function loopForUserAgendas(currentUserRef) {
+  //   currentUserRef.child('/agendas').once('value').then(function(snapshot) {
+  //     var contains = snapshot.exists();
+  //     if (!contains) {
+  //       $('#agendaSpace').text('No Agendas Yet.');
+  //       console.log('No agenda data.');
+  //     } else {
+  //       console.log('Start looping for agendas.');
+  //       $('#agendaSpace').text('');
+  //       snapshot.forEach(function(childSnapshot) {
+  //         var uid = childSnapshot.key;
+  //         retrieveAgendaInfo(uid);
+  //       });
+  //     }
+  //   });
+  // }
 
   // //var ref = database.ref('agendas').orderByChild('dueDate');
   // function retrieveAgendaInfo(agendaUid) {
@@ -357,13 +374,4 @@ $(document).ready(function() {
   // }
   // //=========end of the function=======================
 
-
-  //removes given groupUid from "users" and "groups", including all the data
-  //under the groupUid.
-  function removeGroupInfoFromDatabase(groupUid) {
-    console.log('beginning to remove groups under userUid');
-    currentUserRef.child('groups/' + groupUid).remove();
-    //database.ref('groups/').child(groupUid).remove();
-  }
-  //=========end of the function=======================
 });
