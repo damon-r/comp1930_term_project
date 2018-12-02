@@ -85,19 +85,17 @@ ul.agendaLists {
 
 /*-----Rooms-----*/
 div#roomSpace {
-/*  width: calc(100vw - 355px); */
-  width: 100vw;  
+  width: calc(100vw - 58px);
+  /* width: 100vw;   */
   height: calc(100vh - 83px);
   top:83px;
 /*  left:355px; */
   position:relative;
-  border-right: 3px black solid;
   overflow: auto;
 }
 
 table, td{
   border-collapse: collapse;
-  border:3px solid black;
   width: 50%;
 }
 
@@ -105,6 +103,7 @@ table {
   float:left;
   width: 14em;
   margin: 1em;
+  box-shadow: 0px 0px 5px #000000;
 }
 /*-----Rooms-----*/
 

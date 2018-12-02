@@ -139,12 +139,18 @@ $(document).ready(function() {
       var group_description = snapshot.child('description').val();
       var group_memberCount = snapshot.child('memberCounts').val();
       var group_createdOn = snapshot.child('dateCreated').val();
-      console.log('group Info Retieved..');
+      var group_color = snapshot.child('roomColor').val();
+      console.log('group_color' + group_color);
+      if (group_color == null) {
+        //default color for group table border.
+        group_color = black;
+      }
+      console.log('group Info Retieved:');
       console.log(group_title + group_description+group_memberCount+group_createdOn);
       if (group_title == null || group_description == null || group_memberCount == null || group_createdOn == null) {
         console.log('group info contains null');
       } else {
-        addAGroupTable(groupUid, group_title, group_description, group_memberCount, group_createdOn);
+        addAGroupTable(groupUid, group_title, group_description, group_memberCount, group_createdOn, group_color);
       }
     });
   }
@@ -153,51 +159,61 @@ $(document).ready(function() {
 
   //=======creating and appending a group table.========
   function addAGroupTable(groupUid, group_title, group_description,
-    group_memberCount, group_createdOn) {
+    group_memberCount, group_createdOn, group_color) {
 
     var table = $('<table></table>');
+    table.css('border', '3px solid ' + group_color);
     table.attr('id', groupUid);
     var tr_groupTitle = $('<tr></tr>');
     var td_groupTitle = $('<td></td>');
     td_groupTitle.attr('colspan', '2');
+    td_groupTitle.css('border', '3px solid ' + group_color);
     td_groupTitle.text(groupUid); //change to group_title later.
     //table body for group information.
     var tr_groupInfo = $('<tr></tr>');
     var td_groupInfo = $('<td></td>');
+    td_groupInfo.css('border', '3px solid ' + group_color);
     td_groupInfo.attr('colspan', '2');
-    var img_groupIcon = $('<img/>');
-    img_groupIcon.attr('src', 'url'); // add room icon url here.
-    img_groupIcon.attr('alt', 'Room Icon');
     var p_groupDesc = $('<p></p>');
     p_groupDesc.addClass('descriptionToRoom');
+    p_groupDesc.css('height', '4em');
+    p_groupDesc.css('width', '13em');
+    p_groupDesc.css('word-wrap', 'break-word');
+    p_groupDesc.css('overflow', 'auto');
     p_groupDesc.text(group_description);
     var p_groupMemberCount = $('<p></p>');
     p_groupMemberCount.addClass('descriptionToRoom');
+    p_groupMemberCount.css('margin-bottom', '0');
     p_groupMemberCount.text('Members: ' + group_memberCount);
     var p_groupDateCreated = $('<p></p>');
     p_groupDateCreated.addClass('descriptionToRoom');
+    p_groupDateCreated.css('margin-top', '0');
     p_groupDateCreated.text('Created on: ' + group_createdOn);
     //table footer for ENTER and EXIT a group.
     var tr_footer = $('<tr></tr>');
+    tr_footer.css('text-align', 'center');
     var td_enter = $('<td></td>');
+    td_enter.css('border', '3px solid ' + group_color);
     var enter_button = $('<button></button>');
     enter_button.text('Enter');
     enter_button.addClass(groupUid);
     enter_button.addClass('enterButtons');
     var td_exit = $('<td></td>');
+    td_exit.css('border', '3px solid ' + group_color);
     var exit_button = $('<button></button>');
     exit_button.text('Exit');
     exit_button.addClass(groupUid);
     exit_button.addClass('exitButtons');
     //appending all the elements above.
     tr_groupTitle.append(td_groupTitle);
-    td_groupInfo.append(img_groupIcon, p_groupDesc, p_groupMemberCount, p_groupDateCreated);
+    td_groupInfo.append(p_groupDesc, p_groupMemberCount, p_groupDateCreated);
     tr_groupInfo.append(td_groupInfo);
     td_enter.append(enter_button);
     td_exit.append(exit_button);
     tr_footer.append(td_enter, td_exit);
     table.append(tr_groupTitle, tr_groupInfo, tr_footer);
     $('#roomSpace').prepend(table);
+    console.log('table created.');
   }
   //===========end of the function.==============
 
