@@ -17,13 +17,15 @@
         <div id='content'>
                 <h1>Create Room</h1>
                 <h2>Room Name:</h2>
-                <input id='roomName' type='name' name='roomName' required='required' placeholder='Type here...' pattern='(2,20)'>
+                <input id='roomName' type='name' name='roomName' required='required' 
+                    placeholder='Type here...' size='25' pattern='(2,25)' autofocus/>
                 <h2>Room Description:</h2>
-                <input id='roomDesc' type='text' name='roomDesc' placeholder='Type here...'>
+                <textarea id='roomDesc' type='text' rows='2' cols='25' name='roomDesc' placeholder='Type here...'/>
+                </textarea>
                 <h2>Room Color:</h2>
                 <input id='roomColor' type="color" name="favcolor">
                 <h2>Invite List:</h2>
-                <input id='personToAdd' type='email' name='personName' placeholder='Type User to Add'/>
+                <input id='personToAdd' type='email' name='personName' size='25' placeholder='Type User Email  to Add'/>
                 <div id='addPerson' class='button'>Add Email</div>
                 <div id='userList'>
                     <h3>Invited Users:</h3>
