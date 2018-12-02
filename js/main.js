@@ -10,13 +10,13 @@ $(document).ready(function() {
       console.log('onAuthStateChanged: ' + userUid);
       setUsername(currentUserRef);
       loopForUserGroups(currentUserRef);
-      loopForUserAgendas(currentUserRef);
+      //loopForUserAgendas(currentUserRef);
     } else {
       console.log('user not logged in');
     }
   });
 
-  //=====================event handling sction================================
+  //=====================event handling section================================
   //click exit buttons will get a warning of quiting a group, if
   //"OK" is clicked, remove that group info from the page and the
   //database.
@@ -112,23 +112,23 @@ $(document).ready(function() {
     });
   }
 
-  //retrieves current user's agendas, needs to be run once page is loaded.
-  function loopForUserAgendas(currentUserRef) {
-    currentUserRef.child('/agendas').once('value').then(function(snapshot) {
-      var contains = snapshot.exists();
-      if (!contains) {
-        $('#agendaSpace').text('No Agendas Yet.');
-        console.log('No agenda data.');
-      } else {
-        console.log('Start looping for agendas.');
-        $('#agendaSpace').text('');
-        snapshot.forEach(function(childSnapshot) {
-          var uid = childSnapshot.key;
-          retrieveAgendaInfo(uid);
-        });
-      }
-    });
-  }
+  // //retrieves current user's agendas, needs to be run once page is loaded.
+  // function loopForUserAgendas(currentUserRef) {
+  //   currentUserRef.child('/agendas').once('value').then(function(snapshot) {
+  //     var contains = snapshot.exists();
+  //     if (!contains) {
+  //       $('#agendaSpace').text('No Agendas Yet.');
+  //       console.log('No agenda data.');
+  //     } else {
+  //       console.log('Start looping for agendas.');
+  //       $('#agendaSpace').text('');
+  //       snapshot.forEach(function(childSnapshot) {
+  //         var uid = childSnapshot.key;
+  //         retrieveAgendaInfo(uid);
+  //       });
+  //     }
+  //   });
+  // }
 
   //retrieves title, description, memberCount and creadtedOn info
   //of a group using //groupUid, adds them onto a table and
@@ -168,7 +168,15 @@ $(document).ready(function() {
     var td_groupTitle = $('<td></td>');
     td_groupTitle.attr('colspan', '2');
     td_groupTitle.css('border', '3px solid ' + group_color);
-    td_groupTitle.text(groupUid); //change to group_title later.
+    
+    var p_groupTitle = $('<p></p>');
+    p_groupTitle.css('height', '2em');
+    p_groupTitle.css('max-width', '14em');
+    p_groupTitle.css('margin', '0');
+    p_groupTitle.css('overflow', 'auto');
+    p_groupTitle.css('white-space', 'nowrap');
+    p_groupTitle.html('<b>' + group_title + '</b>'); //change to group_title later.
+    td_groupTitle.append(p_groupTitle);
     //table body for group information.
     var tr_groupInfo = $('<tr></tr>');
     var td_groupInfo = $('<td></td>');
@@ -176,8 +184,7 @@ $(document).ready(function() {
     td_groupInfo.attr('colspan', '2');
     var p_groupDesc = $('<p></p>');
     p_groupDesc.addClass('descriptionToRoom');
-    p_groupDesc.css('height', '4em');
-    p_groupDesc.css('width', '13em');
+    p_groupDesc.css('height', '5em');
     p_groupDesc.css('word-wrap', 'break-word');
     p_groupDesc.css('overflow', 'auto');
     p_groupDesc.text(group_description);
@@ -201,7 +208,7 @@ $(document).ready(function() {
     var td_exit = $('<td></td>');
     td_exit.css('border', '3px solid ' + group_color);
     var exit_button = $('<button></button>');
-    exit_button.text('Exit');
+    exit_button.text('Quit');
     exit_button.addClass(groupUid);
     exit_button.addClass('exitButtons');
     //appending all the elements above.
@@ -217,61 +224,61 @@ $(document).ready(function() {
   }
   //===========end of the function.==============
 
-  //var ref = database.ref('agendas').orderByChild('dueDate');
-  function retrieveAgendaInfo(agendaUid) {
-    database.ref('agendas/' + agendaUid).once('value').then(function(snapshot) {
-      console.log(agendaUid);
-      agendaDesc = snapshot.child('description').val();
-      agendaDueD = snapshot.child('dueDate').val();
-      agendaDueT = snapshot.child('dueTime').val();
-      console.log('agenda info Retieved..');
-      if (agendaDesc == null ||
-        agendaDueD == null ||
-        agendaDueT == null) {
-          console.log('agenda info contains null');
-        } else {
-          var dataObj = {
-            //assignedTo: snapshot.child('assignedTo').val(),
-            description: agendaDesc,
-            dueDate: agendaDueD,
-            dueTime: agendaDueT,
-          };
-          addAAgendaList(agendaUid, dataObj);
-        }
+  // //var ref = database.ref('agendas').orderByChild('dueDate');
+  // function retrieveAgendaInfo(agendaUid) {
+  //   database.ref('agendas/' + agendaUid).once('value').then(function(snapshot) {
+  //     console.log(agendaUid);
+  //     agendaDesc = snapshot.child('description').val();
+  //     agendaDueD = snapshot.child('dueDate').val();
+  //     agendaDueT = snapshot.child('dueTime').val();
+  //     console.log('agenda info Retieved..');
+  //     if (agendaDesc == null ||
+  //       agendaDueD == null ||
+  //       agendaDueT == null) {
+  //         console.log('agenda info contains null');
+  //       } else {
+  //         var dataObj = {
+  //           //assignedTo: snapshot.child('assignedTo').val(),
+  //           description: agendaDesc,
+  //           dueDate: agendaDueD,
+  //           dueTime: agendaDueT,
+  //         };
+  //         addAAgendaList(agendaUid, dataObj);
+  //       }
 
-    });
-  }
+  //   });
+  // }
 
-  //==============creating and appending a agenda list======
-  function addAAgendaList(agendaUid, {description, dueDate, dueTime}) {
-    console.log('---------------');
+  // //==============creating and appending a agenda list======
+  // function addAAgendaList(agendaUid, {description, dueDate, dueTime}) {
+  //   console.log('---------------');
 
-    console.log(agendaUid + description + dueDate + dueTime);
-    console.log('---------------');
-    var div_agendas = $('<div></div>');
-    div_agendas.addClass('agendas');
-    var h2_groupTitle = $('<h2></h2>');
-    h2_groupTitle.text("");
-    div_agendas.append(h2_groupTitle);
-    var div_individualAgenda = $('<div></div>');
-    div_individualAgenda.addClass('individualAgenda')
-    var h4_agendaDesc = $('<h4><//h4>');
-    h4_agendaDesc.addClass('agendaDesc');
-    //h4_agendaDesc.text(description);
-    h4_agendaDesc.text(agendaUid);
-    var p_agendaDesc = $('<p></p>');
-    p_agendaDesc.text("Due: ");
-    p_agendaDesc.addClass('agendaDesc');
-    var span_date = $('<span></span>');
-    span_date.text(dueDate + " @ ");
-    var span_time = $('<span></span>');
-    span_time.text(dueTime);
-    p_agendaDesc.append(span_date, span_time);
-    div_individualAgenda.append(h4_agendaDesc, p_agendaDesc);
-    div_agendas.append(div_individualAgenda);
-    $('#agendaSpace').append(div_agendas);
-  }
-  //==============end of the function============
+  //   console.log(agendaUid + description + dueDate + dueTime);
+  //   console.log('---------------');
+  //   var div_agendas = $('<div></div>');
+  //   div_agendas.addClass('agendas');
+  //   var h2_groupTitle = $('<h2></h2>');
+  //   h2_groupTitle.text("");
+  //   div_agendas.append(h2_groupTitle);
+  //   var div_individualAgenda = $('<div></div>');
+  //   div_individualAgenda.addClass('individualAgenda')
+  //   var h4_agendaDesc = $('<h4><//h4>');
+  //   h4_agendaDesc.addClass('agendaDesc');
+  //   //h4_agendaDesc.text(description);
+  //   h4_agendaDesc.text(agendaUid);
+  //   var p_agendaDesc = $('<p></p>');
+  //   p_agendaDesc.text("Due: ");
+  //   p_agendaDesc.addClass('agendaDesc');
+  //   var span_date = $('<span></span>');
+  //   span_date.text(dueDate + " @ ");
+  //   var span_time = $('<span></span>');
+  //   span_time.text(dueTime);
+  //   p_agendaDesc.append(span_date, span_time);
+  //   div_individualAgenda.append(h4_agendaDesc, p_agendaDesc);
+  //   div_agendas.append(div_individualAgenda);
+  //   $('#agendaSpace').append(div_agendas);
+  // }
+  // //==============end of the function============
 
 
   // $('#validateBtn').click(function validateKey() {
