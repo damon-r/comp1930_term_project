@@ -261,6 +261,24 @@ a.topButton:hover {
   margin-top: 20px;
 }
 
+.messageTime {
+  float: left;
+  position: relative;
+  display: inline-block;
+  font-family: sans-serif;
+  margin-left: 10px;
+  margin-top: 20px;
+}
+
+.messageTime2 {
+  float: right;
+  position: relative;
+  display: inline-block;
+  font-family: sans-serif;
+  margin-right: 10px;
+  margin-top: 20px;
+}
+
 .user {
   display:inline-block;
   margin-left: 20px;

@@ -1,14 +1,8 @@
 $(document).ready(function() {
-<<<<<<< HEAD
   var database = firebase.database();
   var rootRef = database.ref();
 
-=======
-  const database = firebase.database();
-  const rootRef = database.ref();
-  
-  //listens for user 
->>>>>>> 4db1121f7adc687015a4785e4922ea8ed2638cfb
+  //listens for user
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       var userUid = user.uid;

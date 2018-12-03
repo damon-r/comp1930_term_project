@@ -1,0 +1,284 @@
+body {
+  margin: 0;
+}
+
+/*-----Header-----*/
+div#header {
+  margin: 0;
+  height: 80px;
+  width: 100%;
+  background-color: rgb(244, 184, 105);
+  position: fixed;
+  border-bottom: 3px black solid;
+}
+
+span#roomName {
+  font-size: 35pt;
+  font-family: sans-serif;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 15px;
+  float: left;
+  color: #FFFFFF;
+  text-shadow: 0px 0px 8px #000000;
+}
+
+img#profileImage {
+  height: 80%;
+  float: right;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 0.5%;
+  background-color: white;
+  border-radius: 35px;
+}
+
+span#profileName {
+  position: relative;
+  top: 50%;
+  margin-right: 2%;
+  transform: translateY(-50%);
+  font-size: 18pt;
+  font-family: sans-serif;
+  float: right;
+}
+
+a.topButton {
+  font: 18pt Arial;
+  text-decoration: none;
+  background-color: #EEEEEE;
+  color: #333333;
+  padding: 2px 10px 2px 10px;
+  border: 1px solid #333333;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  float: right;
+  margin-right: 2%;
+}
+
+a.topButton:hover {
+  filter: brightness(75%);
+}
+/*-----Header-----*/
+
+/*-----Agenda-----*/
+div#agendaSpace {
+  height: calc(100vh - 83px);
+  width: 350px;
+  top: 83px;
+  position: fixed;
+  background-color: rgb(237, 151, 42);
+  border-right: 3px black solid;
+  overflow: auto;
+}
+
+ul.agendaLists {
+  list-style-type: square;
+  text-align: right;
+  border-bottom: 3px rgba(49, 49, 49, .5) solid;
+}
+/*-----Agenda-----*/
+
+/*-----Rooms-----*/
+div#roomSpace {
+/*  width: calc(100vw - 355px); */
+  width: 100vw;  
+  height: calc(100vh - 83px);
+  top:83px;
+/*  left:355px; */
+  position:relative;
+  border-right: 3px black solid;
+  overflow: auto;
+}
+
+table, td{
+  border-collapse: collapse;
+  border:3px solid black;
+  width: 50%;
+}
+
+table {
+  float:left;
+  width: 14em;
+  margin: 1em;
+}
+/*-----Rooms-----*/
+
+/*-----create and join a room-----*/
+div#createAndJoinRoom {
+  position:fixed;
+  width: 55px;
+  height: calc(100vh - 83px);
+  top: 85px;
+  right:3px;
+}
+
+img.functionalityIcon {
+  width: 50px;
+  height:50px;
+  float: right;
+  clear: right;
+  margin: 3vh .5vw;
+}
+
+img.rotateOnHoveringImg{
+  border-radius:50%;
+  -webkit-transition: -webkit-transform .3s ease-in-out;
+  -ms-transition: -ms-transform .3s ease-in-out;
+  transition: transform .3s ease-in-out;
+}
+
+img.rotateOnHoveringImg:hover{
+  transform:rotate(180deg);
+  -ms-transform:rotate(180deg);
+  -webkit-transform:rotate(180deg);
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: white;
+  text-align: center;
+  /*border-radius: 6px;*/
+  padding: 5px 0;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 20px;
+  right: 105%;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+/*-----create and join a room-----*/
+
+/*-----for the modal-----*/
+.modal {
+  display:none;
+  position:fixed;
+  z-index: 1;
+  top:0;
+  left:0;
+  height:100%;
+  width:100%;
+  overflow:auto;
+  background-color: rgba(0,0,0,0.5);
+}
+
+#modal-content {
+  background-color: white;
+  display: inline-block;
+  position: relative;
+  top:30%;
+  left:50%;
+  transform: translate(-50%, 0);
+  animation:modalOpen;
+  animation-duration:1s;
+}
+
+div.title{
+  background-color: rgb(244, 184, 105);
+}
+
+div.title h1{
+  margin: 0;
+  margin:1em 1em;
+  display: inline-block;
+}
+
+span#closeBtn {
+  position: absolute;
+  top: 0 ;
+  right: .2em;
+  color:#000;
+  font-size: 24pt;
+  padding:0;
+  margin:0;
+}
+
+input#groupKey {
+  margin:1em 1em;
+  font-size: 12pt;
+}
+
+#closeBtn:hover, #closeBtn:focus {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#validateBtn {
+  float:right;
+  margin-right:1rem;
+  margin-bottom:1rem;
+}
+
+@keyframes modalOpen{
+  from{opacity: 0}
+  to {opacity: 1}
+}
+/*-----end of the modal-----*/
+
+
+/*-------for agenda lists-------*/
+/* #create_agenda_modal {
+  background-color: white;
+  display: inline-block;
+  position: relative;
+  top:30%;
+  left:50%;
+  transform: translate(-50%, 0);
+  animation:modalOpen;
+  animation-duration:1s;
+}
+
+#create_agenda_modal{
+  width: 300px;
+}
+.floatClearRight {
+  float:right;
+  clear:right;
+  margin:5%;
+}
+.members {
+  margin-top: .5%;
+} */
+/*-------end of agenda lists-------*/
+
+
+.individualAgenda, .agenda_groupTitle {
+  margin:.6%;
+}
+div.individualAgenda {
+  text-align: right;
+  border:1px solid black;
+  width:90%;
+  margin-left:auto;
+  margin-right:auto;
+  border-radius: 10px;
+  padding:3%;
+  box-shadow:  0px 0px 8px #000000;
+}
+
+.agendaDesc {
+  margin: .1rem;
+}
+
+
+
+.errorText {
+  color: red;
+  height: 1em;
+  margin:0 1em;
+}
