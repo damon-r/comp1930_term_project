@@ -6,40 +6,44 @@ $(document).ready(function() {
   var currentUserName;
 
   $('#create_agenda_modal').hide();
+
+  //parses the url address and get the currentGroupUid.
   var url = document.location.href;
   var currentGroupUid = url.split('#')[1];
+  console.log('url parsed from the url: ' + currentGroupUid);
   var messages = firebase.database().ref('groups/'+currentGroupUid+'/messages');
 
+  var today = new Date();
+  const year = today.getFullYear();
+  const month = `${today.getMonth() + 1}`.padStart(2, 0);
+  const day = `${today.getDate()}`.padStart(2, 0);
+  const stringToday = [year, month, day].join('-');
+  console.log(stringToday);
+
+  //sets minimum date for the dueDate of a new agenda, which cannot be smaller
+  //than today.
+  $('#dueDate').attr('min',stringToday);
+  //sets the default date for a new agenda to today.
+  $('#dueDate').attr('value', stringToday);
+  
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      var date = new Date();
-      $('#dueDate').attr('min',date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate());
-      //parses the url address and get the currentGroupUid.
-      //!!!this is very important as the contents of this page depend on this!!!
-      console.log('geting group uid from url: ' + currentGroupUid);
+      console.log('calling setGroupTitle function...');
       setGroupTitle(currentGroupUid);
-      var userUid = user.uid;
-      var currentUserRef = database.ref('users/' + userUid);
+      console.log('onAuthStateChanged: ' + user.uid);
+      var currentUserRef = database.ref('users/' + user.uid);
+      console.log('calling setUsername function...');
       setUsername(currentUserRef);
+      console.log('calling loopForGroupAgendas function...');
       loopForGroupAgendas(currentGroupUid);
+      console.log('calling loopForGroupMembers function...');
       loopForGroupMembers(currentGroupUid);
-      console.log('in onAuthStateChanged: ' + userUid);
+      
     } else {
+      window.location.href = "./index.html";
       console.log('user not logged in');
     }
   });
-
-  // //parses the url address and get the currentGroupUid.
-  // //!!!this is very important as the contents of this page depend on this!!!
-  // var currentGroupUid = getCurrentGroupUidFromUrl();
-  // //parses the url with delimiter ('?') and gets the groupUid.
-  // function getCurrentGroupUidFromUrl() {
-  //     var url = document.location.href;
-  //     var currentGroupUid = url.split('#')[1];
-  //     //var currentGroupUid ='-LRoR2dwlyAUq70qYL0F';
-  //     return currentGroupUid;
-  // }
-
 
    //Store the current user's display name and ID in local variables
    var currentUserID;
@@ -52,15 +56,12 @@ $(document).ready(function() {
    }, 1000);
    console.log('currentUserID: ' + currentUserID);
 
-
-
-
-
   //sets the group title on the top left cornner.
   function setGroupTitle(currentGroupUid) {
     rootRef.once('value').then(function(snapshot) {
         var groupTitle = snapshot.child('groups/' + currentGroupUid + '/title').val();
         $('#room').text(groupTitle);
+        console.log('setGroupTitle function called.');
     });
   }
 
@@ -69,6 +70,7 @@ $(document).ready(function() {
     currentUserRef.once('value').then(function(snapshot) {
         var userName = snapshot.child('displayName').val();
         $('#profileName').text(userName);
+        console.log('setUsername function called.');
     });
   }
 
@@ -139,19 +141,25 @@ $(document).ready(function() {
   //into the user list to whom a task can be assign.
   function retrieveGroupMemberName(uid) {
     database.ref('users/' + uid).once('value').then(function(snapshot) {
-      var memberName = snapshot.child('displayName').val();
-      console.log('member name: '+ memberName);
-      var newLabel = $('<label></label>');
-      newLabel.text(memberName);
-      newLabel.addClass('floatClearRight members');
-      var newCheckbox = $('<input/>');
-      newCheckbox.attr('value', uid);
-      console.log('input value: '+ uid);
-      newCheckbox.attr('type', 'checkbox');
-      newCheckbox.addClass('nameCheckbox');
-      newLabel.append(newCheckbox);
-      $('#agendaDesc').after(newLabel);
-      console.log('group member: ' + uid + ' Retieved..');
+      var isThere = snapshot.exists();
+      if (isThere) {
+        var memberName = snapshot.child('displayName').val();
+        console.log('member name: '+ memberName);
+        var newLabel = $('<label></label>');
+        newLabel.text(memberName);
+        newLabel.addClass('floatClearRight members');
+        var newCheckbox = $('<input/>');
+        newCheckbox.attr('value', uid + '#' + memberName);
+        console.log('input value: '+ uid);
+        newCheckbox.attr('type', 'checkbox');
+        newCheckbox.addClass('nameCheckbox');
+        newLabel.append(newCheckbox);
+        $('#agendaDesc').after(newLabel);
+        console.log('group member: ' + uid + ' Retieved..');
+      } else {
+        console.log('user hasn\'t joined projectHub yet');
+      }
+      
     });
   }
   //========================end of a section======================
@@ -164,6 +172,7 @@ $(document).ready(function() {
   //currentGroupUid, the 'agendas' node, and the users to whom the agenda is
   //assigned.
   function updatingANewAgenda(currentGroupUid, newAgenda_description, newAgenda_dateDue, newAgenda_timeDue, prefix, newAgenda_memberObj) {
+    console.log(currentGroupUid+ newAgenda_description+ newAgenda_dateDue+ newAgenda_timeDue+ prefix+ newAgenda_memberObj);
     database.ref('groups/').once('value').then(function(snapshot) {
     //check if the passing in currentGroupUid exists or not.
       var contains = snapshot.child(currentGroupUid).exists();
@@ -175,6 +184,7 @@ $(document).ready(function() {
           description: newAgenda_description,
           dueTime: newAgenda_timeDue,
           dueDate: newAgenda_dateDue,
+          done: false,
           assignedTo: newAgenda_memberObj,
         };
         // Get a key for a new group.
@@ -218,16 +228,16 @@ $(document).ready(function() {
 
   //accepts
   function addAAgendaList(agendaUid, {description, dueDate, dueTime}) {
-  console.log(agendaUid + description + dueDate + dueTime);
+    console.log(agendaUid + description + dueDate + dueTime);
     var div_agendas = $('<div></div>');
-    div_agendas.addClass('agendas');
     div_agendas.attr('id', agendaUid);
+    div_agendas.addClass('agendas');
     // var h2_groupTitle = $('<h2></h2>');
     // h2_groupTitle.text("");
     //div_agendas.append(h2_groupTitle);
     //need to loop this
     var div_individualAgenda = $('<div></div>');
-    div_individualAgenda.addClass('individualAgenda');
+    div_individualAgenda.addClass(agendaUid + ' individualAgenda');
     var h4_agendaDesc = $('<h4><//h4>');
     h4_agendaDesc.addClass('agendaDesc');
     h4_agendaDesc.text(description);
@@ -242,27 +252,92 @@ $(document).ready(function() {
     p_agendaDesc.append(span_date, span_time);
     div_individualAgenda.append(h4_agendaDesc, p_agendaDesc);
     div_agendas.append(div_individualAgenda);
+
+    database.ref('agendas/' + agendaUid ).once('value').then(function(snapshot) {
+      var hasCanceledBy = snapshot.child('canceledBy').exists();
+      var done = snapshot.child('done').val();
+      console.log('testing.......,' + agendaUid + hasCanceledBy);
+      if (hasCanceledBy) {
+        h4_agendaDesc.css('text-decoration', 'line-through');
+        p_agendaDesc.css('text-decoration', 'line-through');
+        var by = snapshot.child('canceledBy').val();
+        var div_canceledBy = $('<div></div>');
+        div_canceledBy.html('Canceled By <br/>' + by);
+        div_agendas.append(div_canceledBy);
+      } else if (done == true) {
+        var doneBy = snapshot.child('assignedTo').val();
+        h4_agendaDesc.css('color', 'grey');
+        p_agendaDesc.css('color', 'grey');
+        var div_doneBy = $('<div></div>');
+        var s = '';
+        for (var key in doneBy) {
+          if (doneBy.hasOwnProperty(key)) {
+            s += doneBy[key] + ', ';
+          }
+        }
+        s = s.substring(0, s.length - 2);
+        div_doneBy.html('Completed By <br/>' + s);
+        div_agendas.append(div_doneBy);
+      } else {
+        var div_agendaIcons = $('<div></div>');
+        div_agendaIcons.addClass('agendaIcons');
+        var img_cancel = $('<img/>');
+        img_cancel.addClass(agendaUid + ' cancelIcons');
+        img_cancel.attr('src', './images/cross.png');
+        img_cancel.attr('alt', 'Cancel Icon');
+        var img_done = $('<img/>');
+        img_done.addClass(agendaUid + ' doneIcons');
+        img_done.attr('src', './images/check-border.png');
+        img_done.attr('alt', 'Check Icon');
+        div_agendaIcons.append(img_cancel, img_done);
+        div_agendas.append(div_agendaIcons);
+      }
+    });
     $('#agendaSpace').prepend(div_agendas);
     console.log('agenda added.');
-
   }
   //========================end of a section======================
 
+  //removes given agendaUid under "users" and "agendas" nodes in the database.
+  function removeAgendaInfoFromDatabase(agendaUid) {
+    database.ref('agendas/' + agendaUid).child('assignedTo').once('value').
+    then(function(snapshot) {
+      var userObj = snapshot.val();
+      for (var key in userObj) {
+        console.log('key: ' + key + ' ' + userObj);
+        database.ref('users/' + key + '/agendas/' + agendaUid).remove();
+      }
+    });
+    var currentUserUid = firebase.auth().currentUser.uid;
+    database.ref('users/' + currentUserUid + '/displayName').once('value').then(function(snapshot) {
+      var updates = {};
+      var name = snapshot.val();
+      updates['agendas/' + agendaUid + '/canceledBy'] = name;
+      rootRef.update(updates);
+    });
+    
+    console.log('removeAgendaInfoFromDatabase function called.');
+  }
+  //=========end of the function=======================
 
-    //=====================event handling section=====================
-  //hover the plus sign will show the interface for creating an agenda.
-  $("#createAgendaIcon").mouseover(function() {
-    $('#createAgendaIcon').css('transform', 'rotate(135deg)');
-    $("#create_agenda_modal").slideDown();
-  });
 
-  //click the plus sign to close the interface,
+  //=====================event handling section=====================
+  //clicks the plus sign to see or close the "create an agend" drop down.
+  var isDown = false;
   $('#createAgendaIcon').click(function(e) {
     e.preventDefault();
-    $('#createAgendaIcon').css('transform', 'rotate(-90deg)');
-    $("#create_agenda_modal").slideUp();
+    if (!isDown) {
+      $('#createAgendaIcon').css('transform', 'rotate(135deg)');
+      $("#create_agenda_modal").slideDown();
+      isDown = true;
+    } else {
+      $('#createAgendaIcon').css('transform', 'rotate(-90deg)');
+      $("#create_agenda_modal").slideUp();
+      isDown = false;
+    }
   });
 
+  //logs current user out.
   $('#logout').click(function(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -271,29 +346,55 @@ $(document).ready(function() {
 
   //clicks the create button on the create agenda modal will write all the value
   //in the input boxes to the database and hides the interface.
-  $('#createAgendaBtn').click(function getAgendaInfo() {
+  $('#newAgendaForm').submit(function getAgendaInfo() {
     var agendaDescription = $('#agendaDesc').val();
     var agendaDueDate = getCurrentDate($('#dueDate').val(), false);
     var agendaDueTime = $('#dueTime').val();
     //prefix will be added to the beginning of a random generated key.
-    //helps to sort the agenda according to due time.
+    //ithelps to sort the agenda according to due time.
     var prefix = getCurrentDate($('#dueDate').val(), true) + agendaDueTime;
     var assignedTo = {};
     //store values of the checked box in 'assigned' object.
-    $('.nameCheckbox:checked').each(function iterator(){
-      assignedTo[$(this).val()] = true;
-    });
-    // var data ={
-    //   agendaDescription: agendaDescription,
-    //   agendaDueTime: agendaDueTime,
-    //   agendaDueDate: agendaDueDate,
-    // };
-    updatingANewAgenda(currentGroupUid, agendaDescription, agendaDueDate, agendaDueTime, prefix, assignedTo);
-
-    $('#createAgendaIcon').css('transform', 'rotate(-90deg)');
-    $("#create_agenda_modal").slideUp();
+    if ($('.nameCheckbox:checked').length <= 0) {
+      alert('You must assign at least one member to this task.');
+    } else {
+      $('.nameCheckbox:checked').each(function iterator(){
+        var [value, name] = $(this).val().split('#');
+        assignedTo[value] = name;
+      });
+      console.log(agendaDescription + agendaDueDate + agendaDueTime + prefix + assignedTo);
+      updatingANewAgenda(currentGroupUid, agendaDescription, agendaDueDate, agendaDueTime, prefix, assignedTo);
+      $('#createAgendaIcon').css('transform', 'rotate(-90deg)');
+      $("#create_agenda_modal").slideUp();
+    }
   });
-  //=====================end of event handling section=====================
+
+  $(document).on('click', '.cancelIcons', function() {
+    var classes = $(this).attr('class').split(' ');
+    var agendaUid = classes[0];
+    if (confirm("Are you sure you want to cancel this agenda?")) {
+      console.log('deleting agenda: '+ agendaUid);
+      document.getElementsByClassName(agendaUid)[0].style.textDecoration = 'line-through';
+      document.getElementsByClassName(agendaUid)[1].style.display = 'none';
+      document.getElementsByClassName(agendaUid)[2].style.display = 'none';
+      console.log('calling removeAgendaInfoFromDatabase...');
+      removeAgendaInfoFromDatabase(agendaUid);
+    }
+  });
+
+  $(document).on('click', '.doneIcons', function() {
+    var classes = $(this).attr('class').split(' ');
+    var agendaUid = classes[0];
+    var markTrue = {};
+    markTrue['agendas/' + agendaUid + '/done'] = true;
+    rootRef.update(markTrue);
+    document.getElementsByClassName(agendaUid)[0].style.color = 'grey';
+    document.getElementsByClassName(agendaUid)[1].style.display = 'none';
+    document.getElementsByClassName(agendaUid)[2].style.display = 'none';
+    console.log('checking agenda: '+ agendaUid);
+    
+  });
+  //=====================end of the event handling section=====================
 
 
   //Prints out messages stored in database

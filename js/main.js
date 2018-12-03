@@ -5,9 +5,8 @@ $(document).ready(function() {
   //listens for user 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      var userUid = user.uid;
-      var currentUserRef = database.ref('users/' + userUid);
-      console.log('onAuthStateChanged: ' + userUid);
+      var currentUserRef = database.ref('users/' + user.uid);
+      console.log('onAuthStateChanged: ' + user.uid);
       setUsername(currentUserRef);
       loopForUserGroups(currentUserRef);
       //loopForUserAgendas(currentUserRef);
@@ -55,21 +54,22 @@ $(document).ready(function() {
       var group_memberCount = snapshot.child('memberCounts').val();
       var group_createdOn = snapshot.child('dateCreated').val();
       var group_color = snapshot.child('roomColor').val();
-      console.log('group_color' + group_color);
-      if (group_color == null) {
-        //default color for group table border.
-        group_color = black;
-      }
+      
       console.log('retrieveGroupInof function called.');
-      console.log('retrieved value:\n' + group_title + group_description + 
-        group_memberCount + group_createdOn);
+      console.log('retrieved value:' + groupUid + '\n' + group_title + group_description + 
+        group_memberCount + group_createdOn + group_color);
       if (group_title == null || group_description == null ||
         group_memberCount == null || group_createdOn == null) {
         console.log('group info contains null');
       } else {
         console.log('calling addAGroupTable function...');
-        addAGroupTable(groupUid, group_title, group_description,
-          group_memberCount, group_createdOn, group_color);
+        if (group_color == null) {
+          addAGroupTable(groupUid, group_title, group_description,
+            group_memberCount, group_createdOn, 'black');
+        } else {
+          addAGroupTable(groupUid, group_title, group_description,
+            group_memberCount, group_createdOn, group_color);
+        }
       }
     });
   }
@@ -80,6 +80,8 @@ $(document).ready(function() {
   //the css of the table is also applied in here.
   function addAGroupTable(groupUid, group_title, group_description,
     group_memberCount, group_createdOn, group_color) {
+    console.log('addAGroupTable parameters' + groupUid+ group_title+ group_description+
+    group_memberCount+ group_createdOn+ group_color);
     var table = $('<table></table>');
     table.css('border', '3px solid ' + group_color);
     table.attr('id', groupUid);
@@ -90,7 +92,7 @@ $(document).ready(function() {
     
     var p_groupTitle = $('<p></p>');
     p_groupTitle.css('height', '2em');
-    p_groupTitle.css('max-width', '14em');
+    p_groupTitle.css('width', '14em');
     p_groupTitle.css('margin', '0');
     p_groupTitle.css('overflow', 'auto');
     p_groupTitle.css('white-space', 'nowrap');
@@ -104,6 +106,7 @@ $(document).ready(function() {
     var p_groupDesc = $('<p></p>');
     p_groupDesc.addClass('descriptionToRoom');
     p_groupDesc.css('height', '5em');
+    p_groupDesc.css('width', '14em');
     p_groupDesc.css('word-wrap', 'break-word');
     p_groupDesc.css('overflow', 'auto');
     p_groupDesc.text(group_description);
@@ -119,24 +122,26 @@ $(document).ready(function() {
     var tr_footer = $('<tr></tr>');
     tr_footer.css('text-align', 'center');
     var td_enter = $('<td></td>');
+    
     td_enter.css('border', '3px solid ' + group_color);
     var enter_button = $('<button></button>');
-    enter_button.text('Enter');
-    enter_button.addClass(groupUid);
-    enter_button.addClass('enterButtons');
+    enter_button.html('<b>Enter</b>');
+    enter_button.addClass(groupUid + ' enterButtons');
     var td_exit = $('<td></td>');
     td_exit.css('border', '3px solid ' + group_color);
     var exit_button = $('<button></button>');
-    exit_button.text('Quit');
-    exit_button.addClass(groupUid);
-    exit_button.addClass('exitButtons');
+    exit_button.html('<b>Quit</b>');
+    exit_button.addClass(groupUid + ' exitButtons');
+    
     //appending all the elements above.
     tr_groupTitle.append(td_groupTitle);
     td_groupInfo.append(p_groupDesc, p_groupMemberCount, p_groupDateCreated);
     tr_groupInfo.append(td_groupInfo);
+    
     td_enter.append(enter_button);
     td_exit.append(exit_button);
     tr_footer.append(td_enter, td_exit);
+    
     table.append(tr_groupTitle, tr_groupInfo, tr_footer);
     $('#roomSpace').prepend(table);
     console.log('addAGroupTable function called.');
@@ -145,7 +150,8 @@ $(document).ready(function() {
 
   //removes given groupUid under "users" and "groups" nodes in the database.
   function removeGroupInfoFromDatabase(groupUid) {
-    currentUserRef.child('groups/' + groupUid).remove();
+    var uid = firebase.auth().currentUser.uid;
+    database.ref('users/' + uid).child('groups/' + groupUid).remove();
     //database.ref('groups/').child(groupUid).remove();
     console.log('removeGroupInfoFromDatabase function called.');
   }
@@ -154,8 +160,7 @@ $(document).ready(function() {
   //=====================event handling section================================
   //clicks enter buttons will remove the corresponding room by parsing the value
   //of the class, which contains the groupUid.
-  $(document).on('click', '.exitButtons',
-  function quitAGroupConfirmation() {
+  $(document).on('click', '.exitButtons', function quitAGroupConfirmation() {
     var classes = $(this).attr('class').split(' ');
     var groupUid = classes[0];
     if (confirm("Are you sure you want to quit this group?")) {
@@ -167,8 +172,7 @@ $(document).ready(function() {
 
   //clicks enter buttons will enter the corresponding room by parsing the value
   //of the class, which contains the groupUid.
-  $(document).on('click', '.enterButtons',
-  function redirect() {
+  $(document).on('click', '.enterButtons', function redirect() {
     var [groupUid] = $(this).attr('class').split(' ');
     window.location.href = "./chat_room.html#" + groupUid;
   });
@@ -207,7 +211,9 @@ $(document).ready(function() {
           updates['users/' + uid + '/groups/' + groupKeyEntered] = true;
           rootRef.update(updates);
           console.log('group: ' + groupKeyEntered + ' added.');
-          window.location.href="./chat_room.html#" + groupKeyEntered;
+          setTimeout(function() {
+            window.location.href="./chat_room.html#" + groupKeyEntered;
+          }, 1500);
       } else {
         $('.errorText').text("The key is not valid.");
       }

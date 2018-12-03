@@ -133,11 +133,11 @@ a.topButton:hover {
   background-color: #FF6868;
 } */
 
-#admin {
+/* #admin {
   border-color: #999999;
   color: #999999;
   background-color: #CCCCCC;
-}
+} */
 
 /* #exitImage {
   float: left;
@@ -293,18 +293,7 @@ a.topButton:hover {
   margin-left: 30px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-div#sidebar_title {
+div.hoverToCreate {
   background-color: rgb(209, 198, 39);
   position: fixed;
   width: 350px;
@@ -312,6 +301,7 @@ div#sidebar_title {
   top:83px;
   left:0px;
 }
+
 div#sidebar_title h3 {
   display: inline-block;
 }
@@ -353,7 +343,7 @@ img.rotateOnHoveringImg{
   width:350px;
   margin-right: 5px;
   margin-top: 3px;
-  z-index: 999999;
+  z-index: 1;
 }
 
 input#agendaDesc {
@@ -370,26 +360,40 @@ input#agendaDesc {
   margin-top: 2px;
 }
 
-.individualAgenda, .agenda_groupTitle {
-  margin:.6%;
-}
-
-div.individualAgenda {
-  text-align: right;
-  border:1px solid black;
-  width:90%;
-  margin-left:auto;
-  margin-right:auto;
-  border-radius: 10px;
-  padding:3%;
-  box-shadow:  0px 0px 8px #000000;
-  background-color: rgb(233, 233, 233);
+.individualAgenda {
+  width:80%;
+  display: inline-block;
 }
 
 .agendas {
+  border:1px solid black;
+  border-radius: 10px;
+  padding:2%;
+  box-shadow:  0px 0px 8px #000000;
   margin-top: 10px;
+  width:90%;
+  margin-left:auto;
+  margin-right:auto;
+  background-color: rgb(233, 233, 233);
+}
+
+div.agendaIcons {
+  width: 20%;
+  display: inline-block;
 }
 
 .agendaDesc {
   margin: .1rem;
 }
+
+img.cancelIcons {
+  width: 20px;
+  margin-right: 1vw;
+  cursor: pointer;
+}
+
+img.doneIcons {
+  width:25px;
+  cursor: pointer;
+}
+

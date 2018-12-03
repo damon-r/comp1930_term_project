@@ -19,6 +19,10 @@
       <!-- <a id='exit' class='sideButton' href='../main.html'><img id='exitImage' src='./images/exit.png'>Exit Room</a>
       <a id='agenda' class='sideButton' href='../agenda/index.html'>Agenda</a>
       <a id='chat' class='sideButton' href='./index.html'>Chat</a> -->
+
+
+      <div id="agendaSpace">Loading agendas ...</div>
+      
       <div class="hoverToCreate">
           <div id="sidebar_title">
             <h3>Agendas</h3>
@@ -26,17 +30,18 @@
           </div>
 
           <div id="create_agenda_modal">
-            <input id="agendaDesc" class="floatClearRight" type="text" placeholder="What the task is about" size="30" required/>
-            <!-- <label class="floatClearRight members">name1<input class="nameCheckbox" type="checkbox" value="name1"/></label>
-            -->
-            <label class="floatClearRight" >Due Date: <input id="dueDate" type="date" required/></label>
-            <label class="floatClearRight">Due Time: <input id="dueTime" type="time" value="23:59" required/></label>
-            <button id="createAgendaBtn" class="floatClearRight">Create</button>
+            <form id="newAgendaForm">
+              <input id="agendaDesc" class="floatClearRight" type="text" placeholder="What the task is about" size="30" required="required"/>
+              <!-- <label class="floatClearRight members">name1<input class="nameCheckbox" type="checkbox" value="name1"/></label>
+              -->
+              <label class="floatClearRight" >Due Date: <input id="dueDate" type=
+                "date" required="required"/></label>
+              <label class="floatClearRight">Due Time: <input id="dueTime" type=
+                "time" value="23:59" required="required"/></label>
+              <input id="createAgendaBtn" class="floatClearRight" type="submit" value="Create"/>
+            </form>
           </div>
-
-
       </div>
-      <div id="agendaSpace">Loading agendas ...</div>
 
     </div>
 
@@ -53,7 +58,11 @@
       <img id='send' src='./images/send.png'>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
+    <!-- Firebase App is always required and must be first -->
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-functions.js"></script>
     <script src="./js/firebase_setup.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
