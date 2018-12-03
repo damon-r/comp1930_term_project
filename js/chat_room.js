@@ -492,15 +492,14 @@ $(document).ready(function() {
   });
 
   //Sends message when send button is clicked
-  $('#send').on('click', function() {
+  $('#send').click(function() {
     sendMessage();
   });
 
-  //Sends message when enter is pressed while message input field is focused on
-  $('#chatInput').on('keypress', function(e) {
-    if (e.keyCode == 13) {
-      event.preventDefault();
-      sendMessage();
+  //pressing Enter key has the same effect as clicking "create" button.
+  $("#chatInput").on("keypress", function(e) {
+    if (e.which === 13) {
+    $('#send').click();
     }
   });
 });
