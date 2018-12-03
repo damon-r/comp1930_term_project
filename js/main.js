@@ -1,15 +1,8 @@
 $(document).ready(function() {
-<<<<<<< HEAD
-  var database = firebase.database();
-  var rootRef = database.ref();
-
-  //listens for user
-=======
   const database = firebase.database();
   const rootRef = database.ref();
   
   //listens for user 
->>>>>>> 5aff1086ab59f2c34154845ef84a21a7ef7a8c82
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       var currentUserRef = database.ref('users/' + user.uid);
@@ -159,6 +152,13 @@ $(document).ready(function() {
   function removeGroupInfoFromDatabase(groupUid) {
     var uid = firebase.auth().currentUser.uid;
     database.ref('users/' + uid).child('groups/' + groupUid).remove();
+    rootRef.child('groups/' + groupUid).once('value').then(function(snapshot) {
+      var decrementCount = {};
+      var originalCount = snapshot.child('memberCount').val();
+      decrementCount['groups/' + groupUid + '/memberCount'] =
+        parseInt(originalCount) - 1;
+      rootRef.update(decrementCount);
+    });
     //database.ref('groups/').child(groupUid).remove();
     console.log('removeGroupInfoFromDatabase function called.');
   }
