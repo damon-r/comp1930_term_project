@@ -146,7 +146,8 @@ $(document).ready(function() {
 
   //removes given groupUid under "users" and "groups" nodes in the database.
   function removeGroupInfoFromDatabase(groupUid) {
-    currentUserRef.child('groups/' + groupUid).remove();
+    var uid = firebase.auth().currentUser.uid;
+    database.ref('users/' + uid).child('groups/' + groupUid).remove();
     //database.ref('groups/').child(groupUid).remove();
     console.log('removeGroupInfoFromDatabase function called.');
   }
