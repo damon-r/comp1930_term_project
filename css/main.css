@@ -1,5 +1,9 @@
+@import url("https://fonts.googleapis.com/css?family=Audiowide");
+@import url("https://fonts.google.com/specimen/Roboto");
+
 body {
   margin: 0;
+  font-family: 'Roboto', sans-serif;
 }
 
 /*-----Header-----*/
@@ -10,11 +14,12 @@ div#header {
   background-color: rgb(244, 184, 105);
   position: fixed;
   border-bottom: 3px black solid;
+  font-family: 'Audiowide', sans-serif;
+  
 }
 
 span#roomName {
   font-size: 35pt;
-  font-family: sans-serif;
   margin: 0;
   position: absolute;
   top: 50%;
@@ -42,12 +47,11 @@ span#profileName {
   margin-right: 2%;
   transform: translateY(-50%);
   font-size: 18pt;
-  font-family: sans-serif;
   float: right;
 }
 
 a.topButton {
-  font: 18pt Arial;
+  font: 18pt;
   text-decoration: none;
   background-color: #EEEEEE;
   color: #333333;
@@ -85,26 +89,28 @@ ul.agendaLists {
 
 /*-----Rooms-----*/
 div#roomSpace {
-/*  width: calc(100vw - 355px); */
-  width: 100vw;  
+  width: calc(100vw - 58px);
+  /* width: 100vw;   */
   height: calc(100vh - 83px);
   top:83px;
 /*  left:355px; */
   position:relative;
-  border-right: 3px black solid;
   overflow: auto;
 }
 
-table, td{
-  border-collapse: collapse;
-  border:3px solid black;
-  width: 50%;
-}
-
 table {
+  border-collapse: collapse;
   float:left;
   width: 14em;
   margin: 1em;
+  box-shadow: 0px 0px 5px #000000;
+}
+
+button.enterButtons, button.exitButtons {
+  border: none;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
 }
 /*-----Rooms-----*/
 
@@ -178,6 +184,7 @@ img.rotateOnHoveringImg:hover{
 }
 
 #modal-content {
+  min-width: 15em;
   background-color: white;
   display: inline-block;
   position: relative;
@@ -230,7 +237,6 @@ input#groupKey {
 }
 /*-----end of the modal-----*/
 
-
 /*-------for agenda lists-------*/
 /* #create_agenda_modal {
   background-color: white;
@@ -257,7 +263,7 @@ input#groupKey {
 /*-------end of agenda lists-------*/
 
 
-.individualAgenda, .agenda_groupTitle {
+/* .individualAgenda, .agenda_groupTitle {
   margin:.6%;
 }
 div.individualAgenda {
@@ -273,7 +279,7 @@ div.individualAgenda {
 
 .agendaDesc {
   margin: .1rem;
-}
+} */
 
 
 

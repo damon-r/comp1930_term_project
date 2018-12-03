@@ -1,5 +1,9 @@
+@import url("https://fonts.googleapis.com/css?family=Audiowide");
+@import url("https://fonts.google.com/specimen/Roboto");
+
 body {
   margin: 0;
+  font-family: 'Roboto', sans-serif;
 }
 
 a {
@@ -17,6 +21,7 @@ a {
   border-bottom: 3px black solid;
   clear: left;
   float: left;
+  font-family: 'Audiowide', sans-serif;
 
 }
 
@@ -29,7 +34,6 @@ a {
 
 #room {
   font-size: 25pt;
-  font-family: sans-serif;
   font-weight: bold;
   display: inline-block;
   margin: 0;
@@ -67,12 +71,11 @@ a {
   margin-right: 2%;
   transform: translateY(-50%);
   font-size: 18pt;
-  font-family: sans-serif;
   float: right;
 }
 
 a.topButton {
-  font: 18pt Arial;
+  font: 18pt;
   text-decoration: none;
   background-color: #EEEEEE;
   color: #333333;
@@ -103,7 +106,7 @@ a.topButton:hover {
   overflow: auto;
 }
 
-.sideButton {
+/* .sideButton {
   width: 80%;
   background-color: white;
   display: inline-block;
@@ -116,7 +119,7 @@ a.topButton:hover {
   transform: translateX(-50%);
   border-radius: 25px;
   border: 2px black solid;
-}
+} */
 
 /* .sideButton:hover {
   color: blue;
@@ -124,11 +127,11 @@ a.topButton:hover {
   font-weight: bold;
 } */
 
-#exit {
+/* #exit {
   border-radius: 0;
   font-size: 16pt;
   background-color: #FF6868;
-}
+} */
 
 #admin {
   border-color: #999999;
@@ -136,13 +139,13 @@ a.topButton:hover {
   background-color: #CCCCCC;
 }
 
-#exitImage {
+/* #exitImage {
   float: left;
   width: 35%;
   margin-left: 5%;
   position: relative;
   top: 5px;
-}
+} */
 /*-----Sidebar-----*/
 
 /*-----Footer-----*/
@@ -247,7 +250,6 @@ a.topButton:hover {
   float: left;
   position: relative;
   display: inline-block;
-  font-family: sans-serif;
   margin-left: 10px;
   margin-top: 20px;
 }
@@ -256,7 +258,6 @@ a.topButton:hover {
   float: right;
   position: relative;
   display: inline-block;
-  font-family: sans-serif;
   margin-right: 10px;
   margin-top: 20px;
 }
@@ -308,7 +309,6 @@ a.topButton:hover {
 #loading {
   font-size: 24pt;
   margin-left: 30px;
-  font-family: sans-serif;
 }
 
 
