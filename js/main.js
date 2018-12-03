@@ -58,7 +58,7 @@ $(document).ready(function() {
       console.log('group_color' + group_color);
       if (group_color == null) {
         //default color for group table border.
-        group_color = black;
+        group_color = 'black';
       }
       console.log('retrieveGroupInof function called.');
       console.log('retrieved value:\n' + group_title + group_description +
