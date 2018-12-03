@@ -45,6 +45,8 @@ $(document).ready(function() {
     }
   });
 
+  
+
    //Store the current user's display name and ID in local variables
    var currentUserID;
    setTimeout(function() {

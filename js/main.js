@@ -1,8 +1,8 @@
 $(document).ready(function() {
   const database = firebase.database();
   const rootRef = database.ref();
-
-  //listens for user
+  
+  //listens for user authentication status.
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       var userUid = user.uid;
@@ -82,6 +82,7 @@ $(document).ready(function() {
     group_memberCount, group_createdOn, group_color) {
     var table = $('<table></table>');
     table.css('border', '3px solid ' + group_color);
+    table.css('width', '14em');
     table.attr('id', groupUid);
     var tr_groupTitle = $('<tr></tr>');
     var td_groupTitle = $('<td></td>');
@@ -145,7 +146,19 @@ $(document).ready(function() {
 
   //removes given groupUid under "users" and "groups" nodes in the database.
   function removeGroupInfoFromDatabase(groupUid) {
+    var uid = firebase.auth().currentUser.uid;
+    database.ref('users/' + uid).child('groups/' + groupUid).remove();
+<<<<<<< HEAD
+    rootRef.child('groups/' + groupUid).once('value').then(function(snapshot) {
+      var decrementCount = {};
+      var originalCount = snapshot.child('memberCount').val();
+      decrementCount['groups/' + groupUid + '/memberCount'] =
+        parseInt(originalCount) - 1;
+      rootRef.update(decrementCount);
+    });
     currentUserRef.child('groups/' + groupUid).remove();
+=======
+>>>>>>> a452e9976d8c4eb0ec76bfd129bb2ffcd2db7c34
     //database.ref('groups/').child(groupUid).remove();
     console.log('removeGroupInfoFromDatabase function called.');
   }
