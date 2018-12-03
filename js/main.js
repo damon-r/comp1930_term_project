@@ -52,7 +52,7 @@ $(document).ready(function() {
     database.ref('groups/' + groupUid).once('value').then(function(snapshot) {
       var group_title = snapshot.child('title').val();
       var group_description = snapshot.child('description').val();
-      var group_memberCount = snapshot.child('memberCounts').val();
+      var group_memberCount = snapshot.child('memberCount').val();
       var group_createdOn = snapshot.child('dateCreated').val();
       var group_color = snapshot.child('roomColor').val();
       console.log('group_color' + group_color);
@@ -63,6 +63,7 @@ $(document).ready(function() {
       console.log('retrieveGroupInof function called.');
       console.log('retrieved value:\n' + group_title + group_description +
         group_memberCount + group_createdOn);
+      //if group info contains
       if (group_title == null || group_description == null ||
         group_memberCount == null || group_createdOn == null) {
         console.log('group info contains null');
@@ -147,7 +148,11 @@ $(document).ready(function() {
   //removes given groupUid under "users" and "groups" nodes in the database.
   function removeGroupInfoFromDatabase(groupUid) {
     var uid = firebase.auth().currentUser.uid;
+    //removes groupUid from current user's groups.
     database.ref('users/' + uid).child('groups/' + groupUid).remove();
+    //removes memberUid from memberInfo in the group.
+    database.ref('groups/' + groupUid + '/memberInfo/' + uid).remove();
+    //decrementes the memberCount of the group by 1.
     rootRef.child('groups/' + groupUid).once('value').then(function(snapshot) {
       var decrementCount = {};
       var originalCount = snapshot.child('memberCount').val();
@@ -155,10 +160,6 @@ $(document).ready(function() {
         parseInt(originalCount) - 1;
       rootRef.update(decrementCount);
     });
-
-    currentUserRef.child('groups/' + groupUid).remove();
-
-    //database.ref('groups/').child(groupUid).remove();
     console.log('removeGroupInfoFromDatabase function called.');
   }
   //=========end of the function=======================
@@ -206,20 +207,34 @@ $(document).ready(function() {
   //validates if the entered groupUid exists in the database, if yes, join the
   //user into the group. if no, show the error text.
   $('#validateBtn').click(function validateKey() {
-    database.ref('groups/').once('value').then(function(snapshot) {
+    rootRef.once('value').then(function(snapshot) {
       var groupKeyEntered = $('#groupKey').val();
       console.log('key enter' + groupKeyEntered);
-      var contains = snapshot.child(groupKeyEntered).exists();
+      var contains = snapshot.child('groups/' + groupKeyEntered).exists();
       if (contains) {
+        var uid = firebase.auth().currentUser.uid;
+        //checks if currentUser is in the group alreay.
+        var isInTheGroup = snapshot.child('users/' + uid + '/groups/' + groupKeyEntered).exists();
+        var email = snapshot.child('users/' + uid + '/email').val();
+        console.log(isInTheGroup + ' ' + email);
+        //if not in the group, do the updates.
+        if (!isInTheGroup) {
+          console.log('You are not in the group: ' + groupKeyEntered);
           $('.errorText').text("");
           console.log('group found');
           var updates = {};
-          var uid = firebase.auth().currentUser.uid;
-          console.log(uid);
+          var newMemberCount = snapshot.child('groups/' + groupKeyEntered + '/memberCount').val() + 1;
+          console.log(uid + newMemberCount);
           updates['users/' + uid + '/groups/' + groupKeyEntered] = true;
+          updates['groups/' + groupKeyEntered + '/memberCount'] = newMemberCount;
+          updates['groups/' + groupKeyEntered + '/memberInfo'] = {[uid]: email};
           rootRef.update(updates);
           console.log('group: ' + groupKeyEntered + ' added.');
+        }
+        console.log('Directing you to room: ' + groupKeyEntered);
+        setTimeout(function() {
           window.location.href="./chat_room.html#" + groupKeyEntered;
+        }, 2000);
       } else {
         $('.errorText').text("The key is not valid.");
       }
