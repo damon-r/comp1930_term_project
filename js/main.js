@@ -155,10 +155,9 @@ $(document).ready(function() {
         parseInt(originalCount) - 1;
       rootRef.update(decrementCount);
     });
-<<<<<<< HEAD
+
     currentUserRef.child('groups/' + groupUid).remove();
-=======
->>>>>>> 06578be3111e233fcce779c1969cd28c97d1463d
+
     //database.ref('groups/').child(groupUid).remove();
     console.log('removeGroupInfoFromDatabase function called.');
   }
