@@ -128,7 +128,7 @@ $(document).ready(function() {
             title: inputName,
             description: inputDesc,
             roomColor: inputColor,
-            memberCounts: userList.length,
+            memberCount: userList.length,
             memberInfo: members,
         });
     }
