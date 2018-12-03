@@ -82,7 +82,7 @@ $(document).ready(function() {
     group_memberCount, group_createdOn, group_color) {
     var table = $('<table></table>');
     table.css('border', '3px solid ' + group_color);
-    table.css('width', '250px');
+    table.css('width', '14em');
     table.attr('id', groupUid);
     var tr_groupTitle = $('<tr></tr>');
     var td_groupTitle = $('<td></td>');
