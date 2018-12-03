@@ -1,7 +1,7 @@
 $(document).ready(function() {
   const database = firebase.database();
   const rootRef = database.ref();
-  
+
   //listens for user authentication status.
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -148,7 +148,6 @@ $(document).ready(function() {
   function removeGroupInfoFromDatabase(groupUid) {
     var uid = firebase.auth().currentUser.uid;
     database.ref('users/' + uid).child('groups/' + groupUid).remove();
-<<<<<<< HEAD
     rootRef.child('groups/' + groupUid).once('value').then(function(snapshot) {
       var decrementCount = {};
       var originalCount = snapshot.child('memberCount').val();
@@ -157,8 +156,6 @@ $(document).ready(function() {
       rootRef.update(decrementCount);
     });
     currentUserRef.child('groups/' + groupUid).remove();
-=======
->>>>>>> a452e9976d8c4eb0ec76bfd129bb2ffcd2db7c34
     //database.ref('groups/').child(groupUid).remove();
     console.log('removeGroupInfoFromDatabase function called.');
   }
