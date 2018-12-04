@@ -76,8 +76,8 @@ $(document).ready(function() {
     });
   }
 
-  //================retrive and append agenda section================
-  //retrieves each agendaUid under a group, one at a time. It then passes the //agendaUid to the function that uses Jquery to display name dynamicly.
+  //retrieves each agendaUid under a group, one at a time. It then passes the 
+  //agendaUid to the function that uses Jquery to display name dynamicly.
   function loopForGroupAgendas(currentGroupUid) {
     database.ref('groups/' + currentGroupUid + '/agendas/').once('value').then(function(snapshot) {
       var contains = snapshot.exists();
@@ -117,10 +117,9 @@ $(document).ready(function() {
       addAAgendaList(agendaUid, dataObj);
     });
   }
-  //================end of the section================
 
-  //=================dynamic group members listing section=============
-  //retrieves each memberUid under a group, one at a time. It then passes the //memberUid to the function that uses Jquery to display name dynamicly.
+  //retrieves each memberUid under a group, one at a time. It then passes the 
+  //memberUid to the function that uses Jquery to display name dynamicly.
   function loopForGroupMembers(currentGroupUid) {
     database.ref('groups/' + currentGroupUid +'/memberInfo').once('value').then(function(snapshot) {
       var contains = snapshot.exists();
@@ -161,20 +160,17 @@ $(document).ready(function() {
       } else {
         console.log('user hasn\'t joined projectHub yet');
       }
-      
     });
   }
-  //========================end of a section======================
-
-  //==================create and update agenda info section====================
-
 
   //accepts a json object containing all the agenda info and generates
   //a random key assigned to that agenda. lastly, updates these info under the
   //currentGroupUid, the 'agendas' node, and the users to whom the agenda is
   //assigned.
-  function updatingANewAgenda(currentGroupUid, newAgenda_description, newAgenda_dateDue, newAgenda_timeDue, prefix, newAgenda_memberObj) {
-    console.log(currentGroupUid+ newAgenda_description+ newAgenda_dateDue+ newAgenda_timeDue+ prefix+ newAgenda_memberObj);
+  function updatingANewAgenda(currentGroupUid, newAgenda_description, 
+    newAgenda_dateDue, newAgenda_timeDue, prefix, newAgenda_memberObj) {
+    console.log(currentGroupUid+ newAgenda_description+ newAgenda_dateDue + 
+      newAgenda_timeDue+ prefix+ newAgenda_memberObj);
     database.ref('groups/').once('value').then(function(snapshot) {
     //check if the passing in currentGroupUid exists or not.
       var contains = snapshot.child(currentGroupUid).exists();
@@ -234,16 +230,11 @@ $(document).ready(function() {
     var div_agendas = $('<div></div>');
     div_agendas.attr('id', agendaUid);
     div_agendas.addClass('agendas');
-    // var h2_groupTitle = $('<h2></h2>');
-    // h2_groupTitle.text("");
-    //div_agendas.append(h2_groupTitle);
-    //need to loop this
     var div_individualAgenda = $('<div></div>');
     div_individualAgenda.addClass(agendaUid + ' individualAgenda');
     var h4_agendaDesc = $('<h4><//h4>');
     h4_agendaDesc.addClass('agendaDesc');
     h4_agendaDesc.text(description);
-    //h4_agendaDesc.text(agendaUid);
     var p_agendaDesc = $('<p></p>');
     p_agendaDesc.text("Due: ");
     p_agendaDesc.addClass('agendaDesc');
@@ -298,7 +289,6 @@ $(document).ready(function() {
     $('#agendaSpace').prepend(div_agendas);
     console.log('agenda added.');
   }
-  //========================end of a section======================
 
   //removes given agendaUid under "users" and "agendas" nodes in the database.
   function removeAgendaInfoFromDatabase(agendaUid) {
@@ -320,10 +310,7 @@ $(document).ready(function() {
     
     console.log('removeAgendaInfoFromDatabase function called.');
   }
-  //=========end of the function=======================
 
-
-  //=====================event handling section=====================
   //clicks the plus sign to see or close the "create an agend" drop down.
   var isDown = false;
   $('#createAgendaIcon').click(function(e) {
@@ -349,6 +336,7 @@ $(document).ready(function() {
   //clicks the create button on the create agenda modal will write all the value
   //in the input boxes to the database and hides the interface.
   $('#newAgendaForm').submit(function getAgendaInfo() {
+    $('#agendaSpace').text('');
     var agendaDescription = $('#agendaDesc').val();
     var agendaDueDate = getCurrentDate($('#dueDate').val(), false);
     var agendaDueTime = $('#dueTime').val();
@@ -366,8 +354,11 @@ $(document).ready(function() {
       });
       console.log(agendaDescription + agendaDueDate + agendaDueTime + prefix + assignedTo);
       updatingANewAgenda(currentGroupUid, agendaDescription, agendaDueDate, agendaDueTime, prefix, assignedTo);
-      $('#createAgendaIcon').css('transform', 'rotate(-90deg)');
-      $("#create_agenda_modal").slideUp();
+      setTimeout (function() {
+        $('#createAgendaIcon').css('transform', 'rotate(-90deg)');
+        $("#create_agenda_modal").slideUp();
+      }, 2000);
+
     }
   });
 
@@ -394,10 +385,7 @@ $(document).ready(function() {
     document.getElementsByClassName(agendaUid)[1].style.display = 'none';
     document.getElementsByClassName(agendaUid)[2].style.display = 'none';
     console.log('checking agenda: '+ agendaUid);
-    
   });
-  //=====================end of the event handling section=====================
-
 
   //Prints out messages stored in database
   setTimeout(function() {
