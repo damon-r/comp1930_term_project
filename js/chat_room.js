@@ -355,8 +355,7 @@ $(document).ready(function() {
       console.log(agendaDescription + agendaDueDate + agendaDueTime + prefix + assignedTo);
       updatingANewAgenda(currentGroupUid, agendaDescription, agendaDueDate, agendaDueTime, prefix, assignedTo);
       setTimeout (function() {
-        $('#createAgendaIcon').css('transform', 'rotate(-90deg)');
-        $("#create_agenda_modal").slideUp();
+        location.reload();
       }, 1000);
 
     }
