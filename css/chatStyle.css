@@ -402,6 +402,7 @@ div.agendaIcons {
 
 .agendaDesc {
   margin: .1rem;
+  overflow: auto;
 }
 
 img.cancelIcons {

@@ -117,6 +117,9 @@ $(document).ready(function() {
     p_groupDateCreated.addClass('descriptionToRoom');
     p_groupDateCreated.css('margin-top', '0');
     p_groupDateCreated.text('Created on: ' + group_createdOn);
+    var p_key = $('<p></p>');
+    p_key.addClass('descriptionToRoom');
+    p_key.html('<b>Invitation Key:</b><br/>' + groupUid);
     //table footer for ENTER and EXIT a group.
     var tr_footer = $('<tr></tr>');
     tr_footer.css('text-align', 'center');
@@ -134,7 +137,7 @@ $(document).ready(function() {
     exit_button.addClass('exitButtons');
     //appending all the elements above.
     tr_groupTitle.append(td_groupTitle);
-    td_groupInfo.append(p_groupDesc, p_groupMemberCount, p_groupDateCreated);
+    td_groupInfo.append(p_groupDesc, p_groupMemberCount, p_groupDateCreated, p_key);
     tr_groupInfo.append(td_groupInfo);
     td_enter.append(enter_button);
     td_exit.append(exit_button);
@@ -227,14 +230,14 @@ $(document).ready(function() {
           console.log(uid + newMemberCount);
           updates['users/' + uid + '/groups/' + groupKeyEntered] = true;
           updates['groups/' + groupKeyEntered + '/memberCount'] = newMemberCount;
-          updates['groups/' + groupKeyEntered + '/memberInfo'] = {[uid]: email};
+          updates['groups/' + groupKeyEntered + '/memberInfo/' + uid] = email;
           rootRef.update(updates);
           console.log('group: ' + groupKeyEntered + ' added.');
         }
         console.log('Directing you to room: ' + groupKeyEntered);
         setTimeout(function() {
           window.location.href="./chat_room.html#" + groupKeyEntered;
-        }, 2000);
+        }, 1000);
       } else {
         $('.errorText').text("The key is not valid.");
       }

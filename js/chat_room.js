@@ -357,7 +357,7 @@ $(document).ready(function() {
       setTimeout (function() {
         $('#createAgendaIcon').css('transform', 'rotate(-90deg)');
         $("#create_agenda_modal").slideUp();
-      }, 2000);
+      }, 1000);
 
     }
   });
