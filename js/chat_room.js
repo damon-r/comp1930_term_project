@@ -13,6 +13,9 @@ $(document).ready(function() {
   console.log('url parsed from the url: ' + currentGroupUid);
   var messages = firebase.database().ref('groups/'+currentGroupUid+'/messages');
 
+  //gets current date in the format YYYY-MM-DD, it is used to set the minimum
+  //due date for agenda as you can make the due date that is smaller than today
+  //logically.
   var today = new Date();
   const year = today.getFullYear();
   const month = `${today.getMonth() + 1}`.padStart(2, 0);
@@ -97,7 +100,10 @@ $(document).ready(function() {
     });
   }
 
-  //var ref = database.ref('agendas').orderByChild('dueDate');
+  //retrieves agenda information and assigns them to variables, the variables
+  //then are used as parameters for addAAgendaList function to show the
+  //information on page. If agendaUid passed in does not exist, console log the
+  //agenda not found.
   function retrieveAgendaInfo(agendaUid) {
     database.ref('agendas/' + agendaUid).once('value').then(function(snapshot) {
       console.log(agendaUid);
@@ -224,7 +230,8 @@ $(document).ready(function() {
     }
   }
 
-  //accepts
+  //accepts parameters and uses Jquery to create and append div containers to 
+  //hold the agenda information.
   function addAAgendaList(agendaUid, {description, dueDate, dueTime}) {
     console.log(agendaUid + description + dueDate + dueTime);
     var div_agendas = $('<div></div>');
