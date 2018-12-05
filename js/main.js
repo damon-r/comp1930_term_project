@@ -36,7 +36,6 @@ $(document).ready(function() {
         console.log('Start looping for groups.');
         $('#roomSpace').text('');
         snapshot.forEach(function(childSnapshot) {
-
           var uid = childSnapshot.key;
           console.log('groupUid: ' + uid + '\n');
           retrieveGroupInfo(uid);
