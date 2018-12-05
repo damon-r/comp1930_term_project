@@ -39,7 +39,7 @@ When the user logs out on any page, he/she will be redirected to the landing pag
 
 ## Acknowledgments
 - Thanks Carly Orr and Vidhi Shah for guiding us through the process and teaching us to think like a user
-- Thanks Alistair Calder for giving us a free server space to host our web app.
+- Thanks Alistair Calder (Lab instructor for COMP 1536) for giving us a free server space to host our web app.
 - Thanks GitHub for providing a free collaborating/version control platform
 
 ## License
