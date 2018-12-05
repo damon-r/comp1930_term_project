@@ -4,7 +4,7 @@ projectHub is a web app that is easy to set up group chat and track group tasks.
 
 ## Getting Started
 
-Click the [link](https://www.accountchooser.com/redirect.html#jcolussi2.students.bcit.ca) to use the app.
+Click the [link](http://jcolussi2.students.bcit.ca/projects1/) to use the app.
 
 ## Walk-Through
 
